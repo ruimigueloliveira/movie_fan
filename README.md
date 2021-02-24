@@ -3,12 +3,11 @@ Development of a web application, about films and tv shows. The purpose of this 
 
 The project is divided into two parts.
 
-⋅⋅* Unordered sub-list. 
 
 The first part uses the following technologies:
-⋅⋅*Python / Django (application programming);
-⋅⋅*XML (data format);
-⋅⋅*XML schema (modeling and validation);
+- Python / Django (application programming);
+- XML (data format);
+- XML schema (modeling and validation);
 ⋅⋅*XPATH (data filtering);
 ⋅⋅*XSLT (data transformation);
 ⋅⋅*BaseX (data storage);
