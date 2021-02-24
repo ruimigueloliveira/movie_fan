@@ -4,14 +4,14 @@ Development of a web application, about films and tv shows. The purpose of this 
 The project is divided into two parts.
 
 The first part uses the following technologies:
-⋅⋅* Python / Django (application programming);
-⋅⋅* XML (data format);
-⋅⋅* XML schema (modeling and validation);
-⋅⋅* XPATH (data filtering);
-⋅⋅* XSLT (data transformation);
-⋅⋅* BaseX (data storage);
-⋅⋅* XQuery and XQuery update (data search and management in the database);
-⋅⋅* RSS and / or Atom (received from external data).
+⋅⋅*Python / Django (application programming);
+⋅⋅*XML (data format);
+⋅⋅*XML schema (modeling and validation);
+⋅⋅*XPATH (data filtering);
+⋅⋅*XSLT (data transformation);
+⋅⋅*BaseX (data storage);
+⋅⋅*XQuery and XQuery update (data search and management in the database);
+⋅⋅*RSS and / or Atom (received from external data).
 
 The second one uses the following technologies:
 ⋅⋅* Python / Django (application programming);
