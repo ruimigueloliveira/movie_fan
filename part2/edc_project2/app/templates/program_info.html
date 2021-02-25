@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="score-container">
+        <div class="row">
+            <div class="col-md-5">
+            </div>
+            <div class="col-md-2">
+                {% if movie.watched %}
+                    <button class="btn btn-lg btn-success seen">SEEN</button>
+                {% endif %}
+            </div>
+           <div class="col-md-5">
+               {% if movie.watched %}
+                   <a href="{% url 'mark_unwatched' %}?id={{  movie.id }}">
+                       <button type="button" class="watched btn btn-lg btn-outline-danger">Mark as unwatched</button>
+                   </a>
+               {% else %}
+               <a href="{% url 'mark_watched' %}?id={{  movie.id }}">
+                   <button type="button" class="watched btn btn-lg btn-outline-success">Mark as watched</button>
+               </a>
+               {% endif %}
+           </div>
+
+        </div>
+    </div>
+    <div class="program-container">
+        <div class="row">
+            <div class="col-sm-8" about="{{ movie.full_id }}" typeof="pr:{{ movie.type }}">
+                <p class="movie-title" property="pr:name"><b>{{ movie.name }}</b> ({{ movie.release_year }})
+
+                </p>
+                <p class="movie-info" property="pr:duration">
+                    Added on {{ movie.date_added }} -
+                    {{ movie.duration }}
+                </p>
+                <p class="movie-info" rel="pr:starring" ><b>Cast: </b>
+                    {% for k in movie.cast %}
+                        <b> - </b>
+                        <a class="actor-list" property="pr:url" href="{% url 'actor' %}?actor={{ k }}" typeof="pr:actor">
+                            <span property="pr:name">{{ k }}</span>
+                        </a>
+                    {% endfor %}
+                </p>
+
+                <p class="movie-info" rel="pr:directors"><b>Directed by: </b>
+                    {% for k in movie.director %}
+                        <b> - </b>
+                        <a class="actor-list" property="pr:url" href="{% url 'director' %}?director={{ k }}" typeof="pr:director">
+                            <span property="pr:name">{{ k }}</span>
+                        </a>
+                    {% endfor %}
+                </p>
+
+                <p class="movie-info" rel="pr:countries"><b>Countries: </b>
+                    {% for k in movie.country %}
+                        <b> - </b>
+                        <a class="actor-list" property="pr:url" href="{% url 'country' %}?country={{ k }}" typeof="pr:country">
+                            <span property="pr:name">{{ k }}</span>
+                        </a>
+                    {% endfor %}
+                </p>
+
+                <p class="movie-info" rel="pr:categories"><b>Categories: </b>
+                    {% for k in movie.category %}
+                        <b> - </b>
+                        <a class="actor-list" property="pr:url" href="{% url 'category' %}?category={{ k }}" typeof="pr:category">
+                            <span property="pr:name">{{ k }}</span>
+                        </a>
+                    {% endfor %}
+                </p>
+
+                <p class="movie-info" property="pr:rating"><b>Rating: </b>{{ movie.rating }}</p>
+                <p class="movie-info" property="pr:description"><b>Description: </b>{{ movie.description }}</p>
+                {% if movie.rate %}
+                    <p class="movie-info" property="pr:rate"><b>Your Score: </b>{{ movie.quality }} ({{ movie.rate }}.0)
+                        {% if movie.rate == '3' %}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="yellow" class="bi bi-emoji-neutral" viewBox="-2 -2 18 18">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                <path d="M4 10.5a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 0-1h-7a.5.5 0 0 0-.5.5zm3-4C7 5.672 6.552 5 6 5s-1 .672-1 1.5S5.448 8 6 8s1-.672 1-1.5zm4 0c0-.828-.448-1.5-1-1.5s-1 .672-1 1.5S9.448 8 10 8s1-.672 1-1.5z"/>
+                            </svg>
+                        {% elif movie.rate == '4' or  movie.rate == '5'%}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="yellow" class="bi bi-emoji-smile" viewBox="-2 -2 18 18">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
+                                <path d="M4.285 9.567a.5.5 0 0 1 .683.183A3.498 3.498 0 0 0 8 11.5a3.498 3.498 0 0 0 3.032-1.75.5.5 0 1 1 .866.5A4.498 4.498 0 0 1 8 12.5a4.498 4.498 0 0 1-3.898-2.25.5.5 0 0 1 .183-.683zM7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5zm4 0c0 .828-.448 1.5-1 1.5s-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5z"></path>
+                            </svg>
+                        {% else %}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="yellow" class="bi bi-emoji-frown" viewBox="-2 -2 18 18">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                <path d="M4.285 12.433a.5.5 0 0 0 .683-.183A3.498 3.498 0 0 1 8 10.5c1.295 0 2.426.703 3.032 1.75a.5.5 0 0 0 .866-.5A4.498 4.498 0 0 0 8 9.5a4.5 4.5 0 0 0-3.898 2.25.5.5 0 0 0 .183.683zM7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5zm4 0c0 .828-.448 1.5-1 1.5s-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5z"/>
+                            </svg>
+                        {% endif %}
+                    </p>
+                {% endif %}
+            </div>
+            <div class="col-sm-4 align-items-center d-flex justify-content-center">
+                {% if movie.name == 'Friends' %}
+                    <img src="../static/imgs/friends.jpg" class="program-info-image"/>
+                {% elif movie.name == 'Gotham' %}
+                    <img src="../static/imgs/gotham.jpg" class="program-info-image"/>
+                {% elif movie.name == 'Ken Burns: The Civil War' %}
+                    <img src="../static/imgs/civil_war.jpg" class="program-info-image"/>
+                {% elif movie.name == 'Kingdom' %}
+                    <img src="../static/imgs/kingdom.jpg" class="program-info-image"/>
+                {% elif movie.name == 'You' %}
+                    <img src="../static/imgs/you.jpg" class="program-info-image"/>
+                {% elif movie.name == 'The Blue Planet: A Natural History of the Oceans' %}
+                    <img src="../static/imgs/blue_planet.jpg" class="program-info-image"/>
+                {% elif movie.name == 'Avengers: Infinity War' %}
+                    <img src="../static/imgs/avengers.jpg" class="program-info-image"/>
+                {% elif movie.name == 'Godzilla' %}
+                    <img src="../static/imgs/godzilla.png" class="program-info-image"/>
+                {% elif movie.name == 'The Matrix' %}
+                    <img src="../static/imgs/matrix.jpg" class="program-info-image"/>
+                {% elif movie.name == 'Sherlock Holmes' %}
+                    <img src="../static/imgs/sherlock.jpg" class="program-info-image"/>
+                {% elif movie.name == 'Pulp Fiction' %}
+                    <img src="../static/imgs/pulp_fiction.jpg" class="program-info-image"/>
+                {% elif movie.name == 'Inception' %}
+                    <img src="../static/imgs/inception.jpg" class="program-info-image"/>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="score-container">
+        <a href="">
+        <button disabled = "disabled"; class="btn btn-lg btn-warning">Rate this movie:</button>
+        </a>
+        {% if movie.rate == '1' %}
+            <a href="{% url 'add_rating_1' %}?id={{  movie.id }}">
+            <button type="button" class="btn btn-lg btn-danger">1</button>
+            </a>
+        {% elif movie.rate != '1' %}
+            <a href="{% url 'add_rating_1' %}?id={{  movie.id }}">
+            <button type="button" class="btn btn-lg btn-outline-danger">1</button>
+            </a>
+        {% endif %}
+        {% if movie.rate == '2' %}
+            <a href="{% url 'add_rating_2' %}?id={{  movie.id }}">
+            <button type="button" class="btn btn-lg btn-danger">2</button>
+            </a>
+        {% elif movie.rate != '2' %}
+            <a href="{% url 'add_rating_2' %}?id={{  movie.id }}">
+            <button type="button" class="btn btn-lg btn-outline-danger">2</button>
+            </a>
+        {% endif %}
+        {% if movie.rate == '3' %}
+            <a href="{% url 'add_rating_3' %}?id={{  movie.id }}">
+            <button type="button" class="btn btn-lg btn-warning">3</button>
+            </a>
+        {% elif movie.rate != '3' %}
+            <a href="{% url 'add_rating_3' %}?id={{  movie.id }}">
+            <button type="button" class="btn btn-lg btn-outline-warning">3</button>
+            </a>
+        {% endif %}
+        {% if movie.rate == '4' %}
+            <a href="{% url 'add_rating_4' %}?id={{  movie.id }}">
+            <button type="button" class="btn btn-lg btn-success">4</button>
+            </a>
+        {% elif movie.rate != '4' %}
+            <a href="{% url 'add_rating_4' %}?id={{  movie.id }}">
+            <button type="button" class="btn btn-lg btn-outline-success">4</button>
+            </a>
+        {% endif %}
+        {% if movie.rate == '5' %}
+            <a href="{% url 'add_rating_5' %}?id={{  movie.id }}">
+            <button type="button" class="btn btn-lg btn-success">5</button>
+            </a>
+        {% elif movie.rate != '5' %}
+            <a href="{% url 'add_rating_5' %}?id={{  movie.id }}">
+            <button type="button" class="btn btn-lg btn-outline-success">5</button>
+            </a>
+        {% endif %}
+    </div>
+{% endblock %}
