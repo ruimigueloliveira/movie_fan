@@ -1,5 +1,3 @@
-Segundo Projeto de EDC
-
 RDF - Formato dos dados em NT:
 Na pasta utils está o ficheiro moviesDB.nt que contém os triplos usados no nosso trabalho.
 Nessa pasta também está o ficheiro streamData.csv original e o programa main.py e edit.py criado por nós para converter o ficheiro CSV num ficheiro NT.
