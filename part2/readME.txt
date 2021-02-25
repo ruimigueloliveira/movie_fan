@@ -14,7 +14,3 @@ Inferências:
 
 RDFa:
 Implementámos RDFa em todas as páginas que contém informação escrita, como as do filme, ator, diretor, país e categoria.
-
-88859 - Pedro Gonçalves
-89216 - Rui Oliveira
-89228 - Pedro Silva
