@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+    {% if error %}
+        <p style="..." >Error, please insert the correct information!</p>
+    {% endif %}
+    <form action="." method="post">
+        {% csrf_token %}
+        <div class="list-container">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="list-name">Search</p>
+                    <p class="search-by"> Search by show name:</p>
+                    <p><input class="form-control pad" type="text" name="serieName" placeholder="Name of the show" aria-label="SearchShow"></p>
+                    <p class="search-by"> Search by actor:</p>
+                    <p><input class="form-control pad" type="text" name="actorName" placeholder="Name of the actor" aria-label="SearchActor"></p>
+                    <p class="search-by"> Search by country:</p>
+                    <p><input class="form-control pad" type="text" name="countryName" placeholder="Name of the country" aria-label="SearchCountry"></p>
+                    <button type="submit" class="btn btn-lg btn-outline-light btn-search">Search</button>
+                </div>
+                <div class="col-md-2"></div>
+                <div class="col-md-4">
+                    <table class="dist">
+                        <tbody>
+                            <p class="list-name">Categories</p>
+
+                            {% for k in search %}
+                                <a class="movie-titles" href="{% url 'category' %}?category={{ k }}">
+                                    <p>{{ k }}</p>
+                                </a>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock content %}

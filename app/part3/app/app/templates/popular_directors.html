@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class=list-container>
+        <div class="row">
+            <div class="col-md-8">
+                <div>
+                    <p class="actors-directors-name">Most Popular Directors</p>
+                    <!-- <input class="form-control" type="text" placeholder="Search Movie" aria-label="Search"> -->
+                    {% for k in search %}
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <p>
+                                    <a class="movie-titles" href="{% url 'director' %}?director={{ k }}">
+                                        {{ k }}
+                                    </a>
+                                    </p>
+                                </div>
+                            </div>
+                    {% endfor %}
+                    <p></p>
+                    <p class="actors-directors-name">All Directors</p>
+                    {% for k in all %}
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <p>
+                                    <a class="movie-titles" href="{% url 'director' %}?director={{ k }}">
+                                        {{ k }}
+                                    </a>
+                                    </p>
+                                </div>
+                            </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
