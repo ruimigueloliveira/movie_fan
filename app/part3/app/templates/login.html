@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+    {% if error %}
+        <p style="..." >Error, please insert the correct information!</p>
+    {% endif %}
+    <form action="." method="post">
+        {% csrf_token %}
+        <div class="list-container">
+            <div class="row">
+                <div class="col-md-6">
+
+                    <p class="list-name">Login</p>
+
+                    <p class="search-by">Username:</p>
+                    <input class="form-control pad" type="text" name="serieName"  aria-label="SearchShow">
+
+                    <p class="search-by"> Password:</p>
+                    <input class="form-control pad" type="text" name="actorName"  aria-label="SearchActor">
+                    
+                    <button type="submit" class="btn btn-lg btn-outline-light btn-search">Log In</button>
+
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock content %}
