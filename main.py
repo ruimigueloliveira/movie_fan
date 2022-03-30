@@ -1,6 +1,8 @@
 from fastapi import FastAPI
-from registry.users_operations import register
-import registry.users_operations as u
+
+import statuses
+from users_operations import register
+import users_operations as u
 
 app = FastAPI()
 
@@ -21,8 +23,8 @@ async def say_hello(name: str):
 async def signup(username, email, password) -> dict:
     # If signup successful
     status: int = register(username, email, password)
-    if status != u.OK:
-        return {"message": f"Error: {u.status_code(status)}"}
+    if status != statuses.OK:
+        return {"message": f"Error: {statuses.status_code(status)}"}
     return {"message": "OK"}
 
 
@@ -30,7 +32,7 @@ async def signup(username, email, password) -> dict:
 async def login(username, email, password) -> dict:
     # If signup successful
     status: int = u.check(username, email, password)
-    if status == u.OK:
-        return {"message": f"Error: {u.status_code(status)}"}
+    if status == statuses.OK:
+        return {"message": f"Error: {statuses.status_code(status)}"}
     return {"message": "OK"}
 
