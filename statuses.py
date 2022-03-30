@@ -9,6 +9,7 @@ INVALID_EMAIL: int = 2
 INVALID_PASSWORD: int = 3
 NON_EXISTENT_USER: int = 4
 USER_ALREADY_EXISTS: int = 5
+INVALID_TOKEN: int = 6
 VALID_USERNAME: int = 10
 VALID_EMAIL: int = 20
 VALID_PASSWORD: int = 30
@@ -26,6 +27,10 @@ MISMATCH_USERNAME_EMAIL: int = 44
 USER_PARAMETERS_AVAILABLE: int = 50
 USERNAME_ALREADY_EXISTS: int = 51
 EMAIL_ALREADY_EXISTS: int = 52
+VALID_TOKEN: int = 60
+INVALID_AUTH_CODE: int = 61
+INVALID_ACCESS_TOKEN: int = 62
+OVERDUE_ACCESS_TOKEN: int = 63
 
 
 def status_code(code: int) -> str:
@@ -47,6 +52,7 @@ def status_code(code: int) -> str:
         INVALID_PASSWORD: "Password is not valid",
         NON_EXISTENT_USER: "User with requested credentials does not exist",
         USER_ALREADY_EXISTS: "Can't add user, he already exists!",
+        INVALID_TOKEN: "Invalid token!",
         VALID_USERNAME: "Username is valid",
         VALID_EMAIL: "Email is valid",
         VALID_PASSWORD: "Password is valid",
@@ -62,7 +68,10 @@ def status_code(code: int) -> str:
         WRONG_PASSWORD: "Password incorrect",
         MISMATCH_USERNAME_EMAIL: "Username and e-mail do not match",
         USERNAME_ALREADY_EXISTS: "Username already used!",
-        EMAIL_ALREADY_EXISTS: "Email is already in use!"
+        EMAIL_ALREADY_EXISTS: "Email is already in use!",
+        INVALID_AUTH_CODE: "Authorization code is invalid!",
+        INVALID_ACCESS_TOKEN: "Access token is not valid!",
+        OVERDUE_ACCESS_TOKEN: "Access token is no longer valid!",
     }
 
     # Validate code
