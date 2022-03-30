@@ -15,11 +15,13 @@ async def say_hello(name: str):
     return {"message": f"Hello {name}"}
 
 
+# FIXME Use POST and pass password in request body instead of in endpoint
+# FIXME password is already received in hash form
 @app.get("/v1/signup/{username}/{email}/{password}")
 async def signup(username, email, password) -> dict:
     # If signup successful
     status: int = register(username, email, password)
-    if status == u.OK:
+    if status != u.OK:
         return {"message": f"Error: {u.status_code(status)}"}
     return {"message": "OK"}
 
