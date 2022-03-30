@@ -29,6 +29,9 @@ NON_EXISTENT_USERNAME: int = 41
 NON_EXISTENT_EMAIL: int = 42
 WRONG_PASSWORD: int = 43
 MISMATCH_USERNAME_EMAIL: int = 44
+USER_PARAMETERS_AVAILABLE: int = 50
+USERNAME_ALREADY_EXISTS: int = 51
+EMAIL_ALREADY_EXISTS: int = 52
 # Misc
 SPECIAL_SYM: tuple = ('$', '@', '#', '%')
 USERS_DB: str = "users.csv"
@@ -49,6 +52,9 @@ def status_code(code: int) -> str:
     :param code: Status code integer
     :return: Status code description
     """
+
+    # Parameter parse
+    code = int(code)
 
     # Status code list w/ descriptions
     statuses: Dict[int, str] = {
@@ -72,12 +78,14 @@ def status_code(code: int) -> str:
         NON_EXISTENT_USERNAME: "Username does not exist",
         NON_EXISTENT_EMAIL: "E-mail does not exist",
         WRONG_PASSWORD: "Password incorrect",
-        MISMATCH_USERNAME_EMAIL: "Username and e-mail do not match"
+        MISMATCH_USERNAME_EMAIL: "Username and e-mail do not match",
+        USERNAME_ALREADY_EXISTS: "Username already used!",
+        EMAIL_ALREADY_EXISTS: "Email is already in use!"
     }
 
     # Validate code
-    if code in statuses.keys():
-        return "Invalid status code!"
+    if code not in statuses.keys():
+        return f"Invalid status code: {code}!"
 
     return statuses[code]
 
@@ -110,6 +118,7 @@ def password_check(passwd: str) -> int:
     return VALID_PASSWORD
 
 
+# FIXME parameters are str | object because of sentinel object
 def input_check(username: str = SENTINEL, email: str = SENTINEL, password: str = SENTINEL) -> int:
     """
 
@@ -163,9 +172,16 @@ def register(username: str, email: str, password: str) -> int:
                      f"{username_h},{email_h},{password_h}")
         return OK
 
-    # Check if user already exists
-    if check(username=username, email=email, password=password) == OK:
+    # Check if user exists
+    if check(password, username, email) == OK:
         return USER_ALREADY_EXISTS
+    # Check if username or email exists
+    df = pd.read_csv(USERS_DB)
+    if df["username"].str.contains(username_h).sum() > 0:
+        return USERNAME_ALREADY_EXISTS
+    if df["email"].str.contains(hash_unicode(email)).sum() > 0:
+        return EMAIL_ALREADY_EXISTS
+
     # Append line with hashes to csv
     with open(USERS_DB, 'a') as fd:
         fd.write(f"\n{username_h},{email_h},{password_h}")
