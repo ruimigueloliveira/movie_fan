@@ -5,6 +5,8 @@ from typing import Dict
 import pandas as pd
 
 # --- Constants ---
+# Sentinel design pattern
+SENTINEL = object()
 # Status codes
 ERROR: int = -1
 OK: int = 0
@@ -108,7 +110,7 @@ def password_check(passwd: str) -> int:
     return VALID_PASSWORD
 
 
-def input_check(username: str = None, email: str = None, password: str = None) -> int:
+def input_check(username: str = SENTINEL, email: str = SENTINEL, password: str = SENTINEL) -> int:
     """
 
     :param username: Username to be validated
@@ -116,18 +118,18 @@ def input_check(username: str = None, email: str = None, password: str = None) -
     :param password: Password to be validated
     :return: Status code conveying the validity status of the parameters
     """
-    if username != "" and username is not None:
+    if username != "" and username is not SENTINEL:
         # Same as email before the '@'
         name_regex = re.compile(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+')
         if not re.fullmatch(name_regex, username):
             return INVALID_USERNAME
-    if email != "" and email is not None:
+    if email != "" and email is not SENTINEL:
         # Thanks to https://stackabuse.com/python-validate-email-address-with-regular-expressions-regex/
         email_regex = re.compile(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+')
         if not re.fullmatch(email_regex, email):
             return INVALID_EMAIL
     # Password validation (to prevent sql injection and stuff)
-    if password != "" and password is not None:
+    if password != "" and password is not SENTINEL:
         password_status: int = password_check(password)
         if password_status != VALID_PASSWORD:
             return password_status
@@ -171,7 +173,7 @@ def register(username: str, email: str, password: str) -> int:
     return OK
 
 
-def check(password: str, username: str = None, email: str = None) -> int:  # or bool?
+def check(password: str, username: str = SENTINEL, email: str = SENTINEL) -> int:  # or bool?
     """
     Check if a user with the provided parameters exist - must provide at least either username or email
     :param password: User password
@@ -189,7 +191,7 @@ def check(password: str, username: str = None, email: str = None) -> int:  # or 
 
     # Search for the user in the registry with the defined password ('s SHA-256)
     #   and obtain the username and email ('s SHA-256)
-    if username is not None:
+    if username is not SENTINEL:
         # Parse username to hash
         username_h: str = hash_unicode(username)
 
@@ -197,7 +199,7 @@ def check(password: str, username: str = None, email: str = None) -> int:  # or 
         user_row = user_db.loc[user_db['username'] == username_h]
 
         # Verification: If email is not empty, check if it matches with username
-        if email is not None:
+        if email is not SENTINEL:
             claimed_email: str = hash_unicode(email)
             # Get email associated with username
 
@@ -205,7 +207,7 @@ def check(password: str, username: str = None, email: str = None) -> int:  # or 
             if actual_email != claimed_email:
                 return MISMATCH_USERNAME_EMAIL
     else:
-        assert email is not None, "Bad request: empty username and email"
+        assert email is not SENTINEL, "Bad request: empty username and email"
         # Get user info
         user_row = user_db.loc[user_db['email'] == email]
 
@@ -218,7 +220,7 @@ def check(password: str, username: str = None, email: str = None) -> int:  # or 
     return OK
 
 
-def remove(password: str, username: str = None, email: str = None) -> int:
+def remove(password: str, username: str = SENTINEL, email: str = SENTINEL) -> int:
     """
 
     :param password:
