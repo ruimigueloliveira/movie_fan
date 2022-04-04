@@ -1,0 +1,22 @@
+
+MariaDB instalação (=~200MB):https://linuxhint.com/install-mariadb-ubuntu/
+Definir a password do root como "root"
+
+Instalar mariadb e drivers: sudo apt install python3-pip
+ sudo apt-get install libmariadb3 libmariadb-dev
+ pip3 install mariadb
+ 
+ Configurar mariadb no terminal:
+	 mariadb -u root -p 
+	 inserir password
+	 create database movies;
+	 use movies;
+	 create table show_info (id int, type varchar(10), title varchar(140), director varchar(200), cast varchar(600), country varchar(90), date_added varchar(40), release_year int, rating varchar(20), duration varchar(30), listed_in varchar(150), description varchar(500), primary key(id));
+ 
+ 
+
+Se ao correr o csv_to_mariadb der erro façam o seguinte:
+    terminal: mariadb -u root -p 
+    inserir password
+	UPDATE mysql.user SET plugin = 'mysql_native_password' WHERE user = 'root' AND plugin IN ('unix_socket', 'auth_socket');
+	FLUSH PRIVILEGES;
