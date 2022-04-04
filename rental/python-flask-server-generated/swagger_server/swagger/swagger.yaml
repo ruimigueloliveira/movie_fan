@@ -1,0 +1,219 @@
+openapi: 3.0.0
+info:
+  title: Rental API
+  description: Lets you rent products
+  version: v1
+servers:
+- url: https://virtserver.swaggerhub.com/movie-fan/Rental/v1
+  description: SwaggerHub API Auto Mocking
+- url: https://virtserver.swaggerhub.com/movie-fan/Movie-rental/v1
+  description: SwaggerHub API Auto Mocking
+paths:
+  /products/{id}:
+    get:
+      description: Returns the details of the product
+      operationId: products_id_get
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Successfully returned the product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+      x-openapi-router-controller: swagger_server.controllers.default_controller
+    put:
+      description: Updates product
+      operationId: products_id_put
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Successfully updated the product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_1'
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+      x-openapi-router-controller: swagger_server.controllers.default_controller
+    post:
+      description: Add a product for rental
+      operationId: products_id_post
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Successfully added the product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_1'
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+      x-openapi-router-controller: swagger_server.controllers.default_controller
+    delete:
+      description: Lets the admin delete a product
+      operationId: products_id_delete
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          # required:
+          # - admin
+          type: integer
+      responses:
+        "200":
+          description: Successfully deleted the product
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+      x-openapi-router-controller: swagger_server.controllers.default_controller
+  /products/pay/{id}:
+    put:
+      description: Rents the product
+      operationId: products_pay_id_put
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Successfully rent the product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+      x-openapi-router-controller: swagger_server.controllers.default_controller
+  /products:
+    get:
+      description: Returns all products available
+      operationId: products_get
+      responses:
+        "200":
+          description: Successfully returned the products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/inline_response_200_2'
+                x-content-type: application/json
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+      x-openapi-router-controller: swagger_server.controllers.default_controller
+components:
+  schemas:
+    inline_response_200:
+      # required:
+      # - username
+      type: object
+      properties:
+        product_id:
+          type: string
+        product_name:
+          type: string
+        state:
+          type: string
+        price:
+          type: number
+        date_limit:
+          type: string
+      example:
+        date_limit: date_limit
+        price: 0.80082819046101150206595775671303272247314453125
+        product_id: product_id
+        state: state
+        product_name: product_name
+    inline_response_400:
+      type: object
+      properties:
+        message:
+          type: string
+    inline_response_200_1:
+      # required:
+      # - admin
+      type: object
+      properties:
+        product_id:
+          type: string
+        product_name:
+          type: string
+        state:
+          type: string
+        price:
+          type: number
+        date_limit:
+          type: string
+      example:
+        date_limit: date_limit
+        price: 0.80082819046101150206595775671303272247314453125
+        product_id: product_id
+        state: state
+        product_name: product_name
+    inline_response_200_2:
+      # required:
+      # - username
+      type: object
+      properties:
+        product_ame:
+          type: array
+          items:
+            type: string
+      example:
+        product_ame:
+        - product_ame
+        - product_ame

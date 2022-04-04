@@ -1,0 +1,25 @@
+{
+    "products": {
+        "product1": {
+            "product_id": "123",
+            "product_name": "product1",
+            "state": "available",
+            "price": 23,
+            "date_limit": "april"
+        },
+        "product2": {
+            "product_id": "132",
+            "product_name": "product2",
+            "state": "free",
+            "price": 0,
+            "date_limit": "may"
+        },
+        "product3": {
+            "product_id": "142",
+            "product_name": "product3",
+            "state": "free",
+            "price": 0,
+            "date_limit": "may"
+        }
+    }
+}

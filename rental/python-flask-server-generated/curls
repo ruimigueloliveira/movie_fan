@@ -1,0 +1,15 @@
+curl -X 'GET' \
+  'http://192.168.1.185:8080/movie-fan/Rental/v1/products/12' \
+  -H 'accept: application/json'
+  
+curl -X 'POST' \
+  'http://192.168.1.185:8080/movie-fan/Rental/v1/products/12' \
+  -H 'accept: application/json' \
+  -d ''
+
+
+
+curl -X 'POST' \
+  'http://192.168.1.185:8080/movie-fan/Rental/v1/products/12' \
+  -H 'accept: application/json' \
+  -d ''
