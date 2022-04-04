@@ -11,10 +11,5 @@ def main():
     app.add_api('swagger.yaml', arguments={'title': 'Rental API'}, pythonic_params=True)
     app.run(port=8080)
 
-
-@app.route('/products/12', methods=['POST'])
-def products_id_post(id):
-    return "Hello"
-
 if __name__ == '__main__':
     main()

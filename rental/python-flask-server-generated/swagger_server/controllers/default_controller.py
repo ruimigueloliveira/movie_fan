@@ -1,5 +1,6 @@
 import connexion
 import six
+import json
 
 from swagger_server.models.inline_response200 import InlineResponse200  # noqa: E501
 from swagger_server.models.inline_response2001 import InlineResponse2001  # noqa: E501
@@ -15,7 +16,8 @@ def products_get():  # noqa: E501
 
     :rtype: List[InlineResponse2002]
     """
-    return 'do some magic!'
+    f = open("products.json", "r")
+    return json.load(f)
 
 
 def products_id_delete(id):  # noqa: E501
@@ -44,7 +46,6 @@ def products_id_get(id):  # noqa: E501
     f = open("products.json", "r")
     return json.load(f)
 
-@app.route('/products/12', methods=['GET', 'POST'])
 def products_id_post(id):  # noqa: E501
     """products_id_post
 
