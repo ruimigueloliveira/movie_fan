@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import Http404, HttpRequest
 from datetime import datetime
 import mariadb
 import sys
@@ -32,170 +33,209 @@ def nmovies(request):
     return render(request, 'index.html', tparams)
 
 def movie(request):
+    if not 'show_id' in request.GET:
+        raise Http404("Filme não disponível!")
+    id = request.GET['show_id']
+    print(id)
     cur = conn.cursor()
-    cur.execute("select * from show_info where id=1;")
+    data = (id, )
+    statement ="select * from show_info where id=%d;"
+    cur.execute(statement,data)
     myresult = cur.fetchall()
-    #print(myresult)
     cur.close()
     tparams = {
         'title': myresult[0],
-        'message': 'Your contact page.',
-        'year': datetime.now().year,
     }
     return render(request, 'index.html', tparams)
 
 def id(request):
+    if not 'show_id' in request.GET:
+        raise Http404("Filme não disponível!")
+    id = request.GET['show_id']
+    print(id)
     cur = conn.cursor()
-    cur.execute("select id from show_info where id=1;")
+    data = (id, )
+    statement ="select id from show_info where id=%d;"
+    cur.execute(statement,data)
     myresult = cur.fetchall()
-    #print(myresult)
     cur.close()
     tparams = {
         'title': myresult[0][0],
-        'message': 'Your application description page.',
-        'year': datetime.now().year,
     }
     return render(request, 'index.html', tparams)
 
 def type(request):
+    if not 'show_id' in request.GET:
+        raise Http404("Filme não disponível!")
+    id = request.GET['show_id']
+    print(id)
     cur = conn.cursor()
-    cur.execute("select type from show_info where id=1;")
+    data = (id, )
+    statement ="select type from show_info where id=%d;"
+    cur.execute(statement,data)
     myresult = cur.fetchall()
-    #print(myresult)
     cur.close()
     tparams = {
         'title': myresult[0][0],
-        'message': 'Your application description page.',
-        'year': datetime.now().year,
     }
     return render(request, 'index.html', tparams)
 
 def title(request):
+    if not 'show_id' in request.GET:
+        raise Http404("Filme não disponível!")
+    id = request.GET['show_id']
+    print(id)
     cur = conn.cursor()
-    cur.execute("select title from show_info where id=1;")
+    data = (id, )
+    statement ="select title from show_info where id=%d;"
+    cur.execute(statement,data)
     myresult = cur.fetchall()
-    #print(myresult)
     cur.close()
     tparams = {
         'title': myresult[0][0],
-        'message': 'Your application description page.',
-        'year': datetime.now().year,
     }
     return render(request, 'index.html', tparams)
 
 def director(request):
+    if not 'show_id' in request.GET:
+        raise Http404("Filme não disponível!")
+    id = request.GET['show_id']
+    print(id)
     cur = conn.cursor()
-    cur.execute("select director from show_info where id=1;")
+    data = (id, )
+    statement ="select director from show_info where id=%d;"
+    cur.execute(statement,data)
     myresult = cur.fetchall()
-    #print(myresult)
     cur.close()
     tparams = {
         'title': myresult[0][0],
-        'message': 'Your application description page.',
-        'year': datetime.now().year,
     }
     return render(request, 'index.html', tparams)
 
 def cast(request):
+    if not 'show_id' in request.GET:
+        raise Http404("Filme não disponível!")
+    id = request.GET['show_id']
+    print(id)
     cur = conn.cursor()
-    cur.execute("select cast from show_info where id=1;")
+    data = (id, )
+    statement ="select cast from show_info where id=%d;"
+    cur.execute(statement,data)
     myresult = cur.fetchall()
-    #print(myresult)
     cur.close()
     tparams = {
         'title': myresult[0][0],
-        'message': 'Your application description page.',
-        'year': datetime.now().year,
     }
     return render(request, 'index.html', tparams)
 
 def country(request):
+    if not 'show_id' in request.GET:
+        raise Http404("Filme não disponível!")
+    id = request.GET['show_id']
+    print(id)
     cur = conn.cursor()
-    cur.execute("select country from show_info where id=1;")
+    data = (id, )
+    statement ="select country from show_info where id=%d;"
+    cur.execute(statement,data)
     myresult = cur.fetchall()
-    #print(myresult)
     cur.close()
     tparams = {
         'title': myresult[0][0],
-        'message': 'Your application description page.',
-        'year': datetime.now().year,
     }
     return render(request, 'index.html', tparams)
 
 def date_added(request):
+    if not 'show_id' in request.GET:
+        raise Http404("Filme não disponível!")
+    id = request.GET['show_id']
+    print(id)
     cur = conn.cursor()
-    cur.execute("select date_added from show_info where id=1;")
+    data = (id, )
+    statement ="select date_added from show_info where id=%d;"
+    cur.execute(statement,data)
     myresult = cur.fetchall()
-    #print(myresult)
     cur.close()
     tparams = {
         'title': myresult[0][0],
-        'message': 'Your application description page.',
-        'year': datetime.now().year,
     }
     return render(request, 'index.html', tparams)
 
 def release_year(request):
+    if not 'show_id' in request.GET:
+        raise Http404("Filme não disponível!")
+    id = request.GET['show_id']
+    print(id)
     cur = conn.cursor()
-    cur.execute("select release_year from show_info where id=1;")
+    data = (id, )
+    statement ="select release_year from show_info where id=%d;"
+    cur.execute(statement,data)
     myresult = cur.fetchall()
-    #print(myresult)
     cur.close()
     tparams = {
         'title': myresult[0][0],
-        'message': 'Your application description page.',
-        'year': datetime.now().year,
     }
     return render(request, 'index.html', tparams)
 
 def rating(request):
+    if not 'show_id' in request.GET:
+        raise Http404("Filme não disponível!")
+    id = request.GET['show_id']
+    print(id)
     cur = conn.cursor()
-    cur.execute("select rating from show_info where id=1;")
+    data = (id, )
+    statement ="select rating from show_info where id=%d;"
+    cur.execute(statement,data)
     myresult = cur.fetchall()
-    #print(myresult)
     cur.close()
     tparams = {
         'title': myresult[0][0],
-        'message': 'Your application description page.',
-        'year': datetime.now().year,
     }
     return render(request, 'index.html', tparams)
 
 def duration(request):
+    if not 'show_id' in request.GET:
+        raise Http404("Filme não disponível!")
+    id = request.GET['show_id']
+    print(id)
     cur = conn.cursor()
-    cur.execute("select duration from show_info where id=1;")
+    data = (id, )
+    statement ="select duration from show_info where id=%d;"
+    cur.execute(statement,data)
     myresult = cur.fetchall()
-    #print(myresult)
     cur.close()
     tparams = {
         'title': myresult[0][0],
-        'message': 'Your application description page.',
-        'year': datetime.now().year,
     }
     return render(request, 'index.html', tparams)
 
 def listed_in(request):
+    if not 'show_id' in request.GET:
+        raise Http404("Filme não disponível!")
+    id = request.GET['show_id']
+    print(id)
     cur = conn.cursor()
-    cur.execute("select listed_in from show_info where id=1;")
+    data = (id, )
+    statement ="select listed_in from show_info where id=%d;"
+    cur.execute(statement,data)
     myresult = cur.fetchall()
-    #print(myresult)
     cur.close()
     tparams = {
         'title': myresult[0][0],
-        'message': 'Your application description page.',
-        'year': datetime.now().year,
     }
     return render(request, 'index.html', tparams)
 
 def description(request):
+    if not 'show_id' in request.GET:
+        raise Http404("Filme não disponível!")
+    id = request.GET['show_id']
+    print(id)
     cur = conn.cursor()
-    cur.execute("select description from show_info where id=1;")
+    data = (id, )
+    statement ="select description from show_info where id=%d;"
+    cur.execute(statement,data)
     myresult = cur.fetchall()
-    #print(myresult)
     cur.close()
     tparams = {
         'title': myresult[0][0],
-        'message': 'Your application description page.',
-        'year': datetime.now().year,
     }
     return render(request, 'index.html', tparams)
