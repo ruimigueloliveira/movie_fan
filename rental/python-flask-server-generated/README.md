@@ -15,6 +15,7 @@ To run the server, please execute the following from the root directory:
 
 ```
 pip3 install -r requirements.txt
+pip install 'connexion[swagger-ui]'
 python3 -m swagger_server
 ```
 
