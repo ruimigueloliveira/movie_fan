@@ -4,6 +4,7 @@ from s4api.graphdb_api import GraphDBApi
 from s4api.swagger import ApiClient
 import json
 from datetime import date
+import requests
 
 _endpoint = "http://localhost:7200"
 _repositorio = "moviesDB"
@@ -60,13 +61,20 @@ def movieslist(request):
     # dct_watched = {ls_uri_watched.strip(): ls_watched.strip() for ls_uri_watched, ls_watched in zip(ls_uri_watched, ls_watched)}
     # dct_score = {ls_uri_score.strip(): ls_score.strip() for ls_uri_score, ls_score in zip(ls_uri_score, ls_score)}
 
-    # tparams = {
-    #     'search': dct_name,
-    #     'watched': dct_watched,
-    #     'score': dct_score
-    # }
+    products = requests.get("http://127.0.0.1:8081/movie-fan/Rental/v1/products").json()
+    ls = [products["products"]["product1"]["title"]]
+    print(ls)
 
-    return render(request, 'list_of_movies.html')
+    tparams = {
+        'search': ls,
+        # 'watched': dct_watched,
+        # 'score': dct_score
+    }
+
+    
+
+
+    return render(request, 'list_of_movies.html', tparams)
 
 # Information about the movie/serie
 def movie(request):
