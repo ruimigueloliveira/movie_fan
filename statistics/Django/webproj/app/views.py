@@ -1,6 +1,7 @@
 from django.shortcuts import render
-from django.http import Http404, HttpRequest
+from django.http import Http404, HttpResponse
 from datetime import datetime
+import json as simplejson 
 import mariadb
 import sys
 
@@ -62,7 +63,8 @@ def id(request):
     tparams = {
         'title': myresult[0][0],
     }
-    return render(request, 'index.html', tparams)
+    data = simplejson.dumps(tparams)
+    return HttpResponse(data, content_type='application/json')
 
 def type(request):
     if not 'show_id' in request.GET:
@@ -78,7 +80,8 @@ def type(request):
     tparams = {
         'title': myresult[0][0],
     }
-    return render(request, 'index.html', tparams)
+    data = simplejson.dumps(tparams)
+    return HttpResponse(data, content_type='application/json')
 
 def title(request):
     if not 'show_id' in request.GET:
@@ -94,7 +97,8 @@ def title(request):
     tparams = {
         'title': myresult[0][0],
     }
-    return render(request, 'index.html', tparams)
+    data = simplejson.dumps(tparams)
+    return HttpResponse(data, content_type='application/json')
 
 def director(request):
     if not 'show_id' in request.GET:
@@ -110,7 +114,8 @@ def director(request):
     tparams = {
         'title': myresult[0][0],
     }
-    return render(request, 'index.html', tparams)
+    data = simplejson.dumps(tparams)
+    return HttpResponse(data, content_type='application/json')
 
 def cast(request):
     if not 'show_id' in request.GET:
@@ -126,7 +131,8 @@ def cast(request):
     tparams = {
         'title': myresult[0][0],
     }
-    return render(request, 'index.html', tparams)
+    data = simplejson.dumps(tparams)
+    return HttpResponse(data, content_type='application/json')
 
 def country(request):
     if not 'show_id' in request.GET:
@@ -142,7 +148,8 @@ def country(request):
     tparams = {
         'title': myresult[0][0],
     }
-    return render(request, 'index.html', tparams)
+    data = simplejson.dumps(tparams)
+    return HttpResponse(data, content_type='application/json')
 
 def date_added(request):
     if not 'show_id' in request.GET:
@@ -158,7 +165,8 @@ def date_added(request):
     tparams = {
         'title': myresult[0][0],
     }
-    return render(request, 'index.html', tparams)
+    data = simplejson.dumps(tparams)
+    return HttpResponse(data, content_type='application/json')
 
 def release_year(request):
     if not 'show_id' in request.GET:
@@ -174,7 +182,8 @@ def release_year(request):
     tparams = {
         'title': myresult[0][0],
     }
-    return render(request, 'index.html', tparams)
+    data = simplejson.dumps(tparams)
+    return HttpResponse(data, content_type='application/json')
 
 def rating(request):
     if not 'show_id' in request.GET:
@@ -190,7 +199,8 @@ def rating(request):
     tparams = {
         'title': myresult[0][0],
     }
-    return render(request, 'index.html', tparams)
+    data = simplejson.dumps(tparams)
+    return HttpResponse(data, content_type='application/json')
 
 def duration(request):
     if not 'show_id' in request.GET:
@@ -206,7 +216,8 @@ def duration(request):
     tparams = {
         'title': myresult[0][0],
     }
-    return render(request, 'index.html', tparams)
+    data = simplejson.dumps(tparams)
+    return HttpResponse(data, content_type='application/json')
 
 def listed_in(request):
     if not 'show_id' in request.GET:
@@ -222,7 +233,8 @@ def listed_in(request):
     tparams = {
         'title': myresult[0][0],
     }
-    return render(request, 'index.html', tparams)
+    data = simplejson.dumps(tparams)
+    return HttpResponse(data, content_type='application/json')
 
 def description(request):
     if not 'show_id' in request.GET:
@@ -238,4 +250,5 @@ def description(request):
     tparams = {
         'title': myresult[0][0],
     }
-    return render(request, 'index.html', tparams)
+    data = simplejson.dumps(tparams)
+    return HttpResponse(data, content_type='application/json')
