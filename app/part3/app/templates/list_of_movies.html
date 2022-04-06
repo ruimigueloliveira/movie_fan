@@ -6,11 +6,12 @@
                 <div>
                     <p class="list-name">Movies List</p>
                     <!-- <input class="form-control" type="text" placeholder="Search Movie" aria-label="Search"> -->
-                    {% for i in search %}
-                            <div class="row">
-                                <div class="col-md-9">
-                                    <a class="movie-titles" href="{% url 'movie' %}?id={{ k }}">{{ i }}</a>
+                    {% for key, val in search.items %}
+                        <div class="row">
+                            <div class="col-md-9">
+                                <a class="movie-titles" href="{% url 'movie' %}?id={{ k }}">{{ val.title}}</a>
                             </div>
+                        </div>
                     {% endfor %}
                 </div>
             </div>

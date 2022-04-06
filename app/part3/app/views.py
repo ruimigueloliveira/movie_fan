@@ -62,8 +62,10 @@ def movieslist(request):
     # dct_score = {ls_uri_score.strip(): ls_score.strip() for ls_uri_score, ls_score in zip(ls_uri_score, ls_score)}
 
     products = requests.get("http://127.0.0.1:8080/movie-fan/Rental/v1/products").json()
-    ls = [products["products"]["product1"]["title"]]
-    print(ls)
+    ls = products["products"]
+
+    for key, val in ls.items():
+        print(val['title'])
 
     tparams = {
         'search': ls,
@@ -71,7 +73,7 @@ def movieslist(request):
         # 'score': dct_score
     }
 
-    
+
 
 
     return render(request, 'list_of_movies.html', tparams)
