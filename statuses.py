@@ -1,6 +1,6 @@
 from typing import Dict
 
-from users_operations import SPECIAL_SYM
+SPECIAL_SYM: tuple = ('$', '@', '#', '%')
 
 ERROR: int = -1
 OK: int = 0

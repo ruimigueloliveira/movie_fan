@@ -5,15 +5,17 @@ import pandas as pd
 
 # --- Constants ---
 # Sentinel design pattern
+import statuses
 from statuses import OK, INVALID_USERNAME, INVALID_EMAIL, USER_ALREADY_EXISTS, VALID_PASSWORD, PASSWORD_TOO_SHORT, \
     PASSWORD_TOO_LONG, PASSWORD_NO_NUMBERS, PASSWORD_NO_UPPERCASE, PASSWORD_NO_LOWERCASE, PASSWORD_NO_SPECIAL_SYMBOLS, \
-    WRONG_PASSWORD, MISMATCH_USERNAME_EMAIL, USERNAME_ALREADY_EXISTS, EMAIL_ALREADY_EXISTS
+    WRONG_PASSWORD, MISMATCH_USERNAME_EMAIL, USERNAME_ALREADY_EXISTS, EMAIL_ALREADY_EXISTS, SPECIAL_SYM
 
 SENTINEL = object()
 # Status codes
 # Misc
-SPECIAL_SYM: tuple = ('$', '@', '#', '%')
 USERS_DB: str = "users.csv"
+
+# FIXME incoming passwords are supposed to be hashes already, not literals -> don't need to hash the passwords?
 
 
 def hash_unicode(a_string: str) -> str:
@@ -206,13 +208,13 @@ def remove(password: str, username: str = SENTINEL, email: str = SENTINEL) -> in
 if __name__ == '__main__':
 
     # Register user
-    status: int = register(username="andre", email="andre@gmail.com", password="passAndre1#")
-    assert status in (OK, USER_ALREADY_EXISTS), f"Error status: {status}"
+    status: int = register(username="andre2", email="andre2@gmail.com", password="andre$P1")
+    assert status in (OK, USER_ALREADY_EXISTS), f"Error status: {status}: {statuses.status_code(status)}"
 
     # Check credentials
-    status = check(username="andre", email="andre@gmail.com", password="passAndre1#")
-    assert status == OK, f"Error status: {status}"
+    status = check(username="andre2", email="andre2@gmail.com", password="andre$P1")
+    assert status == OK, f"Error status: {status}: {statuses.status_code(status)}"
 
     # Delete user
-    status = remove(username="andre", password="passAndre1#")
-    assert status == OK, f"Error status: {status}"
+    status = remove(username="andre2", password="andre$P1")
+    assert status == OK, f"Error status: {status}: {statuses.status_code(status)}"
