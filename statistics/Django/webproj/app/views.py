@@ -26,12 +26,44 @@ def home(request):
     return render(request, 'index.html', tparams)
 
 def nmovies(request):
+    cur = conn.cursor()
+    statement ="select count(*) from show_info;"
+    cur.execute(statement)
+    myresult = cur.fetchall()
+    cur.close()
+    print(myresult)
     tparams = {
-        'title': 'Contact',
-        'message': 'Your contact page.',
-        'year': datetime.now().year,
+        'title': myresult[0][0]
     }
-    return render(request, 'index.html', tparams)
+    data = simplejson.dumps(tparams)
+    return HttpResponse(data, content_type='application/json')
+    
+def allmovies(request):
+    cur = conn.cursor()
+    statement ="select * from show_info;"
+    cur.execute(statement)
+    myresult = cur.fetchall()
+    cur.close()
+    #print(myresult)
+    tparams = {}
+    for i in myresult:
+        movie = {
+        'id': i[0],
+        'type': i[1],
+        'title': i[2],
+        'director': i[3],
+        'cast': i[4],
+        'country': i[5],
+        'date_added': i[6],
+        'release_year': i[7],
+        'rating': i[8],
+        'duration': i[9],
+        'listed_in': i[10],
+        'description': i[11]
+        }
+        tparams[i[0]]=movie
+    data = simplejson.dumps(tparams)
+    return HttpResponse(data, content_type='application/json')
 
 def movie(request):
     if not 'show_id' in request.GET:
@@ -45,9 +77,22 @@ def movie(request):
     myresult = cur.fetchall()
     cur.close()
     tparams = {
-        'title': myresult[0],
+        'id': myresult[0][0],
+        'type': myresult[0][1],
+        'title': myresult[0][2],
+        'director': myresult[0][3],
+        'cast': myresult[0][4],
+        'country': myresult[0][5],
+        'date_added': myresult[0][6],
+        'release_year': myresult[0][7],
+        'rating': myresult[0][8],
+        'duration': myresult[0][9],
+        'listed_in': myresult[0][10],
+        'description': myresult[0][11]
     }
-    return render(request, 'index.html', tparams)
+
+    data = simplejson.dumps(tparams)
+    return HttpResponse(data, content_type='application/json')
 
 def id(request):
     if not 'show_id' in request.GET:
