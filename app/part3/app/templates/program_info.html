@@ -2,71 +2,50 @@
 {% block content %}
     <div class="score-container">
         <div class="row">
+            <div class="col-md-5"></div>
+            <div class="col-md-2"></div>
             <div class="col-md-5">
-            </div>
-            <div class="col-md-2">
-                {% if movie.watched %}
-                    <button class="btn btn-lg btn-success seen">SEEN</button>
-                {% endif %}
-            </div>
-           <div class="col-md-5">
-               {% if movie.watched %}
-                   <a href="{% url 'mark_unwatched' %}?id={{  movie.id }}">
-                       <button type="button" class="watched btn btn-lg btn-outline-danger">Mark as unwatched</button>
-                   </a>
-               {% else %}
-               <a href="{% url 'mark_watched' %}?id={{  movie.id }}">
-                   <button type="button" class="watched btn btn-lg btn-outline-success">Mark as watched</button>
+               <a href="{% url 'rent' %}?id={{  movie.id }}">
+                   <button type="button" class="watched btn btn-lg btn-outline-success">Rent</button>
                </a>
-               {% endif %}
-           </div>
-
+            </div>
         </div>
     </div>
     <div class="program-container">
         <div class="row">
             <div class="col-sm-8" about="{{ movie.full_id }}" typeof="pr:{{ movie.type }}">
-                <p class="movie-title" property="pr:name"><b>{{ movie.name }}</b> ({{ movie.release_year }})
-
+                <p class="movie-title" property="pr:name"><b>{{ movie.title }}</b> ({{ movie.release_year }})
                 </p>
                 <p class="movie-info" property="pr:duration">
                     Added on {{ movie.date_added }} -
                     {{ movie.duration }}
                 </p>
                 <p class="movie-info" rel="pr:starring" ><b>Cast: </b>
-                    {% for k in movie.cast %}
                         <b> - </b>
                         <a class="actor-list" property="pr:url" href="{% url 'actor' %}?actor={{ k }}" typeof="pr:actor">
-                            <span property="pr:name">{{ k }}</span>
+                            <span property="pr:name">{{ movie.cast }}</span>
                         </a>
-                    {% endfor %}
                 </p>
 
                 <p class="movie-info" rel="pr:directors"><b>Directed by: </b>
-                    {% for k in movie.director %}
                         <b> - </b>
                         <a class="actor-list" property="pr:url" href="{% url 'director' %}?director={{ k }}" typeof="pr:director">
-                            <span property="pr:name">{{ k }}</span>
+                            <span property="pr:name">{{ movie.director }}</span>
                         </a>
-                    {% endfor %}
                 </p>
 
                 <p class="movie-info" rel="pr:countries"><b>Countries: </b>
-                    {% for k in movie.country %}
                         <b> - </b>
                         <a class="actor-list" property="pr:url" href="{% url 'country' %}?country={{ k }}" typeof="pr:country">
-                            <span property="pr:name">{{ k }}</span>
+                            <span property="pr:name">{{ movie.country }}</span>
                         </a>
-                    {% endfor %}
                 </p>
 
                 <p class="movie-info" rel="pr:categories"><b>Categories: </b>
-                    {% for k in movie.category %}
                         <b> - </b>
                         <a class="actor-list" property="pr:url" href="{% url 'category' %}?category={{ k }}" typeof="pr:category">
-                            <span property="pr:name">{{ k }}</span>
+                            <span property="pr:name">{{ movie.type }}</span>
                         </a>
-                    {% endfor %}
                 </p>
 
                 <p class="movie-info" property="pr:rating"><b>Rating: </b>{{ movie.rating }}</p>
