@@ -11,7 +11,6 @@ _repositorio = "moviesDB"
 client = ApiClient(endpoint=_endpoint)
 accessor = GraphDBApi(client)
 
-
 # Home Page
 def home_page(request):
     return render(request, 'home_page.html')
@@ -26,70 +25,22 @@ def signup(request):
 
 # List of all the movies
 def movieslist(request):
-    # query = '''PREFIX mov: <http://movies.org/pred/>
-    #         select ?film ?name ?watched ?rate
-	#         where {
-    # 	        ?real mov:name "Movie" .
-	#             ?film mov:type ?real .
-	#             ?film mov:name ?name .
-    #             OPTIONAL {?film mov:watched ?watched . }
-    #             OPTIONAL {?film mov:rate ?rate . }
-	#         }'''
-
-    # _body = {"query": query}
-    # res = accessor.sparql_select(body=_body, repo_name=_repositorio)
-    # res = json.loads(res)
-    # ls = []
-    # ls_watched = []
-    # ls_score = []
-    # ls_uri = []
-    # ls_uri_watched = []
-    # ls_uri_score = []
-
-    # for key in res['results']['bindings']:
-    #     uri = key['film']['value'].split('/')[4]
-    #     if 'watched' in key:
-    #         ls_watched.append(key['watched']['value'])
-    #         ls_uri_watched.append(uri)
-    #     if 'rate' in key:
-    #         ls_score.append(key['rate']['value'])
-    #         ls_uri_score.append(uri)
-    #     ls.append(key['name']['value'])
-    #     ls_uri.append(uri)
-
-    # dct_name = {ls_uri.strip(): ls.strip() for ls_uri, ls in zip(ls_uri, ls)}
-    # dct_watched = {ls_uri_watched.strip(): ls_watched.strip() for ls_uri_watched, ls_watched in zip(ls_uri_watched, ls_watched)}
-    # dct_score = {ls_uri_score.strip(): ls_score.strip() for ls_uri_score, ls_score in zip(ls_uri_score, ls_score)}
-
-    products = requests.get("http://127.0.0.1:8080/movie-fan/Rental/v1/products").json()
-    ls = products["products"]
-
-    for key, val in ls.items():
-        print(val['title'])
-
+    allmovies_ditc = requests.get("http://127.0.0.1:8001/v1/allmovies").json()
     tparams = {
-        'search': ls,
-        # 'watched': dct_watched,
-        # 'score': dct_score
+        'allmovies_ditc': allmovies_ditc
     }
-
-
-
-
     return render(request, 'list_of_movies.html', tparams)
 
 # Information about the movie/serie
 def movie(request):
-    # if not 'id' in request.GET:
-    #     raise Http404("Filme não disponível!")
-    # id = request.GET['id']
-    # info = getShowInfo(id)
-
-    # tparams = {
-    #     'movie': info,
-    # }
-
-    return render(request, 'program_info.html')
+    if not 'id' in request.GET:
+        raise Http404("Filme não disponível!")
+    id = request.GET['id']
+    movie_ditc = requests.get("http://127.0.0.1:8001/v1/movie/?show_id="+id).json()
+    tparams = {
+        'movie': movie_ditc,
+    }
+    return render(request, 'program_info.html', tparams)
 
 # List of all the series
 def serieslist(request):
@@ -744,10 +695,17 @@ def add_rating_5(request):
     return render(request, 'program_info.html')
 
 # Marks the movie as watched
-def mark_watched(request):
-    # id = request.GET['id']
-    # tparams = mark_as_watched(id)
-    return render(request, 'program_info.html')
+def rent(request):
+    if not 'id' in request.GET:
+        raise Http404("Filme não disponível!")
+    id = request.GET['id']
+    movie_ditc = requests.get("http://127.0.0.1:8001/v1/movie/?show_id="+id).json()
+    rent_status = ""
+    tparams = {
+        'movie': movie_ditc,
+        'rent_status': rent_status
+    }
+    return render(request, 'rent.html', tparams)
 
 # Marks the movie as unwatched
 def mark_unwatched(request):

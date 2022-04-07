@@ -17,4 +17,5 @@ $ ./start_rental
 
 ## statistics
 ````
+$ ./start_statistics
 ````
