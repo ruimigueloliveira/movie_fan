@@ -126,7 +126,7 @@ def register(username: str, email: str, password: str) -> int:
     return OK
 
 
-def check(password: str, username: str = SENTINEL, email: str = SENTINEL) -> int:  # or bool?
+def check(password: str, username: str, email: str = SENTINEL) -> int:  # or bool?
     """
     Check if a user with the provided parameters exist - must provide at least either username or email
     :param password: User password
@@ -144,25 +144,21 @@ def check(password: str, username: str = SENTINEL, email: str = SENTINEL) -> int
 
     # Search for the user in the registry with the defined password ('s SHA-256)
     #   and obtain the username and email ('s SHA-256)
-    if username is not SENTINEL:
-        # Parse username to hash
-        username_h: str = hash_unicode(username)
 
-        # Get user info
-        user_row = user_db.loc[user_db['username'] == username_h]
+    # Parse username to hash
+    username_h: str = hash_unicode(username)
 
-        # Verification: If email is not empty, check if it matches with username
-        if email is not SENTINEL:
-            claimed_email: str = hash_unicode(email)
-            # Get email associated with username
+    # Get user info
+    user_row = user_db.loc[user_db['username'] == username_h]
 
-            actual_email: str = str(user_row['email'][0])
-            if actual_email != claimed_email:
-                return MISMATCH_USERNAME_EMAIL
-    else:
-        assert email is not SENTINEL, "Bad request: empty username and email"
-        # Get user info
-        user_row = user_db.loc[user_db['email'] == email]
+    # Verification: If email is not empty, check if it matches with username
+    if email is not SENTINEL:
+        claimed_email: str = hash_unicode(email)
+        # Get email associated with username
+
+        actual_email: str = str(user_row['email'][0])
+        if actual_email != claimed_email:
+            return MISMATCH_USERNAME_EMAIL
 
     claimed_passwd: str = hash_unicode(password)
     actual_passwd = str(user_row['password'][0])
