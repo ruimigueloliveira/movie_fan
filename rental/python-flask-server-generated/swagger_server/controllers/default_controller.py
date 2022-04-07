@@ -1,6 +1,8 @@
 import connexion
 import six
 import json
+from flask import request
+from werkzeug.datastructures import ImmutableMultiDict
 
 from swagger_server.models.inline_response200 import InlineResponse200  # noqa: E501
 from swagger_server.models.inline_response2001 import InlineResponse2001  # noqa: E501
@@ -57,6 +59,12 @@ def products_id_post(id_):  # noqa: E501
 
     :rtype: InlineResponse2001
     """
+
+
+    print('Movie ID: ' + str(id_))
+    print('Movie Price: ' + str(request.form.getlist("price")[0]))
+    print('Movie Status: ' + str(request.form.getlist("status")[0]))
+
 
     dict = {'id_': id_, 'name': 'Ze'}
 

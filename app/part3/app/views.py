@@ -29,6 +29,7 @@ def movieslist(request):
     tparams = {
         'allmovies_ditc': allmovies_ditc
     }
+
     return render(request, 'list_of_movies.html', tparams)
 
 # Information about the movie/serie
@@ -701,6 +702,13 @@ def rent(request):
     id = request.GET['id']
     movie_ditc = requests.get("http://127.0.0.1:8001/v1/movie/?show_id="+id).json()
     rent_status = ""
+
+    # Estas 3 linhas têm de ser alteradas consoante o filme
+    url = 'http://127.0.0.1:8080/movie-fan/Rental/v1/products/12'
+    movie_info = {'movie_id': id, 'price': 21, 'status': 'avaliable'}
+    x = requests.post(url, data = movie_info)
+
+
     tparams = {
         'movie': movie_ditc,
         'rent_status': rent_status
