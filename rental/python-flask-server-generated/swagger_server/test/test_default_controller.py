@@ -32,7 +32,7 @@ class TestDefaultController(BaseTestCase):
         
         """
         response = self.client.open(
-            '/movie-fan/Rental/v1/products/{id}'.format(id=56),
+            '/movie-fan/Rental/v1/products/{id_}'.format(id_=56),
             method='DELETE')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
@@ -43,7 +43,7 @@ class TestDefaultController(BaseTestCase):
         
         """
         response = self.client.open(
-            '/movie-fan/Rental/v1/products/{id}'.format(id=56),
+            '/movie-fan/Rental/v1/products/{id_}'.format(id_=56),
             method='GET')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
@@ -54,7 +54,7 @@ class TestDefaultController(BaseTestCase):
         
         """
         response = self.client.open(
-            '/movie-fan/Rental/v1/products/{id}'.format(id=56),
+            '/movie-fan/Rental/v1/products/{id_}'.format(id_=56),
             method='POST')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
@@ -65,7 +65,7 @@ class TestDefaultController(BaseTestCase):
         
         """
         response = self.client.open(
-            '/movie-fan/Rental/v1/products/{id}'.format(id=56),
+            '/movie-fan/Rental/v1/products/{id_}'.format(id_=56),
             method='PUT')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
@@ -76,7 +76,7 @@ class TestDefaultController(BaseTestCase):
         
         """
         response = self.client.open(
-            '/movie-fan/Rental/v1/products/pay/{id}'.format(id=56),
+            '/movie-fan/Rental/v1/products/pay/{id_}'.format(id_=56),
             method='PUT')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
