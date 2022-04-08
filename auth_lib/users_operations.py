@@ -5,8 +5,8 @@ import pandas as pd
 
 # --- Constants ---
 # Sentinel design pattern
-import statuses
-from statuses import OK, INVALID_USERNAME, INVALID_EMAIL, USER_ALREADY_EXISTS, VALID_PASSWORD, PASSWORD_TOO_SHORT, \
+from auth_lib import statuses
+from auth_lib.statuses import OK, INVALID_USERNAME, INVALID_EMAIL, USER_ALREADY_EXISTS, VALID_PASSWORD, PASSWORD_TOO_SHORT, \
     PASSWORD_TOO_LONG, PASSWORD_NO_NUMBERS, PASSWORD_NO_UPPERCASE, PASSWORD_NO_LOWERCASE, PASSWORD_NO_SPECIAL_SYMBOLS, \
     WRONG_PASSWORD, MISMATCH_USERNAME_EMAIL, USERNAME_ALREADY_EXISTS, EMAIL_ALREADY_EXISTS, SPECIAL_SYM
 
@@ -14,8 +14,6 @@ SENTINEL = object()
 # Status codes
 # Misc
 USERS_DB: str = "users.csv"
-
-# FIXME incoming passwords are supposed to be hashes already, not literals -> don't need to hash the passwords?
 
 
 def hash_unicode(a_string: str) -> str:
@@ -93,7 +91,7 @@ def register(username: str, email: str, password: str) -> int:
     """
 
     # Validate input
-    status: int = input_check(username, email, password)
+    status: int = input_check(username, email)
     if status != OK:
         return status
 

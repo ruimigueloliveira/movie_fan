@@ -5,9 +5,9 @@ from cryptography.exceptions import InvalidSignature
 from cryptography.hazmat.primitives import serialization, hashes
 from cryptography.hazmat.primitives.asymmetric import padding
 
-import statuses
-import statuses as s
-import users_operations as u
+from auth_lib import statuses
+from auth_lib import statuses as s
+from auth_lib import users_operations as u
 
 # Sentinel pattern
 SENTINEL = object()
@@ -18,10 +18,8 @@ DAY_NS = int(1e9 * 60 * 60 * 24)  # 60s * 60 min * 24h
 # Separates the arguments when encrypting multiple strings
 SEPARATOR: str = ';'
 
-# FIXME incoming passwords are supposed to be hashes already, not literals -> don't need to hash the passwords?
 
-
-def load_priv_key():
+def _load_priv_key():
     """
 
     :return: Private key of the authorization entity
@@ -41,7 +39,7 @@ def _sign(*args: str) -> bytes:
     :param args: Multiple string messages
     :return: Joins strings and produces a digital signature of them
     """
-    private_key = load_priv_key()
+    private_key = _load_priv_key()
     # Join all strings and sign
     to_sign = bytes(SEPARATOR.join(args), "UTF-8")
     signature: bytes = private_key.sign(
@@ -59,7 +57,7 @@ def _verify(signature: bytes, *args: str) -> bool:
 
     try:
         # Get public key
-        pub_key = load_priv_key().public_key()
+        pub_key = _load_priv_key().public_key()
         # Verify signature
         pub_key.verify(
             signature,
