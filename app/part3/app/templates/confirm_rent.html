@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="score-container"></div>
+    <div class="program-container">
+        <div class="row">
+            <div class="col-sm-8" about="{{ movie_statistics.full_id }}" typeof="pr:{{ movie.type }}">
+                <p class="movie-title"><b>Your Rental is Confirmed</b></p>
+                <p class="movie-info"> Details: </p>
+            </div>
+        </div>
+    </div>
+    
+{% endblock %}

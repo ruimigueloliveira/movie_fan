@@ -5,6 +5,8 @@ from s4api.swagger import ApiClient
 import json
 from datetime import date
 import requests
+import random
+from urllib.request import urlopen
 
 _endpoint = "http://localhost:7200"
 _repositorio = "moviesDB"
@@ -695,25 +697,38 @@ def add_rating_5(request):
     # tparams = add_rating(id, '5')
     return render(request, 'program_info.html')
 
-# Marks the movie as watched
+# Rent Movie
 def rent(request):
     if not 'id' in request.GET:
         raise Http404("Filme não disponível!")
     id = request.GET['id']
+    movie_statistics = requests.get("http://127.0.0.1:8001/v1/movie/?show_id="+id).json()
+    
+    
+    movie_price = "2$"
+
+    tparams = {
+        'movie_statistics': movie_statistics,
+        'movie_price': movie_price
+    }
+    return render(request, 'rent.html', tparams)
+
+# Confirm Rent Movie
+def confirm_rent(request): 
+    if not 'id' in request.GET:
+        raise Http404("Filme não disponível!")
+    id = request.GET['id']
     movie_ditc = requests.get("http://127.0.0.1:8001/v1/movie/?show_id="+id).json()
-    rent_status = ""
 
-    # Estas 3 linhas têm de ser alteradas consoante o filme
-    url = 'http://127.0.0.1:8080/movie-fan/Rental/v1/products/12'
-    movie_info = {'movie_id': id, 'price': 21, 'status': 'avaliable'}
-    x = requests.post(url, data = movie_info)
-
+    movie_price = str(2)+'$'
+    movie_data = {'movie_id': id, "price": movie_price, 'status': 'avaliable'}
+    x = requests.post("http://127.0.0.1:8080/movie-fan/Rental/v1/products/"+id, data = movie_data)
 
     tparams = {
         'movie': movie_ditc,
-        'rent_status': rent_status
+        'movie_price': movie_price
     }
-    return render(request, 'rent.html', tparams)
+    return render(request, 'confirm_rent.html', tparams)
 
 # Marks the movie as unwatched
 def mark_unwatched(request):
