@@ -1,3 +1,24 @@
+from flask import request
+
+from auth_lib import users_operations, statuses, oauth_operations
+
+
+def v1_signup_post():  # noqa: E501
+    """Registers an user to the database with the given credentials.
+
+    Give the e-mail, username and password as parameters. Registers a new user with those credentials in the userbase. # noqa: E501
+
+
+    :rtype: None
+    """
+    credentials: dict = request.form
+    username, email, password = [credentials[param] for param in ("username", "email", "password")]
+
+    status_code: int = users_operations.register(username, email, password)
+
+    return f"Operation status: {status_code} - \"{statuses.status_code(status_code)}\""
+
+
 def v1_access_token_post():  # noqa: E501
     """Log-in Step 2 (Tokens) - Give valid authorization code. Return access token if code is valid.
 
@@ -16,35 +37,25 @@ def v1_auth_token_post():  # noqa: E501
 
     :rtype: None
     """
+
     return 'do some magic!'
 
-
-def v1_signout_post():  # noqa: E501
-    """Deletes an user from the registry.
-
-    Deletes an user from the registry. # noqa: E501
-
-
-    :rtype: None
-    """
-    return 'do some magic!'
-
-
-def v1_signup_post():  # noqa: E501
-    """Registers an user to the database with the given credentials.
-
-    Give the e-mail, username and password as parameters. Registers a new user with those credentials in the userbase. # noqa: E501
-
-
-    :rtype: None
-    """
-    return 'do some magic!'
 
 
 def v1_validate_access_token_post():  # noqa: E501
     """Log-in Step 3 (Validation) - Check validity of access token.
 
     Check if parameter access token is valid. This call is used by other modules to authenticate a user. # noqa: E501
+
+
+    :rtype: None
+    """
+    return 'do some magic!'
+
+def v1_signout_post():  # noqa: E501
+    """Deletes an user from the registry.
+
+    Deletes an user from the registry. # noqa: E501
 
 
     :rtype: None

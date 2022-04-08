@@ -2,14 +2,29 @@
 
 from __future__ import absolute_import
 
+import requests
 from flask import json
 from six import BytesIO
 
 from swagger_server.test import BaseTestCase
 
+PORT = 8080
+
 
 class TestDefaultController(BaseTestCase):
     """DefaultController integration test stubs"""
+
+    def test_v1_signup_post(self):
+        """Test case for v1_signup_post
+
+        Registers an user to the database with the given credentials.
+        """
+        response = requests.post(
+            f"http://localhost:{PORT}/deti-egs-moviefan/Authentication/1.0.0/v1/signup",
+            json=dict(username="user1", email="user1@it.org", password="user1Pa$$")
+        )
+        self.assert200(response,
+                       'Response body is : ' + response.data.decode('utf-8'))
 
     def test_v1_access_token_post(self):
         """Test case for v1_access_token_post
@@ -33,28 +48,6 @@ class TestDefaultController(BaseTestCase):
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
 
-    def test_v1_signout_post(self):
-        """Test case for v1_signout_post
-
-        Deletes an user from the registry.
-        """
-        response = self.client.open(
-            '/deti-egs-moviefan/Authentication/1.0.0/v1/signout',
-            method='POST')
-        self.assert200(response,
-                       'Response body is : ' + response.data.decode('utf-8'))
-
-    def test_v1_signup_post(self):
-        """Test case for v1_signup_post
-
-        Registers an user to the database with the given credentials.
-        """
-        response = self.client.open(
-            '/deti-egs-moviefan/Authentication/1.0.0/v1/signup',
-            method='POST')
-        self.assert200(response,
-                       'Response body is : ' + response.data.decode('utf-8'))
-
     def test_v1_validate_access_token_post(self):
         """Test case for v1_validate_access_token_post
 
@@ -66,7 +59,19 @@ class TestDefaultController(BaseTestCase):
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
 
+    def test_v1_signout_post(self):
+        """Test case for v1_signout_post
+
+        Deletes an user from the registry.
+        """
+        response = self.client.open(
+            '/deti-egs-moviefan/Authentication/1.0.0/v1/signout',
+            method='POST')
+        self.assert200(response,
+                       'Response body is : ' + response.data.decode('utf-8'))
+
 
 if __name__ == '__main__':
     import unittest
+
     unittest.main()
