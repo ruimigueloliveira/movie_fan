@@ -21,6 +21,7 @@ urlpatterns = [
     path('add_rating_4/', views.add_rating_4, name='add_rating_4'),
     path('add_rating_5/', views.add_rating_5, name='add_rating_5'),
     path('rent/', views.rent, name='rent'),
+    path('confirm_rent/', views.confirm_rent, name='confirm_rent'),
     path('mark_unwatched/', views.mark_unwatched, name='mark_unwatched'),
     path('popular_actors/', views.popular_actors, name='popular_actors'),
     path('popular_directors/', views.popular_directors, name='popular_directors'),

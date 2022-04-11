@@ -1,13 +1,23 @@
 {% extends "base.html" %}
 {% block content %}
+<form action="/confirm_rent/?id={{movie_statistics.id}}" method="post">
+    {% csrf_token %}
     <div class="score-container"></div>
     <div class="program-container">
         <div class="row">
-            <div class="col-sm-8" about="{{ movie.full_id }}" typeof="pr:{{ movie.type }}">
-                <p class="movie-title" property="pr:name"><b>{{ movie.title }}</b> ({{ movie.release_year }})</p>
-                <p class="movie-info"> Rental Status: </p>
+            <div class="col-sm-8" about="{{ movie_statistics.full_id }}" typeof="pr:{{ movie.type }}">
+                <p class="movie-title"><b>Rent: {{ movie_statistics.title }}</b> ({{ movie_statistics.release_year }})</p>
+                <br><br>
+                <label class="movie-info" for="username">Username:</label>
+                <input id="username" type="text" name="username"><br>
+                <label class="movie-info" for="rental_time">Rental Time (Days):</label>
+                <input id="rental_time" type="text" name="rental_time">
+                <br><br>
+                
             </div>
         </div>
+        <input type="submit" value="Confirm">
     </div>
-    
+</form>
+
 {% endblock %}
