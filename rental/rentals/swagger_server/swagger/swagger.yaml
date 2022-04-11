@@ -4,9 +4,11 @@ info:
   description: Lets you rent products
   version: v1
 servers:
-- url: https://virtserver.swaggerhub.com/movie-fan/Rental/v1
+- url: https://virtserver.swaggerhub.com/rentals/rental/v1
   description: SwaggerHub API Auto Mocking
-- url: https://virtserver.swaggerhub.com/movie-fan/Movie-rental/v1
+- url: https://virtserver.swaggerhub.com/rentals/rental/v1
+  description: SwaggerHub API Auto Mocking
+- url: https://virtserver.swaggerhub.com/rentals/rental/v1
   description: SwaggerHub API Auto Mocking
 paths:
   /products/{id_}:
@@ -95,38 +97,10 @@ paths:
         style: simple
         explode: false
         schema:
-          # required:
-          # - admin
           type: integer
       responses:
         "200":
           description: Successfully deleted the product
-        "400":
-          description: Invalid request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inline_response_400'
-      x-openapi-router-controller: swagger_server.controllers.default_controller
-  /products/pay/{id_}:
-    put:
-      description: Rents the product
-      operationId: products_pay_id_put
-      parameters:
-      - name: id_
-        in: path
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: integer
-      responses:
-        "200":
-          description: Successfully rent the product
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inline_response_200'
         "400":
           description: Invalid request
           content:
@@ -155,18 +129,40 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_400'
       x-openapi-router-controller: swagger_server.controllers.default_controller
+  /user-products/{user_id}:
+    get:
+      description: Returns the details of the product
+      operationId: user_products_user_id_get
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Successfully returned the product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_2'
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+      x-openapi-router-controller: swagger_server.controllers.default_controller
 components:
   schemas:
     inline_response_200:
-      # required:
-      # - username
       type: object
       properties:
         product_id:
           type: string
         product_name:
-          type: string
-        state:
           type: string
         price:
           type: number
@@ -176,7 +172,6 @@ components:
         date_limit: date_limit
         price: 0.80082819046101150206595775671303272247314453125
         product_id: product_id
-        state: state
         product_name: product_name
     inline_response_400:
       type: object
@@ -184,36 +179,32 @@ components:
         message:
           type: string
     inline_response_200_1:
-      # required:
-      # - admin
       type: object
       properties:
         product_id:
           type: string
         product_name:
           type: string
-        state:
-          type: string
         price:
           type: number
         date_limit:
           type: string
+        user_id:
+          type: string
       example:
         date_limit: date_limit
+        user_id: user_id
         price: 0.80082819046101150206595775671303272247314453125
         product_id: product_id
-        state: state
         product_name: product_name
     inline_response_200_2:
-      # required:
-      # - username
       type: object
       properties:
-        product_ame:
+        products:
           type: array
           items:
             type: string
       example:
-        product_ame:
-        - product_ame
-        - product_ame
+        products:
+        - products
+        - products

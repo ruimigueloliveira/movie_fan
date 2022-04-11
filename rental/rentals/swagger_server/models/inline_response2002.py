@@ -14,20 +14,20 @@ class InlineResponse2002(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, product_ame: List[str]=None):  # noqa: E501
+    def __init__(self, products: List[str]=None):  # noqa: E501
         """InlineResponse2002 - a model defined in Swagger
 
-        :param product_ame: The product_ame of this InlineResponse2002.  # noqa: E501
-        :type product_ame: List[str]
+        :param products: The products of this InlineResponse2002.  # noqa: E501
+        :type products: List[str]
         """
         self.swagger_types = {
-            'product_ame': List[str]
+            'products': List[str]
         }
 
         self.attribute_map = {
-            'product_ame': 'product_ame'
+            'products': 'products'
         }
-        self._product_ame = product_ame
+        self._products = products
 
     @classmethod
     def from_dict(cls, dikt) -> 'InlineResponse2002':
@@ -41,22 +41,22 @@ class InlineResponse2002(Model):
         return util.deserialize_model(dikt, cls)
 
     @property
-    def product_ame(self) -> List[str]:
-        """Gets the product_ame of this InlineResponse2002.
+    def products(self) -> List[str]:
+        """Gets the products of this InlineResponse2002.
 
 
-        :return: The product_ame of this InlineResponse2002.
+        :return: The products of this InlineResponse2002.
         :rtype: List[str]
         """
-        return self._product_ame
+        return self._products
 
-    @product_ame.setter
-    def product_ame(self, product_ame: List[str]):
-        """Sets the product_ame of this InlineResponse2002.
+    @products.setter
+    def products(self, products: List[str]):
+        """Sets the products of this InlineResponse2002.
 
 
-        :param product_ame: The product_ame of this InlineResponse2002.
-        :type product_ame: List[str]
+        :param products: The products of this InlineResponse2002.
+        :type products: List[str]
         """
 
-        self._product_ame = product_ame
+        self._products = products

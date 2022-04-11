@@ -70,14 +70,14 @@ class TestDefaultController(BaseTestCase):
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
 
-    def test_products_pay_id_put(self):
-        """Test case for products_pay_id_put
+    def test_user_products_user_id_get(self):
+        """Test case for user_products_user_id_get
 
         
         """
         response = self.client.open(
-            '/movie-fan/Rental/v1/products/pay/{id_}'.format(id_=56),
-            method='PUT')
+            '/movie-fan/Rental/v1/user-products/{user_id}'.format(user_id=56),
+            method='GET')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
 
