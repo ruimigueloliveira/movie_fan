@@ -1,12 +1,13 @@
-from django.http import Http404, HttpRequest, HttpResponse
+from django.http import Http404, HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from s4api.graphdb_api import GraphDBApi
 from s4api.swagger import ApiClient
 import json
 from datetime import date
 import requests
-import random
-from urllib.request import urlopen
+from django.shortcuts import render
+from .forms import myForms
+import numpy as np
 
 _endpoint = "http://localhost:7200"
 _repositorio = "moviesDB"
@@ -31,7 +32,6 @@ def movieslist(request):
     tparams = {
         'allmovies_ditc': allmovies_ditc
     }
-
     return render(request, 'list_of_movies.html', tparams)
 
 # Information about the movie/serie
@@ -718,16 +718,22 @@ def confirm_rent(request):
     if not 'id' in request.GET:
         raise Http404("Filme não disponível!")
     id = request.GET['id']
-    movie_ditc = requests.get("http://127.0.0.1:8001/v1/movie/?show_id="+id).json()
 
-    movie_price = str(2)+'$'
-    movie_data = {'movie_id': id, "price": movie_price, 'status': 'avaliable'}
-    x = requests.post("http://127.0.0.1:8080/movie-fan/Rental/v1/products/"+id, data = movie_data)
+    form = myForms(request.POST)
+    data = {}
+    if form.is_valid():
+        data = form.cleaned_data
+
+    movie_title = requests.get("http://127.0.0.1:8001/v1/movie/?show_id="+id).json()["title"]
+    movie_price = round(np.log(int(data["rental_time"])+1),2)
+    movie_data = {"price": movie_price, "entity": "movie_fan", "username": data["username"], "title": movie_title, "rental_time": data["rental_time"]}
+
+    requests.post("http://127.0.0.1:8080/movie-fan/Rental/v1/products/"+id, data = movie_data)
 
     tparams = {
-        'movie': movie_ditc,
-        'movie_price': movie_price
+        'movie_data' : movie_data
     }
+
     return render(request, 'confirm_rent.html', tparams)
 
 # Marks the movie as unwatched

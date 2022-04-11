@@ -1,62 +1,23 @@
 {% extends "base.html" %}
 {% block content %}
+<form action="/confirm_rent/?id={{movie_statistics.id}}" method="post">
+    {% csrf_token %}
     <div class="score-container"></div>
     <div class="program-container">
         <div class="row">
             <div class="col-sm-8" about="{{ movie_statistics.full_id }}" typeof="pr:{{ movie.type }}">
-                <p class="movie-title"><b>{{ movie_statistics.title }}</b> ({{ movie_statistics.release_year }})</p>
-                <p class="movie-info"> Choose how long you want to rent a movie or series:</p>
-                <div class="btn-group">
-                    <button class="btn"><b>2 days: 2$</b></button>
-                    <button class="btn"><b>4 days: 3$</b></button>
-                    <button class="btn"><b>6 days: 4$</b></button>
-                </div>
+                <p class="movie-title"><b>Rent: {{ movie_statistics.title }}</b> ({{ movie_statistics.release_year }})</p>
                 <br><br>
-                <p id="result" class="movie-info"></p>
+                <label class="movie-info" for="username">Username:</label>
+                <input id="username" type="text" name="username"><br>
+                <label class="movie-info" for="rental_time">Rental Time (Days):</label>
+                <input id="rental_time" type="text" name="rental_time">
+                <br><br>
+                
             </div>
         </div>
+        <input type="submit" value="Confirm">
     </div>
+</form>
 
-    <div class="score-container">
-        <a href="{% url 'confirm_rent' %}?id={{  movie_statistics.id }}">
-            <button type="button" class="watched btn btn-lg btn-outline-success"><b>Confirm</b></button>
-        </a>
-    </div>
-
-    <script>
-        var num = null;
-        var ele = document.querySelectorAll(".btn-group > button.btn");
-        for(var i=0; i<ele.length; i++){
-            ele[i].addEventListener("click", function(){
-                num = this.innerHTML;
-                document.getElementById("result").innerHTML = "Selected: "+ num;
-            });
-        }
-    </script>
-
-    <style>
-        .btn-group button {
-          background-color: #c7773e; /* Green background */
-          border: 1px solid #3b1b04; /* Green border */
-          color: white; /* White text */
-          padding: 10px 24px; /* Some padding */
-          cursor: pointer; /* Pointer/hand icon */
-          width: 50%; /* Set a width if needed */
-          display: block; /* Make the buttons appear below each other */
-          font-size: 20px;
-        }
-        
-        .btn-group button:not(:last-child) {
-          border-bottom: none; /* Prevent double borders */
-        }
-        
-        /* Add a background color on hover */
-        .btn-group button:hover {
-          background-color: #af6d3d;
-        }
-    </style>
-        
-        
-        
-    
 {% endblock %}
