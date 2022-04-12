@@ -9,10 +9,6 @@ host: "virtserver.swaggerhub.com"
 basePath: "/deti-egs-moviefan/Authentication/1.0.0"
 schemes:
 - "https"
-security:
-- accessCode:
-  - "read"
-  - "write"
 paths:
   /v1/signup:
     post:
@@ -88,12 +84,3 @@ paths:
         "402":
           description: "Request failed - invalid token."
       x-swagger-router-controller: "swagger_server.controllers.default_controller"
-securityDefinitions:
-  accessCode:
-    type: "oauth2"
-    authorizationUrl: "http://example.com/oauth/auth"
-    tokenUrl: "http://example.com/oauth/token"
-    flow: "accessCode"
-    scopes:
-      write: "allows modifying resources"
-      read: "allows reading resources"

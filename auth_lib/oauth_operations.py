@@ -1,3 +1,4 @@
+import os.path
 import time
 from typing import Tuple
 
@@ -25,7 +26,7 @@ def _load_priv_key():
     :return: Private key of the authorization entity
     """
     # Load private key
-    with open("privkey.pem", "rb") as key_file:
+    with open(f"{os.path.dirname(__file__)}\\privkey.pem", "rb") as key_file:
         private_key = serialization.load_pem_private_key(
             key_file.read(),
             password=PRIV_KEY_PASSWORD,
@@ -79,7 +80,7 @@ def authorization_code(username: str, email: str, password: str) -> Tuple[int, b
     :param username:  Username
     :param email: User e-mail
     :param password: User password
-    :return: Authorization code that can be used to (re)generate the access token
+    :return: Status code; Authorization code that can be used to (re)generate the access token
     """
 
     # Check credentials
@@ -99,13 +100,13 @@ def generate_access_token(auth_code: bytes, username: str, email: str, password:
     :param username: Username
     :param email: User e-mail
     :param password: User password
-    :return:
+    :return: Status code; Access code which is a signature of the access code (hex) and a deadline for validity
     """
     # Verify auth_token
     if _verify(auth_code, email, password, username) is True:
         # Re-sign with deadline
         deadline_ns = str(time.time_ns() + 30 * DAY_NS)
-        return s.OK, _sign(str(auth_code)) + f"-ds{deadline_ns}".encode(encoding="UTF-8")
+        return s.OK, _sign(auth_code.hex()) + f"-ds{deadline_ns}".encode(encoding="UTF-8")
     else:
         return s.INVALID_AUTH_CODE, b""
 
@@ -127,14 +128,14 @@ def validate_access_token(access_tkn: bytes, auth_tkn: bytes) -> int:
 if __name__ == '__main__':
     # Generate authorization code
     status_code, auth = authorization_code(username="andre", email="andre@gmail.com", password="andre$P1")
-    assert status_code == 0, f"Authorization code error code {status_code}: {statuses.status_code(status_code)}"
+    assert status_code == 0, f"Authorization code error code {status_code}: {statuses.status_description(status_code)}"
 
     # Generate access token
     status_code, access_token = generate_access_token(
         auth_code=auth, username="andre", email="andre@gmail.com", password="andre$P1"
     )
-    assert status_code == 0, f"Access token generation error code {status_code}: {statuses.status_code(status_code)}"
+    assert status_code == 0, f"Access token generation error code {status_code}: {statuses.status_description(status_code)}"
 
     # Validate access token
     status_code = validate_access_token(access_tkn=access_token, auth_tkn=auth)
-    assert status_code == 0, f"Access token validation error code {status_code}: {statuses.status_code(status_code)}"
+    assert status_code == 0, f"Access token validation error code {status_code}: {statuses.status_description(status_code)}"

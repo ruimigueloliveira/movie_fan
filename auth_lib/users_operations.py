@@ -6,14 +6,16 @@ import pandas as pd
 # --- Constants ---
 # Sentinel design pattern
 from auth_lib import statuses
-from auth_lib.statuses import OK, INVALID_USERNAME, INVALID_EMAIL, USER_ALREADY_EXISTS, VALID_PASSWORD, PASSWORD_TOO_SHORT, \
+from auth_lib.statuses import OK, INVALID_USERNAME, INVALID_EMAIL, USER_ALREADY_EXISTS, VALID_PASSWORD, \
+    PASSWORD_TOO_SHORT, \
     PASSWORD_TOO_LONG, PASSWORD_NO_NUMBERS, PASSWORD_NO_UPPERCASE, PASSWORD_NO_LOWERCASE, PASSWORD_NO_SPECIAL_SYMBOLS, \
-    WRONG_PASSWORD, MISMATCH_USERNAME_EMAIL, USERNAME_ALREADY_EXISTS, EMAIL_ALREADY_EXISTS, SPECIAL_SYM
+    WRONG_PASSWORD, MISMATCH_USERNAME_EMAIL, USERNAME_ALREADY_EXISTS, EMAIL_ALREADY_EXISTS, SPECIAL_SYM, \
+    NON_EXISTENT_USER
 
 SENTINEL = object()
 # Status codes
 # Misc
-USERS_DB: str = "users.csv"
+USERS_DB: str = f"{os.path.dirname(__file__)}\\users.csv"
 
 
 def hash_unicode(a_string: str) -> str:
@@ -108,8 +110,12 @@ def register(username: str, email: str, password: str) -> int:
         return OK
 
     # Check if user exists
-    if check(password, username, email) == OK:
+    user_presence_check = check(password, username, email)
+    if user_presence_check == OK:
         return USER_ALREADY_EXISTS
+    assert user_presence_check == NON_EXISTENT_USER, f"Unexpected status at user registration," \
+                                                     f" while checking if he is present in db: {user_presence_check}"
+
     # Check if username or email exists
     df = pd.read_csv(USERS_DB)
     if df["username"].str.contains(username_h).sum() > 0:
@@ -149,17 +155,21 @@ def check(password: str, username: str, email: str = SENTINEL) -> int:  # or boo
     # Get user info
     user_row = user_db.loc[user_db['username'] == username_h]
 
+    # If user_row is empty, return some error indicating that the user doesn't exist
+    if user_row.empty:
+        return NON_EXISTENT_USER
+
     # Verification: If email is not empty, check if it matches with username
     if email is not SENTINEL:
         claimed_email: str = hash_unicode(email)
-        # Get email associated with username
 
-        actual_email: str = str(user_row['email'][0])
+        # Get email associated with username
+        actual_email: str = user_row.at[1, 'email']
         if actual_email != claimed_email:
             return MISMATCH_USERNAME_EMAIL
 
     claimed_passwd: str = hash_unicode(password)
-    actual_passwd = str(user_row['password'][0])
+    actual_passwd: str = user_row.at[1, 'password']
 
     if claimed_passwd != actual_passwd:
         return WRONG_PASSWORD
@@ -203,12 +213,12 @@ if __name__ == '__main__':
 
     # Register user
     status: int = register(username="andre2", email="andre2@gmail.com", password="andre$P1")
-    assert status in (OK, USER_ALREADY_EXISTS), f"Error status: {status}: {statuses.status_code(status)}"
+    assert status in (OK, USER_ALREADY_EXISTS), f"Error status: {status}: {statuses.status_description(status)}"
 
     # Check credentials
     status = check(username="andre2", email="andre2@gmail.com", password="andre$P1")
-    assert status == OK, f"Error status: {status}: {statuses.status_code(status)}"
+    assert status == OK, f"Error status: {status}: {statuses.status_description(status)}"
 
     # Delete user
     status = remove(username="andre2", password="andre$P1")
-    assert status == OK, f"Error status: {status}: {statuses.status_code(status)}"
+    assert status == OK, f"Error status: {status}: {statuses.status_description(status)}"

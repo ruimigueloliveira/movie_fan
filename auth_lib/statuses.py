@@ -33,7 +33,7 @@ INVALID_ACCESS_TOKEN: int = 62
 OVERDUE_ACCESS_TOKEN: int = 63
 
 
-def status_code(code: int) -> str:
+def status_description(code: int) -> str:
     """
 
     :param code: Status code integer
