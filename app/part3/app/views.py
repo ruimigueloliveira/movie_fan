@@ -728,7 +728,7 @@ def confirm_rent(request):
     movie_price = round(np.log(int(data["rental_time"])+1),2)
     movie_data = {"price": movie_price, "entity": "movie_fan", "username": data["username"], "title": movie_title, "rental_time": data["rental_time"]}
 
-    requests.post("http://127.0.0.1:8080/movie-fan/Rental/v1/products/"+id, data = movie_data)
+    requests.post("http://127.0.0.1:8080/rentals/rental/v1/products/"+id, data = movie_data)
 
     tparams = {
         'movie_data' : movie_data
