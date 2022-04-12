@@ -69,7 +69,7 @@ def v1_signout_post():  # noqa: E501
     # Extract parameters
     username, email, password = [request.json[param] for param in ("username", "email", "password")]
     # Call auth-lib
-    status_code: int = users_operations.remove(username, email, password)
+    status_code: int = users_operations.remove(password, username, email)
     # Return status code
     return f'{status_code}: {statuses.status_description(status_code)}'
 
@@ -86,7 +86,7 @@ def v1_validate_access_token_post():  # noqa: E501
     access_token, auth_code = (request.json[param] for param in ("access_token", "auth_code"))
     # Call auth-lib
     status_code = oauth_operations.validate_access_token(
-        bytes.fromhex(access_token.split("-ds")[0]) + b"-ds" + bytes(auth_code.split('-ds')[1], "utf-8"),
+        bytes.fromhex(access_token.split("-ds")[0]) + b"-ds" + bytes(access_token.split('-ds')[1], "utf-8"),
         bytes.fromhex(auth_code)
     )
     # Return status code

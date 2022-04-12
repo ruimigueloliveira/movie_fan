@@ -1,6 +1,6 @@
 import os.path
 import time
-from typing import Tuple
+from typing import Tuple, Union
 
 from cryptography.exceptions import InvalidSignature
 from cryptography.hazmat.primitives import serialization, hashes
@@ -54,7 +54,17 @@ def _sign(*args: str) -> bytes:
     return signature
 
 
-def _verify(signature: bytes, *args: str) -> bool:
+def _verify(signature: bytes, *args: Union[str, bytes]) -> bool:
+    """
+
+    :param signature: Signature produced by this module
+    :param args: String of strings or a single bytes object
+    :return:
+    """
+    # TODO (low prio.) add verification for args parameter
+
+    # If args.len == 1, element must be bytes, elements otherwise
+    data = SEPARATOR.join(args).encode("utf-8") if len(args) > 1 else args[0]
 
     try:
         # Get public key
@@ -62,7 +72,7 @@ def _verify(signature: bytes, *args: str) -> bool:
         # Verify signature
         pub_key.verify(
             signature,
-            SEPARATOR.join(args).encode("UTF-8"),
+            data,
             padding.PSS(
                 mgf=padding.MGF1(hashes.SHA256()),
                 salt_length=padding.PSS.MAX_LENGTH
@@ -115,7 +125,7 @@ def validate_access_token(access_tkn: bytes, auth_tkn: bytes) -> int:
     # Extract signature and deadline
     token, deadline = access_tkn.split(b"-ds")
     # Verify signature part of the access token against the authorization token
-    if not _verify(token, str(auth_tkn)):
+    if not _verify(token, auth_tkn):
         return s.INVALID_ACCESS_TOKEN
     # Obtain the credentials and deadline
     deadline_ns = int(deadline)

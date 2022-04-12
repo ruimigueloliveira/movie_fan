@@ -64,23 +64,24 @@ class TestDefaultController(BaseTestCase):
             json=dict(
                 auth_code='31d38d6e8ce7ab42f34467135aa19225982f9e8965595bbe74f8734'
                           '8a16a9455c4387cc5d66f02b68d76f5310e7cdd76db98a09cfdeffcb1a50f7e145122b044',
-                access_token="4f4401760667d012a56cd4f7c454ffe3c705dcfa7ee9eaddd2f170087721817826035"
-                             "58dbc4daa4456efc0347357d380e4274ab599df1845f43cf424ba6f7af71652367634526979600"
+                access_token='07cad294e65af23925cc85cf9a435ba2d8cd6e3bd52433736a0dfba29e50c499f79f31'
+                             '1870ece437b16a62c79ee9f7b74a495020d68c43d1db17d5880efadb13-ds1652374634009943200'
             )
         )
         self.assert200(response,
-                       'Response body is : ' + response.data.decode('utf-8'))
+                       'Response body is : ' + response.text)
 
     def test_v1_signout_post(self):
         """Test case for v1_signout_post
 
         Deletes an user from the registry.
         """
-        response = self.client.open(
-            '/deti-egs-moviefan/Authentication/1.0.0/v1/signout',
-            method='POST')
+        response = requests.post(
+            f"http://localhost:{PORT}/deti-egs-moviefan/Authentication/1.0.0/v1/signout",
+            json=dict(username="user1", email="user1@it.org", password="user1Pa$$")
+        )
         self.assert200(response,
-                       'Response body is : ' + response.data.decode('utf-8'))
+                       'Response body is : ' + response.text)
 
 
 if __name__ == '__main__':
