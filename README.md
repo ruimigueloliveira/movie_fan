@@ -8,6 +8,7 @@ $ ./start_app
 
 ## authentication
 ````
+$ ./start_authentication
 ````
 
 ## rental
