@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-<form action="/confirm_rent/?id={{movie_statistics.id}}" method="post">
+<form action="/rent_confirm/?id={{movie_statistics.id}}" method="post">
     {% csrf_token %}
     <div class="score-container"></div>
     <div class="program-container">

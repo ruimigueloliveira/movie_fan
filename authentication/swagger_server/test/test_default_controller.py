@@ -8,7 +8,7 @@ from six import BytesIO
 
 from swagger_server.test import BaseTestCase
 
-PORT = 8080
+PORT = 8001
 
 
 class TestDefaultController(BaseTestCase):
