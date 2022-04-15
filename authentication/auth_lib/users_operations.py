@@ -15,7 +15,7 @@ from auth_lib.statuses import OK, INVALID_USERNAME, INVALID_EMAIL, USER_ALREADY_
 SENTINEL = object()
 # Status codes
 # Misc
-USERS_DB: str = f"{os.path.dirname(__file__)}\\users.csv"
+USERS_DB: str = f"{os.path.dirname(__file__)}/users.csv"
 
 
 def hash_unicode(a_string: str) -> str:
