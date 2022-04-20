@@ -31,7 +31,6 @@ def nmovies(request):
     cur.execute(statement)
     myresult = cur.fetchall()
     cur.close()
-    print(myresult)
     tparams = {
         'title': myresult[0][0]
     }
@@ -42,7 +41,6 @@ def shows(request):
     if not 'type' in request.GET:
         raise Http404("Invalid request!")
     type = request.GET['type']
-    print(type)
     cur = conn.cursor()
     if type=='movie':
         statement ="select * from show_info where type = 'Movie';"
@@ -57,7 +55,6 @@ def shows(request):
     cur.execute(statement)
     myresult = cur.fetchall()
     cur.close()
-    print(myresult)
     tparams = {}
     for i in myresult:
         movie = {
@@ -82,7 +79,6 @@ def actor(request):
     if not 'name' in request.GET:
         raise Http404("Invalid request!")
     name = request.GET['name']
-    print(type)
     cur = conn.cursor()
     name = '%' + name + '%'
     data=(name, )
@@ -91,7 +87,6 @@ def actor(request):
 
     myresult = cur.fetchall()
     cur.close()
-    print(myresult)
     tparams = {}
     for i in myresult:
         movie = {
@@ -116,7 +111,6 @@ def director_list(request):
     if not 'name' in request.GET:
         raise Http404("Invalid request!")
     name = request.GET['name']
-    print(type)
     cur = conn.cursor()
     name = '%' + name + '%'
     data=(name, )
@@ -125,7 +119,6 @@ def director_list(request):
 
     myresult = cur.fetchall()
     cur.close()
-    print(myresult)
     tparams = {}
     for i in myresult:
         movie = {
@@ -150,7 +143,6 @@ def movie(request):
     if not 'show_id' in request.GET:
         raise Http404("Filme não disponível!")
     id = request.GET['show_id']
-    print(id)
     cur = conn.cursor()
     data = (id, )
     statement ="select * from show_info where id=%d;"
@@ -179,7 +171,6 @@ def id(request):
     if not 'show_id' in request.GET:
         raise Http404("Filme não disponível!")
     id = request.GET['show_id']
-    print(id)
     cur = conn.cursor()
     data = (id, )
     statement ="select id from show_info where id=%d;"
@@ -196,7 +187,6 @@ def type(request):
     if not 'show_id' in request.GET:
         raise Http404("Filme não disponível!")
     id = request.GET['show_id']
-    print(id)
     cur = conn.cursor()
     data = (id, )
     statement ="select type from show_info where id=%d;"
@@ -213,7 +203,6 @@ def title(request):
     if not 'show_id' in request.GET:
         raise Http404("Filme não disponível!")
     id = request.GET['show_id']
-    print(id)
     cur = conn.cursor()
     data = (id, )
     statement ="select title from show_info where id=%d;"
@@ -230,7 +219,6 @@ def director(request):
     if not 'show_id' in request.GET:
         raise Http404("Filme não disponível!")
     id = request.GET['show_id']
-    print(id)
     cur = conn.cursor()
     data = (id, )
     statement ="select director from show_info where id=%d;"
@@ -247,7 +235,6 @@ def cast(request):
     if not 'show_id' in request.GET:
         raise Http404("Filme não disponível!")
     id = request.GET['show_id']
-    print(id)
     cur = conn.cursor()
     data = (id, )
     statement ="select cast from show_info where id=%d;"
@@ -264,7 +251,6 @@ def country(request):
     if not 'show_id' in request.GET:
         raise Http404("Filme não disponível!")
     id = request.GET['show_id']
-    print(id)
     cur = conn.cursor()
     data = (id, )
     statement ="select country from show_info where id=%d;"
@@ -281,7 +267,6 @@ def date_added(request):
     if not 'show_id' in request.GET:
         raise Http404("Filme não disponível!")
     id = request.GET['show_id']
-    print(id)
     cur = conn.cursor()
     data = (id, )
     statement ="select date_added from show_info where id=%d;"
@@ -298,7 +283,6 @@ def release_year(request):
     if not 'show_id' in request.GET:
         raise Http404("Filme não disponível!")
     id = request.GET['show_id']
-    print(id)
     cur = conn.cursor()
     data = (id, )
     statement ="select release_year from show_info where id=%d;"
@@ -315,7 +299,6 @@ def rating(request):
     if not 'show_id' in request.GET:
         raise Http404("Filme não disponível!")
     id = request.GET['show_id']
-    print(id)
     cur = conn.cursor()
     data = (id, )
     statement ="select rating from show_info where id=%d;"
@@ -332,7 +315,6 @@ def duration(request):
     if not 'show_id' in request.GET:
         raise Http404("Filme não disponível!")
     id = request.GET['show_id']
-    print(id)
     cur = conn.cursor()
     data = (id, )
     statement ="select duration from show_info where id=%d;"
@@ -349,7 +331,6 @@ def listed_in(request):
     if not 'show_id' in request.GET:
         raise Http404("Filme não disponível!")
     id = request.GET['show_id']
-    print(id)
     cur = conn.cursor()
     data = (id, )
     statement ="select listed_in from show_info where id=%d;"
@@ -366,7 +347,6 @@ def description(request):
     if not 'show_id' in request.GET:
         raise Http404("Filme não disponível!")
     id = request.GET['show_id']
-    print(id)
     cur = conn.cursor()
     data = (id, )
     statement ="select description from show_info where id=%d;"
@@ -398,15 +378,11 @@ def rank(request):
     new_nranks=old_nranks+1
     new_sumranks=old_sumranks+int(rank)
 
-    print(new_nranks)
-    print(new_sumranks)
     cur = conn.cursor()
     try: 
         cur.execute("UPDATE show_rank SET nranks=? , sumranks=? WHERE id = ?", (new_nranks, new_sumranks, id)) 
-        print("YO")
     except mariadb.Error as e: 
         print(f"Error: {e}")
-        print("FUCK")
     conn.commit() 
 
     #UPDATE Customers SET ContactName = 'Alfred Schmidt', City= 'Frankfurt' WHERE CustomerID = 1;
