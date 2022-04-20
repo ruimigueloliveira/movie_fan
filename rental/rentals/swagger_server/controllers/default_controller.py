@@ -21,6 +21,8 @@ def products_get():  # noqa: E501
 
     :rtype: List[InlineResponse2002]
     """
+
+    print("entra aqui")
     prods_ls = []
     for p in db.products.find():
         prods_ls.append(p)

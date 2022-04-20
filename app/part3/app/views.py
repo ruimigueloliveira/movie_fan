@@ -56,7 +56,7 @@ def signup_confirm(request):
 
 # List of all the movies
 def movieslist(request):
-    allmovies_ditc = requests.get("http://127.0.0.1:8003/v1/allmovies").json()
+    allmovies_ditc = requests.get("http://127.0.0.1:8003/v1/shows?type=movie").json()
     tparams = {
         'allmovies_ditc': allmovies_ditc
     }
