@@ -1,0 +1,86 @@
+---
+swagger: "2.0"
+info:
+  description: "This is an example of using OAuth2 Access Code Flow in a specification\
+    \ to describe security to your API."
+  version: "1.0.0"
+  title: "Authentication Module"
+host: "virtserver.swaggerhub.com"
+basePath: "/deti-egs-moviefan/Authentication/1.0.0"
+schemes:
+- "https"
+paths:
+  /v1/signup:
+    post:
+      summary: "Registers an user to the database with the given credentials."
+      description: "Give the e-mail, username and password as parameters. Registers\
+        \ a new user with those credentials in the userbase."
+      operationId: "v1_signup_post"
+      parameters: []
+      responses:
+        "202":
+          description: "Credentials were accepted."
+        "400":
+          description: "Requested credentials are invalid."
+        "500":
+          description: "Internal server error."
+        "501":
+          description: "Bad gateway."
+      x-swagger-router-controller: "swagger_server.controllers.default_controller"
+  /v1/signout:
+    post:
+      summary: "Deletes an user from the registry."
+      description: "Deletes an user from the registry."
+      operationId: "v1_signout_post"
+      parameters: []
+      responses:
+        "200":
+          description: "Credentials were successfully deleted."
+        "400":
+          description: "Requested user data is invalid or non existent."
+        "502":
+          description: "Bad gateway."
+      x-swagger-router-controller: "swagger_server.controllers.default_controller"
+  /v1/auth-token:
+    post:
+      summary: "Log-in Step 1 (Credentials) - Input valid credentials. Return valid\
+        \ authorization code."
+      description: "Parameters are username/e-mail and password. If valid credentials,\
+        \ return valid authorization code, which will be traded at '/access-token'\
+        \ for an access token."
+      operationId: "v1_auth_token_post"
+      parameters: []
+      responses:
+        "200":
+          description: "Credentials were successfully deleted."
+        "400":
+          description: "Requested user data is invalid or non existent."
+        "502":
+          description: "Bad gateway."
+      x-swagger-router-controller: "swagger_server.controllers.default_controller"
+  /v1/access-token:
+    post:
+      summary: "Log-in Step 2 (Tokens) - Give valid authorization code. Return access\
+        \ token if code is valid."
+      description: "Authorization code is obtained through a log-in process with '/auth-token'."
+      operationId: "v1_access_token_post"
+      parameters: []
+      responses:
+        "202":
+          description: "Request accepted - return access token."
+        "402":
+          description: "Request failed - Invalid code."
+      x-swagger-router-controller: "swagger_server.controllers.default_controller"
+  /v1/validate-access-token:
+    post:
+      summary: "Log-in Step 3 (Validation) - Check validity of access token."
+      description: "Check if parameter access token is valid. This call is used by\
+        \ other modules to authenticate a user."
+      operationId: "v1_validate_access_token_post"
+      parameters: []
+      responses:
+        "200":
+          description: "Valid request."
+        "402":
+          description: "Request failed - invalid token."
+      x-swagger-router-controller: "swagger_server.controllers.default_controller"

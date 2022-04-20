@@ -63,7 +63,7 @@ def products_id_post(id_):  # noqa: E501
 
     print('Movie ID: ' + str(id_))
     print('Movie Price: ' + str(request.form.getlist("price")[0]))
-    # print('Movie Status: ' + str(request.form.getlist("status")[0]))
+    print('Movie Status: ' + str(request.form.getlist("status")[0]))
 
 
     dict = {'id_': id_, 'name': 'Ze'}

@@ -2,7 +2,7 @@ import connexion
 import six
 import json
 from flask import request
-from werkzeug.datastructures import ImmutableMultiDict
+import pymongo
 
 from swagger_server.models.inline_response200 import InlineResponse200  # noqa: E501
 from swagger_server.models.inline_response2001 import InlineResponse2001  # noqa: E501
@@ -10,6 +10,8 @@ from swagger_server.models.inline_response2002 import InlineResponse2002  # noqa
 from swagger_server.models.inline_response400 import InlineResponse400  # noqa: E501
 from swagger_server import util
 
+client = pymongo.MongoClient("mongodb+srv://rentalsinc:rentals123@rental.hxgwe.mongodb.net/Rental?retryWrites=true&w=majority")
+db = client.rentals
 
 def products_get():  # noqa: E501
     """products_get
@@ -19,8 +21,12 @@ def products_get():  # noqa: E501
 
     :rtype: List[InlineResponse2002]
     """
-    f = open("products.json", "r")
-    return json.load(f)
+    prods_ls = []
+    for p in db.products.find():
+        prods_ls.append(p)
+
+    # f = open("products.json", "r")
+    return prods_ls
 
 
 def products_id_delete(id_):  # noqa: E501
@@ -60,13 +66,29 @@ def products_id_post(id_):  # noqa: E501
     :rtype: InlineResponse2001
     """
 
+    # client = pymongo.MongoClient("mongodb+srv://rentalsinc:rentals123@rental.hxgwe.mongodb.net/Rental?retryWrites=true&w=majority")
+    # client = pymongo.MongoClient("127.0.0.1", 27017)
 
+
+
+    dict = {
+        '_id': str(request.form.getlist("entity")[0]) + '_' + str(id_),
+        'prod_id': str(id_),
+        'entity': str(request.form.getlist("entity")[0]),
+        'user': str(request.form.getlist("username")[0]),
+        'price': str(request.form.getlist("price")[0]),
+        'title': str(request.form.getlist("title")[0]),
+        'rental_time': str(request.form.getlist("rental_time")[0])
+    }
+
+    db.products.insert_one(dict)
+
+    print('Entity: ' + str(request.form.getlist("entity")[0]))
+    print('User: ' + str(request.form.getlist("username")[0]))
+    print('Rental time: ' + str(request.form.getlist("rental_time")[0]))
     print('Movie ID: ' + str(id_))
     print('Movie Price: ' + str(request.form.getlist("price")[0]))
-    # print('Movie Status: ' + str(request.form.getlist("status")[0]))
-
-
-    dict = {'id_': id_, 'name': 'Ze'}
+    print('Movie Title: ' + str(request.form.getlist("title")[0]))
 
     return "Producted with id " + str(id_) + " added successfully"
 
@@ -84,14 +106,14 @@ def products_id_put(id_):  # noqa: E501
     return 'do some magic!'
 
 
-def products_pay_id_put(id_):  # noqa: E501
-    """products_pay_id_put
+def user_products_user_id_get(user_id):  # noqa: E501
+    """user_products_user_id_get
 
-    Rents the product # noqa: E501
+    Returns the details of the product # noqa: E501
 
-    :param id_:
-    :type id_: int
+    :param user_id:
+    :type user_id: int
 
-    :rtype: InlineResponse200
+    :rtype: InlineResponse2002
     """
     return 'do some magic!'

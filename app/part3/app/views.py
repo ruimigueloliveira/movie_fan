@@ -1,10 +1,13 @@
-from django.http import Http404, HttpRequest, HttpResponse
+from django.http import Http404, HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from s4api.graphdb_api import GraphDBApi
 from s4api.swagger import ApiClient
 import json
 from datetime import date
 import requests
+from django.shortcuts import render
+from .forms import myRentalForms, mySignUpForms
+import numpy as np
 
 _endpoint = "http://localhost:7200"
 _repositorio = "moviesDB"
@@ -23,9 +26,37 @@ def login(request):
 def signup(request):
     return render(request, 'signup.html')
 
+# Sign Up Confirm
+def signup_confirm(request):
+    form = mySignUpForms(request.POST)
+    data = {}
+    if form.is_valid():
+        data = form.cleaned_data
+
+    print("username: ", data["username"])
+    print("password: ", data["password"])
+    print("email: ", data["email"])
+
+    response = requests.post(
+        f"http://localhost:8001/deti-egs-moviefan/Authentication/1.0.0/v1/signup",
+        json=dict(username=data["username"], email=data["email"], password=data["password"])
+    )
+    print('Response body is : ' + response.text)
+
+    error = False
+    if response.status_code != 200:
+        error = True
+
+    tparams = {
+        'username': data["username"],
+        'error' : error
+    }
+
+    return render(request, 'signup_confirm.html', tparams)
+
 # List of all the movies
 def movieslist(request):
-    allmovies_ditc = requests.get("http://127.0.0.1:8001/v1/allmovies").json()
+    allmovies_ditc = requests.get("http://127.0.0.1:8003/v1/allmovies").json()
     tparams = {
         'allmovies_ditc': allmovies_ditc
     }
@@ -36,7 +67,7 @@ def movie(request):
     if not 'id' in request.GET:
         raise Http404("Filme não disponível!")
     id = request.GET['id']
-    movie_ditc = requests.get("http://127.0.0.1:8001/v1/movie/?show_id="+id).json()
+    movie_ditc = requests.get("http://127.0.0.1:8003/v1/movie/?show_id="+id).json()
     tparams = {
         'movie': movie_ditc,
     }
@@ -694,18 +725,41 @@ def add_rating_5(request):
     # tparams = add_rating(id, '5')
     return render(request, 'program_info.html')
 
-# Marks the movie as watched
+# Rent Movie
 def rent(request):
     if not 'id' in request.GET:
         raise Http404("Filme não disponível!")
     id = request.GET['id']
-    movie_ditc = requests.get("http://127.0.0.1:8001/v1/movie/?show_id="+id).json()
-    rent_status = ""
+    movie_statistics = requests.get("http://127.0.0.1:8003/v1/movie/?show_id="+id).json()
+    
     tparams = {
-        'movie': movie_ditc,
-        'rent_status': rent_status
+        'movie_statistics': movie_statistics
     }
     return render(request, 'rent.html', tparams)
+
+# Confirm Rent Movie
+def rent_confirm(request): 
+    if not 'id' in request.GET:
+        raise Http404("Filme não disponível!")
+    id = request.GET['id']
+
+    form = myRentalForms(request.POST)
+    data = {}
+    if form.is_valid():
+        data = form.cleaned_data
+    print(data)
+
+    movie_title = requests.get("http://127.0.0.1:8003/v1/movie/?show_id="+id).json()["title"]
+    movie_price = round(np.log(int(data["rental_time"])+1),2)
+    movie_data = {"price": movie_price, "entity": "movie_fan", "username": data["username"], "title": movie_title, "rental_time": data["rental_time"]}
+
+    requests.post("http://127.0.0.1:8002/rentals/rental/v1/products/"+id, data = movie_data)
+
+    tparams = {
+        'movie_data' : movie_data
+    }
+
+    return render(request, 'rent_confirm.html', tparams)
 
 # Marks the movie as unwatched
 def mark_unwatched(request):

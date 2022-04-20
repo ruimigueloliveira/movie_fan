@@ -1,4 +1,4 @@
-echo "Starting Rental"
-cd rental/python-flask-server-generated
-python3 -mwebbrowser http://127.0.0.1:8080/movie-fan/Rental/v1/products 
+echo "Starting Rental Port 8002"
+cd rental/rentals
+# python3 -mwebbrowser http://127.0.0.1:8002/rentals/rental/v1/products
 python3 -m swagger_server
