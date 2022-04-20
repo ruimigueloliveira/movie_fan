@@ -1,5 +1,5 @@
 # part1 and part2
 app/part1/
 app/part2/
-# __pycache__/
-#  *.pyc
+__pycache__/
+ *.pyc
