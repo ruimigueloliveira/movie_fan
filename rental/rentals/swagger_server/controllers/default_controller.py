@@ -74,7 +74,7 @@ def products_id_post(id_):  # noqa: E501
 
 
     dict = {
-        '_id': str(request.form.getlist("entity")[0]) + '_' + str(id_),
+        '_id': str(request.form.getlist("username")[0]) + '_' + str(id_),
         'prod_id': str(id_),
         'entity': str(request.form.getlist("entity")[0]),
         'user': str(request.form.getlist("username")[0]),
