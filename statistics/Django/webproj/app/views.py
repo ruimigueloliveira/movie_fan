@@ -361,7 +361,27 @@ def description(request):
 
 def rank(request):
     if not 'rank' or not 'show_id' in request.POST:
-        raise Http404("Erro!")
+        if not 'show_id' in request.GET:
+            raise Http404("Filme não disponível!")
+        id = request.GET['show_id']
+        cur = conn.cursor()
+        data = (id, )
+        statement ="select * from show_rank where id=%d;"
+        cur.execute(statement,data)
+        myresult = cur.fetchall()
+        cur.close()
+        try:
+            ranking=myresult[0][2]/myresult[0][1]
+        except:
+            print("NO RANKING")
+            ranking=0
+        tparams = {
+            'Our_rating': ranking,
+            'n_evaluations': myresult[0][1],
+        }
+        data = simplejson.dumps(tparams)
+        return HttpResponse(data, content_type='application/json')
+
     id = request.POST['show_id']
     rank = request.POST['rank']
 
