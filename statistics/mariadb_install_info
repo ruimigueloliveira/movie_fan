@@ -12,7 +12,7 @@ Instalar mariadb e drivers: sudo apt install python3-pip
 	 create database movies;
 	 use movies;
 	 create table show_info (id int, type varchar(10), title varchar(140), director varchar(200), cast varchar(600), country varchar(90), date_added varchar(40), release_year int, rating varchar(20), duration varchar(30), listed_in varchar(150), description varchar(500), primary key(id));
- 
+	 create table show_rank (id int, nranks int, sumranks int, primary key(id))
  
 
 Se ao correr o csv_to_mariadb der erro façam o seguinte:

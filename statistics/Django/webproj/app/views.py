@@ -38,13 +38,94 @@ def nmovies(request):
     data = simplejson.dumps(tparams)
     return HttpResponse(data, content_type='application/json')
     
-def allmovies(request):
+def shows(request):
+    if not 'type' in request.GET:
+        raise Http404("Invalid request!")
+    type = request.GET['type']
+    print(type)
     cur = conn.cursor()
-    statement ="select * from show_info;"
+    if type=='movie':
+        statement ="select * from show_info where type = 'Movie';"
+    elif type=='tvshow':
+        statement ="select * from show_info where type = 'tv show';"
+    else:
+        tparams = {
+        'title': 'error'
+        }
+        data = simplejson.dumps(tparams)
+        return HttpResponse(data, content_type='application/json')
     cur.execute(statement)
     myresult = cur.fetchall()
     cur.close()
-    #print(myresult)
+    print(myresult)
+    tparams = {}
+    for i in myresult:
+        movie = {
+        'id': i[0],
+        'type': i[1],
+        'title': i[2],
+        'director': i[3],
+        'cast': i[4],
+        'country': i[5],
+        'date_added': i[6],
+        'release_year': i[7],
+        'rating': i[8],
+        'duration': i[9],
+        'listed_in': i[10],
+        'description': i[11]
+        }
+        tparams[i[0]]=movie
+    data = simplejson.dumps(tparams)
+    return HttpResponse(data, content_type='application/json')
+
+def actor(request):
+    if not 'name' in request.GET:
+        raise Http404("Invalid request!")
+    name = request.GET['name']
+    print(type)
+    cur = conn.cursor()
+    name = '%' + name + '%'
+    data=(name, )
+    statement = "select * from show_info where cast like %s;"
+    cur.execute(statement,data)
+
+    myresult = cur.fetchall()
+    cur.close()
+    print(myresult)
+    tparams = {}
+    for i in myresult:
+        movie = {
+        'id': i[0],
+        'type': i[1],
+        'title': i[2],
+        'director': i[3],
+        'cast': i[4],
+        'country': i[5],
+        'date_added': i[6],
+        'release_year': i[7],
+        'rating': i[8],
+        'duration': i[9],
+        'listed_in': i[10],
+        'description': i[11]
+        }
+        tparams[i[0]]=movie
+    data = simplejson.dumps(tparams)
+    return HttpResponse(data, content_type='application/json')
+
+def director_list(request):
+    if not 'name' in request.GET:
+        raise Http404("Invalid request!")
+    name = request.GET['name']
+    print(type)
+    cur = conn.cursor()
+    name = '%' + name + '%'
+    data=(name, )
+    statement = "select * from show_info where director like %s;"
+    cur.execute(statement,data)
+
+    myresult = cur.fetchall()
+    cur.close()
+    print(myresult)
     tparams = {}
     for i in myresult:
         movie = {
@@ -294,6 +375,43 @@ def description(request):
     cur.close()
     tparams = {
         'title': myresult[0][0],
+    }
+    data = simplejson.dumps(tparams)
+    return HttpResponse(data, content_type='application/json')
+
+def rank(request):
+    if not 'rank' or not 'show_id' in request.POST:
+        raise Http404("Erro!")
+    id = request.POST['show_id']
+    rank = request.POST['rank']
+
+    cur = conn.cursor()
+    data = (id, )
+    statement ="select nranks,sumranks from show_rank where id=%d;"
+    cur.execute(statement,data)
+    myresult = cur.fetchall()
+    #cur.close()
+
+    old_nranks=myresult[0][0]
+    old_sumranks=myresult[0][1]
+
+    new_nranks=old_nranks+1
+    new_sumranks=old_sumranks+int(rank)
+
+    print(new_nranks)
+    print(new_sumranks)
+    cur = conn.cursor()
+    try: 
+        cur.execute("UPDATE show_rank SET nranks=? , sumranks=? WHERE id = ?", (new_nranks, new_sumranks, id)) 
+        print("YO")
+    except mariadb.Error as e: 
+        print(f"Error: {e}")
+        print("FUCK")
+    conn.commit() 
+
+    #UPDATE Customers SET ContactName = 'Alfred Schmidt', City= 'Frankfurt' WHERE CustomerID = 1;
+    tparams = {
+        'rank': rank,
     }
     data = simplejson.dumps(tparams)
     return HttpResponse(data, content_type='application/json')

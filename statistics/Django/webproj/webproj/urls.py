@@ -21,7 +21,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),
     path('v1/nmovies/', views.nmovies, name='nmovies'),
-    path('v1/allmovies/', views.allmovies, name='allmovies'),
+    path('v1/shows/', views.shows, name='shows'),
+    path('v1/actor/', views.actor, name='actor'),
+    path('v1/director/', views.director_list, name='director_list'),
     path('v1/movie/', views.movie, name='movie'),
     path('v1/movie/id', views.id, name='id'),
     path('v1/movie/type', views.type, name='type'),
@@ -35,4 +37,5 @@ urlpatterns = [
     path('v1/movie/duration', views.duration, name='duration'),
     path('v1/movie/listed_in', views.listed_in, name='listed_in'),
     path('v1/movie/description', views.description, name='description'),
+    path('v1/movie/rank', views.rank, name='rank'),
 ]
