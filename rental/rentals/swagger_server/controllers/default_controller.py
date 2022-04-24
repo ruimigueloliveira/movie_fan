@@ -10,7 +10,8 @@ from swagger_server.models.inline_response2002 import InlineResponse2002  # noqa
 from swagger_server.models.inline_response400 import InlineResponse400  # noqa: E501
 from swagger_server import util
 
-client = pymongo.MongoClient("mongodb+srv://rentalsinc:rentals123@rental.hxgwe.mongodb.net/Rental?retryWrites=true&w=majority")
+# client = pymongo.MongoClient("mongodb+srv://rentalsinc:rentals123@rental.hxgwe.mongodb.net/Rental?retryWrites=true&w=majority")
+client = pymongo.MongoClient("localhost", 27017)
 db = client.rentals
 
 def products_get():  # noqa: E501
@@ -23,6 +24,7 @@ def products_get():  # noqa: E501
     """
 
     print("entra aqui")
+
     prods_ls = []
     for p in db.products.find():
         prods_ls.append(p)
