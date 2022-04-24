@@ -23,13 +23,10 @@ def products_get():  # noqa: E501
     :rtype: List[InlineResponse2002]
     """
 
-    print("entra aqui")
-
     prods_ls = []
     for p in db.products.find():
         prods_ls.append(p)
 
-    # f = open("products.json", "r")
     return prods_ls
 
 
@@ -56,7 +53,13 @@ def products_id_get(id_):  # noqa: E501
 
     :rtype: InlineResponse200
     """
-    return 'do some magic!'
+    
+    prod_ls = []
+    prod = db.products.find({"name": "Peter"})
+    for i in prod:
+        prod_ls.append(i)
+
+    return prod_ls
 
 
 def products_id_post(id_):  # noqa: E501
@@ -72,8 +75,6 @@ def products_id_post(id_):  # noqa: E501
 
     # client = pymongo.MongoClient("mongodb+srv://rentalsinc:rentals123@rental.hxgwe.mongodb.net/Rental?retryWrites=true&w=majority")
     # client = pymongo.MongoClient("127.0.0.1", 27017)
-
-
 
     dict = {
         '_id': str(request.form.getlist("username")[0]) + '_' + str(id_),
