@@ -13,6 +13,7 @@ _endpoint = "http://localhost:7200"
 _repositorio = "moviesDB"
 client = ApiClient(endpoint=_endpoint)
 accessor = GraphDBApi(client)
+username = ""
 
 # Home Page
 def home_page(request):
@@ -27,11 +28,15 @@ def signup(request):
     return render(request, 'signup.html')
 
 # Sign Up Confirm
-def signup_confirm(request):
+def profile(request):
     form = mySignUpForms(request.POST)
     data = {}
     if form.is_valid():
         data = form.cleaned_data
+
+    global username
+    username = data["username"]
+    print(username)
 
     print("username: ", data["username"])
     print("password: ", data["password"])
@@ -44,15 +49,18 @@ def signup_confirm(request):
     print('Response body is : ' + response.text)
 
     error = False
-    if response.status_code != 200:
+    if (response.status_code != 200):
+        error = True
+    if "OK" not in response.text:
         error = True
 
     tparams = {
         'username': data["username"],
-        'error' : error
+        'error' : error,
+        'response' : response.text
     }
 
-    return render(request, 'signup_confirm.html', tparams)
+    return render(request, 'profile.html', tparams)
 
 # List of all the movies
 def movieslist(request):
@@ -75,47 +83,11 @@ def movie(request):
 
 # List of all the series
 def serieslist(request):
-    # query = '''PREFIX mov: <http://movies.org/pred/>
-    #             select ?film ?name ?watched ?rate
-    # 	        where {
-    #     	        ?real mov:name "TV Show" .
-    # 	            ?film mov:type ?real .
-    # 	            ?film mov:name ?name .
-    #                 OPTIONAL {?film mov:watched ?watched . }
-    #                 OPTIONAL {?film mov:rate ?rate . }
-    # 	        }'''
-
-    # _body = {"query": query}
-    # res = accessor.sparql_select(body=_body, repo_name=_repositorio)
-    # res = json.loads(res)
-    # ls = []
-    # ls_watched = []
-    # ls_score = []
-    # ls_uri = []
-    # ls_uri_watched = []
-    # ls_uri_score = []
-
-    # for key in res['results']['bindings']:
-    #     uri = key['film']['value'].split('/')[4]
-    #     if 'watched' in key:
-    #         ls_watched.append(key['watched']['value'])
-    #         ls_uri_watched.append(uri)
-    #     if 'rate' in key:
-    #         ls_score.append(key['rate']['value'])
-    #         ls_uri_score.append(uri)
-    #     ls.append(key['name']['value'])
-    #     ls_uri.append(uri)
-
-    # dct_name = {ls_uri.strip(): ls.strip() for ls_uri, ls in zip(ls_uri, ls)}
-    # dct_watched = {ls_uri_watched.strip(): ls_watched.strip() for ls_uri_watched, ls_watched in zip(ls_uri_watched, ls_watched)}
-    # dct_score = {ls_uri_score.strip(): ls_score.strip() for ls_uri_score, ls_score in zip(ls_uri_score, ls_score)}
-
-    # tparams = {
-    #     'search': dct_name,
-    #     'watched': dct_watched,
-    #     'score': dct_score
-    # }
-    return render(request, 'list_of_series.html')
+    allseries_ditc = requests.get("http://127.0.0.1:8003/v1/shows?type=tvshow").json()
+    tparams = {
+        'allseries_ditc': allseries_ditc
+    }
+    return render(request, 'list_of_series.html', tparams)
 
 # All information about a movie/show from its id
 def getShowInfo(id):
@@ -732,8 +704,10 @@ def rent(request):
     id = request.GET['id']
     movie_statistics = requests.get("http://127.0.0.1:8003/v1/movie/?show_id="+id).json()
     
+    print(username)
     tparams = {
-        'movie_statistics': movie_statistics
+        'movie_statistics': movie_statistics,
+        'username': username
     }
     return render(request, 'rent.html', tparams)
 
@@ -748,10 +722,11 @@ def rent_confirm(request):
     if form.is_valid():
         data = form.cleaned_data
     print(data)
+    print(username)
 
     movie_title = requests.get("http://127.0.0.1:8003/v1/movie/?show_id="+id).json()["title"]
     movie_price = round(np.log(int(data["rental_time"])+1),2)*2
-    movie_data = {"price": movie_price, "entity": "movie_fan", "username": data["username"], "title": movie_title, "rental_time": data["rental_time"]}
+    movie_data = {"price": movie_price, "entity": "movie_fan", "username": username, "title": movie_title, "rental_time": data["rental_time"]}
 
     requests.post("http://127.0.0.1:8002/rentals/rental/v1/products/"+id, data = movie_data)
 

@@ -1,7 +1,7 @@
 from django import forms
 
 class myRentalForms(forms.Form):
-    username = forms.CharField()
+    # username = forms.CharField()
     rental_time = forms.CharField()
 
 class mySignUpForms(forms.Form):

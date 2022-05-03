@@ -8,8 +8,9 @@
             <div class="col-sm-8" about="{{ movie_statistics.full_id }}" typeof="pr:{{ movie.type }}">
                 <p class="movie-title"><b>Rent: {{ movie_statistics.title }}</b> ({{ movie_statistics.release_year }})</p>
                 <br><br>
-                <label class="movie-info" for="username">Username:</label>
-                <input id="username" type="text" name="username"><br>
+                <label class="movie-info" for="username">Username: {{username}}</label>
+                <br>
+                <!-- <input id="username" type="text" name="username"><br> -->
                 <label class="movie-info" for="rental_time">Rental Time (Days):</label>
                 <input id="rental_time" type="text" name="rental_time">
                 <br><br>
