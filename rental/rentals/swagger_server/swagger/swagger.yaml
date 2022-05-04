@@ -108,6 +108,32 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_400'
       x-openapi-router-controller: swagger_server.controllers.default_controller
+  /productsBy/{user}:
+    get:
+      description: Returns the products rent by a user
+      operationId: products_by_user
+      parameters:
+      - name: user
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successfully returned the product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+      x-openapi-router-controller: swagger_server.controllers.default_controller
   /products:
     get:
       description: Returns all products available

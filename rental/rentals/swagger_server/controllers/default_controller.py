@@ -10,7 +10,6 @@ from swagger_server.models.inline_response2002 import InlineResponse2002  # noqa
 from swagger_server.models.inline_response400 import InlineResponse400  # noqa: E501
 from swagger_server import util
 
-# client = pymongo.MongoClient("mongodb+srv://rentalsinc:rentals123@rental.hxgwe.mongodb.net/Rental?retryWrites=true&w=majority")
 client = pymongo.MongoClient("localhost", 27017)
 db = client.rentals
 
@@ -42,6 +41,23 @@ def products_id_delete(id_):  # noqa: E501
     """
     return 'do some magic!'
 
+def products_by_user(user):
+    """products_by_user
+
+    Returns the products rent by a user # noqa: E501
+
+    :param user:
+    :type user: string
+
+    :rtype: InlineResponse200
+    """
+
+    prod_ls = []
+    prod = db.products.find({"user": user})
+    for i in prod:
+        prod_ls.append(i)
+
+    return prod_ls
 
 def products_id_get(id_):  # noqa: E501
     """products_id_get
@@ -53,9 +69,9 @@ def products_id_get(id_):  # noqa: E501
 
     :rtype: InlineResponse200
     """
-    
+
     prod_ls = []
-    prod = db.products.find({"name": "Peter"})
+    prod = db.products.find({"_id": id_})
     for i in prod:
         prod_ls.append(i)
 
@@ -72,9 +88,6 @@ def products_id_post(id_):  # noqa: E501
 
     :rtype: InlineResponse2001
     """
-
-    # client = pymongo.MongoClient("mongodb+srv://rentalsinc:rentals123@rental.hxgwe.mongodb.net/Rental?retryWrites=true&w=majority")
-    # client = pymongo.MongoClient("127.0.0.1", 27017)
 
     dict = {
         '_id': str(request.form.getlist("username")[0]) + '_' + str(id_),
