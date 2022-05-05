@@ -1,26 +1,37 @@
 {% extends "base.html" %}
 {% block content %}
-
-    {% if error %}
-        <div class="list-container">
-            <div class="row">
-                <div class="col-md-6">
-                    <p class="list-name">{{response}}</p>
-                </div>
-            </div>
-        </div>
-
-    {% else %}
-        <form action="." method="post">
-            
-            <div class="list-container">
+<form action="/rent_confirm/?id={{movie_statistics.id}}" method="post">
+    {% csrf_token %}
+    <div class="score-container"></div>
+    <div class="program-container">
+        
+            {% if username != "" %}
+                <p class="list-name">{{username}} PROFILE</p>
                 <div class="row">
-                    <div class="col-md-6">
-                        <p class="list-name">Welcome {{username}}</p>
+                    <div class="col-sm-8" about="{{ movie_statistics.full_id }}" typeof="pr:{{ movie.type }}">
+                        <p class="movie-title"><b>Current rentals:</b></p>
+                        <br>
+                        {% for rental in user_rentals%}
+                        <div class="row">
+                            <div class="col-md-9">
+                                <ul>
+                                    <li class="movie-info"> <b>{{rental.title}} </b> </p>
+                                    <p class="movie-info"> <b>Price:</b> {{rental.price}}$ </p>
+                                    <p class="movie-info"> <b>Rental Time:</b> {{rental.rental_time}} days</p>
+                                    <br>
+                                </ul>
+                                
+                            </div>
+                        </div>
+                        {% endfor %}
                     </div>
                 </div>
-            </div>
-        </form>
-    {% endif %}
-    
-{% endblock content %}
+
+            {% else %}
+                <label class="movie-info">You need to be logged in to rent a movie!</label>
+            {% endif %}
+    </div>
+</form>
+
+{% endblock %}
+                        

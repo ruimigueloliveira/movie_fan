@@ -5,8 +5,12 @@
         <div class="row">
             <div class="col-sm-8" about="{{ movie_statistics.full_id }}">
                 <p class="movie-title"><b>Your Rental is Confirmed</b></p>
-                <p class="movie-info"> Details: </p>
-                <p class="movie-info"> {{movie_data}} </p>
+                <br>
+                <!-- <p class="movie-info"> Price: {{movie_data}} </p> -->
+                <p class="movie-info"> <b>Price:</b> {{movie_data.price}}$ </p>
+                <p class="movie-info"> <b>Username:</b> {{movie_data.username}} </p>
+                <p class="movie-info"> <b>Title:</b> {{movie_data.title}} </p>
+                <p class="movie-info"> <b>Rental Time:</b> {{movie_data.rental_time}} days</p>
             </div>
         </div>
     </div>

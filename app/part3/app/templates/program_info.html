@@ -100,54 +100,5 @@
             </div>
         </div>
     </div>
-    <div class="score-container">
-        <a href="">
-        <button disabled = "disabled"; class="btn btn-lg btn-warning">Rate this movie:</button>
-        </a>
-        {% if movie.rate == '1' %}
-            <a href="{% url 'add_rating_1' %}?id={{  movie.id }}">
-            <button type="button" class="btn btn-lg btn-danger">1</button>
-            </a>
-        {% elif movie.rate != '1' %}
-            <a href="{% url 'add_rating_1' %}?id={{  movie.id }}">
-            <button type="button" class="btn btn-lg btn-outline-danger">1</button>
-            </a>
-        {% endif %}
-        {% if movie.rate == '2' %}
-            <a href="{% url 'add_rating_2' %}?id={{  movie.id }}">
-            <button type="button" class="btn btn-lg btn-danger">2</button>
-            </a>
-        {% elif movie.rate != '2' %}
-            <a href="{% url 'add_rating_2' %}?id={{  movie.id }}">
-            <button type="button" class="btn btn-lg btn-outline-danger">2</button>
-            </a>
-        {% endif %}
-        {% if movie.rate == '3' %}
-            <a href="{% url 'add_rating_3' %}?id={{  movie.id }}">
-            <button type="button" class="btn btn-lg btn-warning">3</button>
-            </a>
-        {% elif movie.rate != '3' %}
-            <a href="{% url 'add_rating_3' %}?id={{  movie.id }}">
-            <button type="button" class="btn btn-lg btn-outline-warning">3</button>
-            </a>
-        {% endif %}
-        {% if movie.rate == '4' %}
-            <a href="{% url 'add_rating_4' %}?id={{  movie.id }}">
-            <button type="button" class="btn btn-lg btn-success">4</button>
-            </a>
-        {% elif movie.rate != '4' %}
-            <a href="{% url 'add_rating_4' %}?id={{  movie.id }}">
-            <button type="button" class="btn btn-lg btn-outline-success">4</button>
-            </a>
-        {% endif %}
-        {% if movie.rate == '5' %}
-            <a href="{% url 'add_rating_5' %}?id={{  movie.id }}">
-            <button type="button" class="btn btn-lg btn-success">5</button>
-            </a>
-        {% elif movie.rate != '5' %}
-            <a href="{% url 'add_rating_5' %}?id={{  movie.id }}">
-            <button type="button" class="btn btn-lg btn-outline-success">5</button>
-            </a>
-        {% endif %}
-    </div>
+    
 {% endblock %}

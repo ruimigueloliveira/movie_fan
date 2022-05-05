@@ -4,20 +4,27 @@
     {% csrf_token %}
     <div class="score-container"></div>
     <div class="program-container">
-        <div class="row">
-            <div class="col-sm-8" about="{{ movie_statistics.full_id }}" typeof="pr:{{ movie.type }}">
-                <p class="movie-title"><b>Rent: {{ movie_statistics.title }}</b> ({{ movie_statistics.release_year }})</p>
-                <br><br>
-                <label class="movie-info" for="username">Username: {{username}}</label>
-                <br>
-                <!-- <input id="username" type="text" name="username"><br> -->
-                <label class="movie-info" for="rental_time">Rental Time (Days):</label>
-                <input id="rental_time" type="text" name="rental_time">
-                <br><br>
-                
+        
+            {% if username != "" %}
+            <div class="row">
+                <div class="col-sm-8" about="{{ movie_statistics.full_id }}" typeof="pr:{{ movie.type }}">
+                    <p class="movie-title"><b>Rent: {{ movie_statistics.title }}</b> ({{ movie_statistics.release_year }})</p>
+                    <br><br>
+            
+                    <label class="movie-info" for="username">Username: {{username}}</label>
+                    <br>
+                    <label class="movie-info" for="rental_time">Rental Time (Days):</label>
+                    <input id="rental_time" type="text" name="rental_time">
+                    <br><br>
+                </div>
             </div>
-        </div>
-        <input type="submit" value="Confirm">
+            <input type="submit" value="Confirm">
+
+            {% else %}
+            <label class="movie-info" for="username">You need to be logged in to rent a movie!</label>
+            {% endif %}
+
+
     </div>
 </form>
 
