@@ -3,3 +3,6 @@ app/part1/
 app/part2/
 __pycache__/
  *.pyc
+
+# Pycharm files
+./idea

@@ -164,7 +164,7 @@ def check(password: str, username: str, email: str = SENTINEL) -> int:  # or boo
         claimed_email: str = hash_unicode(email)
 
         # Get email associated with username
-        actual_email: str = user_row.at[1, 'email']
+        actual_email: str = user_row.at[0, 'email']
         if actual_email != claimed_email:
             return MISMATCH_USERNAME_EMAIL
 
