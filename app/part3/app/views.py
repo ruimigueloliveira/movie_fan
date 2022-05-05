@@ -1,32 +1,22 @@
+import email
 from django.http import Http404
 from django.shortcuts import render
 import requests
 from django.shortcuts import render
-from .forms import myRentalForms, mySignUpForms
+from .forms import myRentalForms, mySignUpForms, myLogInForms
 import numpy as np
 
-username = "ADMIN"
+username = "admin1"
+email = "admin1@it.org"
+password = "admin1Pa$$"
 
 # Home Page
 def home_page(request):
     return render(request, 'home_page.html')
 
-# Login
-def login(request):
-    return render(request, 'login.html')
-
 # Sign Up
 def signup(request):
     return render(request, 'signup.html')
-
-# Profile
-def profile(request):
-    user_rentals = requests.get("http://127.0.0.1:8002/rentals/rental/v1/productsBy/"+username).json()
-    tparams = {
-        'username': username,
-        'user_rentals': user_rentals
-    }
-    return render(request, 'profile.html', tparams)
 
 # Sign Up Confirm
 def signup_confirm(request):
@@ -34,11 +24,17 @@ def signup_confirm(request):
     data = {}
     if form.is_valid():
         data = form.cleaned_data
+
     global username
     username = data["username"]
+    global email
+    email = data["email"]
+    global password
+    password = data["password"]
+
     response = requests.post(
         f"http://localhost:8001/deti-egs-moviefan/Authentication/1.0.0/v1/signup",
-        json=dict(username=data["username"], email=data["email"], password=data["password"])
+        json=dict(username=username, email=email, password=password)
     )
     error = False
     if response.status_code != 200:
@@ -51,6 +47,55 @@ def signup_confirm(request):
         'response' : response.text
     }
     return render(request, 'signup_confirm.html', tparams)
+
+# Login
+def login(request):
+    return render(request, 'login.html')
+
+# Log In Confirm
+def login_confirm(request):
+    form = myLogInForms(request.POST)
+    data = {}
+    if form.is_valid():
+        data = form.cleaned_data
+    
+    global username
+    username = data["username"]
+    global email
+    email = data["email"]
+    global password
+    password = data["password"]
+
+    response = requests.post(
+        f"http://localhost:8001/deti-egs-moviefan/Authentication/1.0.0/v1/auth-token",
+        json=dict(username=username, email=email, password=password)
+    )
+    print('\nResponse body is : ' + response.text)
+
+    error = False
+    if response.status_code != 200:
+        error = True
+    if "OK" not in response.text:
+        error = True
+        
+    tparams = {
+        'username': data["username"],
+        'error' : error,
+        'response' : response.text
+    }
+
+    return render(request, 'login_confirm.html', tparams)
+
+# Profile
+def profile(request):
+    user_rentals = requests.get("http://127.0.0.1:8002/rentals/rental/v1/productsBy/"+username).json()
+    tparams = {
+        'username': username,
+        'email': email,
+        'password': password,
+        'user_rentals': user_rentals
+    }
+    return render(request, 'profile.html', tparams)
 
 # List of all the movies
 def movieslist(request):
@@ -127,4 +172,4 @@ def category(request):
 
 # Searches for movies from the name, actors or countries
 def search(request):
-        return render(request, 'search.html')
+    return render(request, 'search.html')

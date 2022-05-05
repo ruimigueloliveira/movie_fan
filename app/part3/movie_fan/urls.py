@@ -19,4 +19,6 @@ urlpatterns = [
     path('rent/', views.rent, name='rent'),
     path('rent_confirm/', views.rent_confirm, name='rent_confirm'),
     path('profile/', views.profile, name='profile'),
+    path('login/', views.login, name='login'),
+    path('login_confirm/', views.login_confirm, name='login_confirm'),
 ]

@@ -7,6 +7,9 @@
         
             {% if username != "" %}
                 <p class="list-name">{{username}} PROFILE</p>
+                <p class="movie-info"> <b>username:</b> {{username}} </p>
+                <p class="movie-info"> <b>email:</b> {{email}} </p>
+                <p class="movie-info"> <b>password:</b> {{password}} </p>
                 <div class="row">
                     <div class="col-sm-8" about="{{ movie_statistics.full_id }}" typeof="pr:{{ movie.type }}">
                         <p class="movie-title"><b>Current rentals:</b></p>
