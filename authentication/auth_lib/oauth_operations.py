@@ -2,6 +2,7 @@ import os.path
 import time
 from typing import Tuple, Union
 
+import cryptography.hazmat.backends
 from cryptography.exceptions import InvalidSignature
 from cryptography.hazmat.primitives import serialization, hashes
 from cryptography.hazmat.primitives.asymmetric import padding
@@ -26,10 +27,11 @@ def _load_priv_key():
     :return: Private key of the authorization entity
     """
     # Load private key
-    with open(f"{os.path.dirname(__file__)}\\privkey.pem", "rb") as key_file:
+    with open(os.path.join(os.path.dirname(__file__), "privkey.pem"), "rb") as key_file:
         private_key = serialization.load_pem_private_key(
             key_file.read(),
             password=PRIV_KEY_PASSWORD,
+            backend=cryptography.hazmat.backends.default_backend()
         )
     return private_key
 
