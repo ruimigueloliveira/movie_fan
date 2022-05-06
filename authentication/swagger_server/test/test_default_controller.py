@@ -3,9 +3,6 @@
 from __future__ import absolute_import
 
 import requests
-from flask import json
-from six import BytesIO
-
 from swagger_server.test import BaseTestCase
 
 PORT = 8001
@@ -36,7 +33,7 @@ class TestDefaultController(BaseTestCase):
             json=dict(username="user1", email="user1@it.org", password="user1Pa$$")
         )
         self.assert200(response,
-                       'Response body is : ' + response.text)
+                       'Response body is : ' + response.json())
 
     def test_v1_access_token_post(self):
         """Test case for v1_access_token_post
@@ -52,7 +49,7 @@ class TestDefaultController(BaseTestCase):
             )
         )
         self.assert200(response,
-                       'Response body is : ' + response.text)
+                       'Response body is : ' + response.json())
 
     def test_v1_validate_access_token_post(self):
         """Test case for v1_validate_access_token_post
@@ -69,7 +66,7 @@ class TestDefaultController(BaseTestCase):
             )
         )
         self.assert200(response,
-                       'Response body is : ' + response.text)
+                       'Response body is : ' + response.json())
 
     def test_v1_signout_post(self):
         """Test case for v1_signout_post
@@ -81,7 +78,7 @@ class TestDefaultController(BaseTestCase):
             json=dict(username="user1", email="user1@it.org", password="user1Pa$$")
         )
         self.assert200(response,
-                       'Response body is : ' + response.text)
+                       'Response body is : ' + response.json())
 
 
 if __name__ == '__main__':
