@@ -3,6 +3,7 @@ import six
 import json
 from flask import request
 import pymongo
+import datetime
 
 from swagger_server.models.inline_response200 import InlineResponse200  # noqa: E501
 from swagger_server.models.inline_response2001 import InlineResponse2001  # noqa: E501
@@ -88,7 +89,9 @@ def products_id_post(id_):  # noqa: E501
 
     :rtype: InlineResponse2001
     """
-
+    rental_time = str(request.form.getlist("rental_time")[0])
+    today = datetime.datetime.now()
+    end_rental = today + datetime.timedelta(rental_time)
     dict = {
         '_id': str(request.form.getlist("username")[0]) + '_' + str(id_),
         'prod_id': str(id_),
@@ -96,7 +99,8 @@ def products_id_post(id_):  # noqa: E501
         'user': str(request.form.getlist("username")[0]),
         'price': str(request.form.getlist("price")[0]),
         'title': str(request.form.getlist("title")[0]),
-        'rental_time': str(request.form.getlist("rental_time")[0])
+        'rental_time': rental_time,
+        'end_rental': end_rental
     }
 
     db.products.insert_one(dict)
@@ -104,11 +108,12 @@ def products_id_post(id_):  # noqa: E501
     print('Entity: ' + str(request.form.getlist("entity")[0]))
     print('User: ' + str(request.form.getlist("username")[0]))
     print('Rental time: ' + str(request.form.getlist("rental_time")[0]))
+    print('End of rental: ' + str(dict['end_rental']))
     print('Movie ID: ' + str(id_))
     print('Movie Price: ' + str(request.form.getlist("price")[0]))
     print('Movie Title: ' + str(request.form.getlist("title")[0]))
 
-    return "Producted with id " + str(id_) + " added successfully"
+    return "Product with id " + str(id_) + " added successfully"
 
 
 def products_id_put(id_):  # noqa: E501
