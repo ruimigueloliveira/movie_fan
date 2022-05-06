@@ -6,9 +6,10 @@ from django.shortcuts import render
 from .forms import myRentalForms, mySignUpForms, myLogInForms
 import numpy as np
 
-username = "admin1"
-email = "admin1@it.org"
-password = "admin1Pa$$"
+username = ""
+email = ""
+password = ""
+auth_code = ""
 
 # Home Page
 def home_page(request):
@@ -48,40 +49,41 @@ def signup_confirm(request):
     }
     return render(request, 'signup_confirm.html', tparams)
 
-# Login
+# login_step_1
 def login(request):
     return render(request, 'login.html')
 
-# Log In Confirm
+# login_step_2
 def login_confirm(request):
     form = myLogInForms(request.POST)
     data = {}
     if form.is_valid():
         data = form.cleaned_data
-    
+
+    response = requests.post(
+        f"http://localhost:8001/deti-egs-moviefan/Authentication/1.0.0/v1/auth-token",
+        json=dict(username=data["username"], email=data["email"], password=data["password"])
+    )
+
     global username
     username = data["username"]
     global email
     email = data["email"]
     global password
     password = data["password"]
+    global auth_code
+    auth_code = response.json()["auth-code"]
 
-    response = requests.post(
-        f"http://localhost:8001/deti-egs-moviefan/Authentication/1.0.0/v1/auth-token",
-        json=dict(username=username, email=email, password=password)
-    )
-    print('\nResponse body is : ' + response.text)
-
-    error = False
-    if response.status_code != 200:
-        error = True
-    if "OK" not in response.text:
-        error = True
+    if (response.status_code != 200) or ("OK" not in response.text):
+        username = ""
+        email = ""
+        password = ""
+        auth_code = ""
         
     tparams = {
         'username': data["username"],
-        'error' : error,
-        'response' : response.text
+        'response' : response.text,
+        'auth_code' : auth_code
     }
 
     return render(request, 'login_confirm.html', tparams)
