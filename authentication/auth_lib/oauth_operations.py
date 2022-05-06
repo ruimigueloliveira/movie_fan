@@ -1,6 +1,6 @@
 import os.path
 import time
-from typing import Tuple, Union
+from typing import Tuple, Union, Optional
 
 import cryptography.hazmat.backends
 from cryptography.exceptions import InvalidSignature
@@ -11,7 +11,6 @@ from auth_lib import statuses
 from auth_lib import statuses as s
 from auth_lib import users_operations as u
 
-# Sentinel pattern
 SENTINEL = object()
 # Registry entity key password
 PRIV_KEY_PASSWORD = b"priv_key543"
@@ -86,7 +85,7 @@ def _verify(signature: bytes, *args: Union[str, bytes]) -> bool:
         return False
 
 
-def authorization_code(username: str, email: str, password: str) -> Tuple[int, bytes]:
+def authorization_code(username: str, email: Optional[str], password: str) -> Tuple[int, bytes]:
     """
 
     :param username:  Username
@@ -99,6 +98,9 @@ def authorization_code(username: str, email: str, password: str) -> Tuple[int, b
     status: int = u.check(password, username, email)
     if status != s.OK:
         return status, b""
+
+    if email is None:
+        return s.OK, _sign(password, username)
 
     # -- Generate authorization code
     signature = _sign(email, password, username)

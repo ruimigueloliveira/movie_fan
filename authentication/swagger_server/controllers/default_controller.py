@@ -11,7 +11,7 @@ def v1_auth_token_post():  # noqa: E501
     :rtype: None
     """
     # Extract parameters
-    username, email, password = [request.json[param] for param in ("username", "email", "password")]
+    username, email, password = [request.json.get(param) for param in ("username", "email", "password")]
     # Call auth-lib
     status_code, auth_code = oauth_operations.authorization_code(username, email, password)
     # Return status code
