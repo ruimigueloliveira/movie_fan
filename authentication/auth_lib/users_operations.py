@@ -1,6 +1,8 @@
 import hashlib
 import os.path
 import re
+from typing import Optional
+
 import pandas as pd
 
 # --- Constants ---
@@ -64,18 +66,18 @@ def input_check(username: str = SENTINEL, email: str = SENTINEL, password: str =
     :param password: Password to be validated
     :return: Status code conveying the validity status of the parameters
     """
-    if username != "" and username is not SENTINEL:
+    if username not in ("", SENTINEL, None):
         # Same as email before the '@'
         name_regex = re.compile(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+')
         if not re.fullmatch(name_regex, username):
             return INVALID_USERNAME
-    if email != "" and email is not SENTINEL:
+    if email not in ("", SENTINEL, None):
         # Thanks to https://stackabuse.com/python-validate-email-address-with-regular-expressions-regex/
         email_regex = re.compile(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+')
         if not re.fullmatch(email_regex, email):
             return INVALID_EMAIL
     # Password validation (to prevent sql injection and stuff)
-    if password != "" and password is not SENTINEL:
+    if password not in ("", SENTINEL, None):
         password_status: int = password_check(password)
         if password_status != VALID_PASSWORD:
             return password_status
@@ -130,7 +132,7 @@ def register(username: str, email: str, password: str) -> int:
     return OK
 
 
-def check(password: str, username: str, email: str = SENTINEL) -> int:  # or bool?
+def check(password: Optional[str], username: Optional[str], email: Optional[str] = None) -> int:  # or bool?
     """
     Check if a user with the provided parameters exist - must provide at least either username or email
     :param password: User password
@@ -143,24 +145,14 @@ def check(password: str, username: str, email: str = SENTINEL) -> int:  # or boo
     if status != OK:
         return status
 
-    # Read csv db
-    user_db: pd.DataFrame = pd.read_csv(USERS_DB)
-
-    # Search for the user in the registry with the defined password ('s SHA-256)
-    #   and obtain the username and email ('s SHA-256)
-
-    # Parse username to hash
-    username_h: str = hash_unicode(username)
-
-    # Get user info
-    user_row = user_db.loc[user_db['username'] == username_h]
+    user_row = _get_user_hashed_creds(username)
 
     # If user_row is empty, return some error indicating that the user doesn't exist
     if user_row.empty:
         return NON_EXISTENT_USER
 
     # Verification: If email is not empty, check if it matches with username
-    if email is not SENTINEL:
+    if email is not None:
         claimed_email: str = hash_unicode(email)
 
         # Get email associated with username
@@ -175,6 +167,18 @@ def check(password: str, username: str, email: str = SENTINEL) -> int:  # or boo
         return WRONG_PASSWORD
 
     return OK
+
+
+def _get_user_hashed_creds(username):
+    # Read csv db
+    user_db: pd.DataFrame = pd.read_csv(USERS_DB)
+    # Search for the user in the registry with the defined password ('s SHA-256)
+    #   and obtain the username and email ('s SHA-256)
+    # Parse username to hash
+    username_h: str = hash_unicode(username)
+    # Get user info
+    user_row = user_db.loc[user_db['username'] == username_h]
+    return user_row
 
 
 def remove(password: str, username: str = SENTINEL, email: str = SENTINEL) -> int:
