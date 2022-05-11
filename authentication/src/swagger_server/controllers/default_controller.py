@@ -15,7 +15,9 @@ def v1_auth_token_post():  # noqa: E501
     # Call auth-lib
     status_code, auth_code = oauth_operations.authorization_code(username, email, password)
     # Return status code
-    return {str(status_code): statuses.status_description(status_code), "auth-code": auth_code.hex()}
+    return dict(
+        status_code=str(status_code), status=statuses.status_description(status_code), auth_code=auth_code.hex()
+    )
 
 
 def v1_signup_post():  # noqa: E501
@@ -32,7 +34,7 @@ def v1_signup_post():  # noqa: E501
     # Call auth-lib
     status_code: int = users_operations.register(username, email, password)
     # Return status code
-    return {str(status_code): statuses.status_description(status_code)}
+    return dict(status_code=str(status_code), status=statuses.status_description(status_code))
 
 
 def v1_access_token_post():  # noqa: E501
@@ -55,10 +57,11 @@ def v1_access_token_post():  # noqa: E501
         [signature.hex(), str(deadline, "utf-8")]
     )
     # Return status code
-    return {
-        str(status_code): statuses.status_description(status_code),
-        "access-token": access_token
-    }
+    return dict(
+        status_code=status_code,
+        status=statuses.status_description(status_code),
+        access_token=access_token
+    )
 
 
 def v1_signout_post():  # noqa: E501
@@ -74,7 +77,10 @@ def v1_signout_post():  # noqa: E501
     # Call auth-lib
     status_code: int = users_operations.remove(password, username, email)
     # Return status code
-    return {str(status_code): statuses.status_description(status_code)}
+    return dict(
+        status_code=str(status_code),
+        status=statuses.status_description(status_code)
+    )
 
 
 def v1_validate_access_token_post():  # noqa: E501
@@ -93,4 +99,4 @@ def v1_validate_access_token_post():  # noqa: E501
         bytes(auth_code, "utf-8")
     )
     # Return status code
-    return {str(status_code): statuses.status_description(status_code)}
+    return dict(status_code=str(status_code), status=statuses.status_description(status_code))
