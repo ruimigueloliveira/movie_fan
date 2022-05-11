@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
 
-    {% if error %}
+    {% if username == "" %}
         <div class="list-container">
             <div class="row">
                 <div class="col-md-6">
-                    <p class="list-name">{{response}}</p>
+                    <p class="list-name">{{status}}</p>
                 </div>
             </div>
         </div>

@@ -1,27 +1,20 @@
 {% extends "base.html" %}
 {% block content %}
-
-    {% if username == "" %}
-        <div class="list-container">
-            <div class="row">
-                <div class="col-md-6">
-                    <p class="list-name">{{response}}</p>
-                </div>
+{% if username == "" %}
+    <div class="list-container">
+        <div class="row">
+            <div class="col-md-12">
+                <p class="list-name">{{status}}</p>
             </div>
         </div>
-
-    {% else %}
-        <form action="." method="post">
-            
-            <div class="list-container">
-                <div class="row">
-                    <div class="col-md-6">
-                        
-                        <p class="list-name">Welcome Back {{username}}</p>
-                    </div>
-                </div>
+    </div>
+{% else %}
+    <div class="list-container">
+        <div class="row">
+            <div class="col-md-6">
+                <p class="list-name">Welcome Back {{username}}</p>
             </div>
-        </form>
-    {% endif %}
-    
+        </div>
+    </div>
+{% endif %}
 {% endblock content %}

@@ -6,7 +6,7 @@ class myRentalForms(forms.Form):
 
 class myLogInForms(forms.Form):
     username = forms.CharField()
-    email = forms.CharField()
+    # email = forms.CharField()
     password = forms.CharField()
 
 class mySignUpForms(forms.Form):

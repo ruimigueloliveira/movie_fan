@@ -9,15 +9,20 @@ import numpy as np
 username = ""
 email = ""
 password = ""
-auth_code = ""
 
 # Home Page
 def home_page(request):
-    return render(request, 'home_page.html')
+    tparams = {
+        'username': username,
+    }
+    return render(request, 'home_page.html', tparams)
 
 # Sign Up
 def signup(request):
-    return render(request, 'signup.html')
+    tparams = {
+        'username': username,
+    }
+    return render(request, 'signup.html', tparams)
 
 # Sign Up Confirm
 def signup_confirm(request):
@@ -26,32 +31,32 @@ def signup_confirm(request):
     if form.is_valid():
         data = form.cleaned_data
 
-    global username
-    username = data["username"]
-    global email
-    email = data["email"]
-    global password
-    password = data["password"]
-
     response = requests.post(
         f"http://localhost:8001/deti-egs-moviefan/Authentication/1.0.0/v1/signup",
-        json=dict(username=username, email=email, password=password)
+        json=dict(username=data["username"], email=data["email"], password=data["password"])
     )
-    error = False
-    if response.status_code != 200:
-        error = True
-    if "OK" not in response.text:
-        error = True
+
+    global username
+    username = data["username"]
+
+    status = response.json()["status"]
+
+    if (response.status_code != 200) or ("OK" not in response.text):
+        username = ""
+
     tparams = {
-        'username': data["username"],
-        'error' : error,
-        'response' : response.text
+        'username': username,
+        'status' : status
     }
+
     return render(request, 'signup_confirm.html', tparams)
 
 # login_step_1
 def login(request):
-    return render(request, 'login.html')
+    tparams = {
+        'username': username,
+    }
+    return render(request, 'login.html', tparams)
 
 # login_step_2
 def login_confirm(request):
@@ -62,39 +67,45 @@ def login_confirm(request):
 
     response = requests.post(
         f"http://localhost:8001/deti-egs-moviefan/Authentication/1.0.0/v1/auth-token",
-        json=dict(username=data["username"], email=data["email"], password=data["password"])
+        json=dict(username=data["username"], password=data["password"])
     )
 
     global username
     username = data["username"]
-    global email
-    email = data["email"]
-    global password
-    password = data["password"]
-    global auth_code
-    auth_code = response.json()["auth-code"]
+
+    status = response.json()["status"]
 
     if (response.status_code != 200) or ("OK" not in response.text):
         username = ""
-        email = ""
-        password = ""
-        auth_code = ""
-        
+    
     tparams = {
-        'username': data["username"],
-        'response' : response.text,
-        'auth_code' : auth_code
+        'username': username,
+        'status' : status
     }
 
     return render(request, 'login_confirm.html', tparams)
+
+# login_step_1
+def logout(request):
+    global username
+    bye_user = username
+    username = ""
+    global email
+    email = ""
+    global password
+    password = ""
+
+    tparams = {
+        'username': username,
+        'bye_user' : bye_user
+    }
+    return render(request, 'logout.html', tparams)
 
 # Profile
 def profile(request):
     user_rentals = requests.get("http://127.0.0.1:8002/rentals/rental/v1/productsBy/"+username).json()
     tparams = {
         'username': username,
-        'email': email,
-        'password': password,
         'user_rentals': user_rentals
     }
     return render(request, 'profile.html', tparams)
@@ -103,7 +114,8 @@ def profile(request):
 def movieslist(request):
     allmovies_ditc = requests.get("http://127.0.0.1:8003/v1/shows?type=movie").json()
     tparams = {
-        'allmovies_ditc': allmovies_ditc
+        'allmovies_ditc': allmovies_ditc,
+        'username': username,
     }
     return render(request, 'list_of_movies.html', tparams)
 
@@ -115,6 +127,7 @@ def movie(request):
     movie_ditc = requests.get("http://127.0.0.1:8003/v1/movie/?show_id="+id).json()
     tparams = {
         'movie': movie_ditc,
+        'username': username,
     }
     return render(request, 'program_info.html', tparams)
 
@@ -122,7 +135,8 @@ def movie(request):
 def serieslist(request):
     allseries_ditc = requests.get("http://127.0.0.1:8003/v1/shows?type=tvshow").json()
     tparams = {
-        'allseries_ditc': allseries_ditc
+        'allseries_ditc': allseries_ditc,
+        'username': username,
     }
     return render(request, 'list_of_series.html', tparams)
 
@@ -152,26 +166,42 @@ def rent_confirm(request):
     movie_data = {"price": movie_price, "entity": "movie_fan", "username": username, "title": movie_title, "rental_time": data["rental_time"]}
     requests.post("http://127.0.0.1:8002/rentals/rental/v1/products/"+id, data = movie_data)
     tparams = {
-        'movie_data' : movie_data
+        'movie_data' : movie_data,
+        'username': username,
     }
     return render(request, 'rent_confirm.html', tparams)
 
 # Lists all movies/series of an actor
 def actor(request):
-    return render(request, 'actor.html')
+    tparams = {
+        'username': username,
+    }
+    return render(request, 'actor.html', tparams)
 
 # Lists all movies/series of a director
 def director(request):
-    return render(request, 'director.html')
+    tparams = {
+        'username': username,
+    }
+    return render(request, 'director.html', tparams)
 
 # Lists all movies/series directed in a country
 def country(request):
-    return render(request, 'country.html')
+    tparams = {
+        'username': username,
+    }
+    return render(request, 'country.html', tparams)
 
 # Lists all movies/series from a category (action, drama, comedy, etc.)
 def category(request):
-    return render(request, 'category.html')
+    tparams = {
+        'username': username,
+    }
+    return render(request, 'category.html', tparams)
 
 # Searches for movies from the name, actors or countries
 def search(request):
-    return render(request, 'search.html')
+    tparams = {
+        'username': username,
+    }
+    return render(request, 'search.html', tparams)

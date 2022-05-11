@@ -2,37 +2,48 @@
 {% block content %}
 <form action="/rent_confirm/?id={{movie_statistics.id}}" method="post">
     {% csrf_token %}
-    <div class="score-container"></div>
-    <div class="program-container">
+    {% if username != "" %}
+        <div class="score-container">
+            <div class="row">
+                <div class="col-md-5"></div>
+                <div class="col-md-2"></div>
+                <div class="col-md-5">
+                <a href="{% url 'logout' %}">
+                    <button type="button" class="watched btn btn-lg btn-outline-success">LOG OUT</button>
+                </a>
+                </div>
+            </div>
+        </div>
+        <div class="program-container">
         
-            {% if username != "" %}
-                <p class="list-name">{{username}} PROFILE</p>
-                <p class="movie-info"> <b>username:</b> {{username}} </p>
-                <p class="movie-info"> <b>email:</b> {{email}} </p>
-                <p class="movie-info"> <b>password:</b> {{password}} </p>
+        <p class="list-name">{{username}} Current rentals:</p>
+        <div class="row">
+            <div class="col-sm-8" about="{{ movie_statistics.full_id }}" typeof="pr:{{ movie.type }}">
+                <br>
+                {% for rental in user_rentals%}
                 <div class="row">
-                    <div class="col-sm-8" about="{{ movie_statistics.full_id }}" typeof="pr:{{ movie.type }}">
-                        <p class="movie-title"><b>Current rentals:</b></p>
-                        <br>
-                        {% for rental in user_rentals%}
-                        <div class="row">
-                            <div class="col-md-9">
-                                <ul>
-                                    <li class="movie-info"> <b>{{rental.title}} </b> </p>
-                                    <p class="movie-info"> <b>Price:</b> {{rental.price}}$ </p>
-                                    <p class="movie-info"> <b>Rental Time:</b> {{rental.rental_time}} days</p>
-                                    <br>
-                                </ul>
-                                
+                    <div class="col-md-9">
+                        <li>
+                            <div class="col-md-20">
+                                <a class="movie-titles" href="{% url 'movie' %}?id={{rental.prod_id}}"><b>{{rental.title}}</b></a>
+                                <br><br>
+                                <p  class="movie-info"> <b>Price:</b> {{rental.price}}$ </p>
+                                <p style="text-transform:none" class="movie-info"> <b>Rental Time:</b> {{rental.rental_time}} days</p>
+                                <p style="text-transform:none" class="movie-info"> <b>End Rental:</b> {{rental.end_rental}} days</p>
                             </div>
-                        </div>
-                        {% endfor %}
+                            <br>
+                        </li>
+                        
                     </div>
                 </div>
+                {% endfor %}
+            </div>
+        </div>
 
-            {% else %}
-                <label class="movie-info">You need to be logged in to rent a movie!</label>
-            {% endif %}
+    {% else %}
+        <label class="movie-info">You need to be logged in to rent a movie!</label>
+    {% endif %}
+
     </div>
 </form>
 
