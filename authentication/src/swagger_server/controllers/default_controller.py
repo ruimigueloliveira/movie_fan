@@ -1,5 +1,7 @@
 from flask import request
-from auth_lib import oauth_operations, users_operations, statuses
+
+import auth_lib.db_operations
+from auth_lib import oauth_operations, utils, statuses
 
 
 def v1_auth_token_post():  # noqa: E501
@@ -32,7 +34,7 @@ def v1_signup_post():  # noqa: E501
     # Extract parameters
     username, email, password = [request.json[param] for param in ("username", "email", "password")]
     # Call auth-lib
-    status_code: int = users_operations.register(username, email, password)
+    status_code: int = auth_lib.db_operations.register(username, email, password)
     # Return status code
     return dict(status_code=str(status_code), status=statuses.status_description(status_code))
 
@@ -75,7 +77,7 @@ def v1_signout_post():  # noqa: E501
     # Extract parameters
     username, email, password = [request.json[param] for param in ("username", "email", "password")]
     # Call auth-lib
-    status_code: int = users_operations.remove(password, username, email)
+    status_code: int = auth_lib.db_operations.remove(password, username, email)
     # Return status code
     return dict(
         status_code=str(status_code),

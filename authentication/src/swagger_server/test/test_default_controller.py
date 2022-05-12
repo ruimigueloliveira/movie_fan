@@ -21,7 +21,7 @@ class TestDefaultController(BaseTestCase):
             json=dict(username="user1", email="user1@it.org", password="user1Pa$$")
         )
         self.assert200(response,
-                       'Response body is : ' + response.text)
+                       'Response body is : ' + response.json())
 
     def test_v1_auth_token_post(self):
         """Test case for v1_auth_token_post

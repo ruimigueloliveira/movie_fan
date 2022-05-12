@@ -1,4 +1,8 @@
-connexion==2.6.0
+connexion~=2.13.0
 python_dateutil == 2.6.0
 setuptools >= 21.0.0
 pymongo ~= 4.1.1
+pandas ~= 1.2.4
+requests~=2.22.0
+numpy~=1.22.1
+cryptography~=2.8

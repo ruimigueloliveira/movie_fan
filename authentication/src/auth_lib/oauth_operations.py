@@ -7,9 +7,10 @@ from cryptography.exceptions import InvalidSignature
 from cryptography.hazmat.primitives import serialization, hashes
 from cryptography.hazmat.primitives.asymmetric import padding
 
+import auth_lib.db_operations
 from auth_lib import statuses
 from auth_lib import statuses as s
-from auth_lib import users_operations as u
+from auth_lib import utils as u
 
 SENTINEL = object()
 # Registry entity key password
@@ -95,7 +96,7 @@ def authorization_code(username: str, email: Optional[str], password: str) -> Tu
     """
 
     # Check credentials
-    status: int = u.check(password, username, email)
+    status: int = auth_lib.db_operations.check(password, username, email)
     if status != s.OK:
         return status, b""
 
