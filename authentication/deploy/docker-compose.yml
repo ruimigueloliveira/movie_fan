@@ -1,0 +1,20 @@
+version: '3'
+services:
+  auth:
+    build:
+      context: ../
+      dockerfile: deploy/Dockerfile.dev
+    ports:
+      - "8001:8001"
+#      - "127.0.0.1:5678:5678"  # For the debug server
+    links:
+      - mongo
+    depends_on:
+      - mongo
+    volumes:
+      - .:/code
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    command: mongod --port 27017 --bind_ip 0.0.0.0
