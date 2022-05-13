@@ -1,0 +1,11 @@
+
+docker images
+docker ps
+docker ps -a
+
+docker stop [container_id]
+docker rm [container_id]
+docker image rm [image_id]
+
+docker build -t [img_name] .
+docker run --name [container_name] -d -p 8002:8080 [img_name]

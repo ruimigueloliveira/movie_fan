@@ -1,16 +1,20 @@
-FROM python:3.6-alpine
+# start by pulling the python image
+FROM python:3.8-alpine
 
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
+# switch working directory
+WORKDIR /app
 
-COPY requirements.txt /usr/src/app/
+# copy the requirements file into the image
+COPY app/requirements.txt .
 
-RUN pip3 install --no-cache-dir -r requirements.txt
+# install the dependencies and packages in the requirements file
+RUN pip install -r requirements.txt
 
-COPY . /usr/src/app
+# copy every content from the local file to the image
+COPY  /app/ .
+
+# configure the container to run in an executed manner
 
 EXPOSE 8002
 
-ENTRYPOINT ["python3"]
-
-CMD ["-m", "swagger_server"]
+CMD ["python3", "-m", "swagger_server"]
