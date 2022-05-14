@@ -10,7 +10,6 @@ from cryptography.hazmat.primitives.asymmetric import padding
 import auth_lib.db_operations
 from auth_lib import statuses
 from auth_lib import statuses as s
-from auth_lib import utils as u
 
 SENTINEL = object()
 # Registry entity key password

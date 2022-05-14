@@ -1,8 +1,10 @@
-connexion~=2.13.0
-python_dateutil == 2.6.0
-setuptools >= 21.0.0
-pymongo ~= 4.1.1
-pandas ~= 1.2.4
-requests~=2.22.0
-numpy~=1.22.1
-cryptography~=2.8
+connexion==2.13.0
+cryptography==37.0.2
+Flask==2.1.1
+Flask_Testing==0.6.1
+pymongo==4.1.1
+python_dateutil==2.8.2
+requests==2.22.0
+setuptools==45.2.0
+six==1.14.0
+# pydevd-pycharm~=221.5080.212

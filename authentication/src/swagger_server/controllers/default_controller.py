@@ -3,6 +3,10 @@ from flask import request
 import auth_lib.db_operations
 from auth_lib import oauth_operations, utils, statuses
 
+# # Python Debug Server (PyCharm)
+# import pydevd_pycharm
+# pydevd_pycharm.settrace('dockerhost', port=5678, stdoutToServer=True, stderrToServer=True, suspend=False)
+
 
 def v1_auth_token_post():  # noqa: E501
     """Log-in Step 1 (Credentials) - Input valid credentials. Return valid authorization code.

@@ -3,7 +3,6 @@
 """
 
 import hashlib
-import os.path
 import re
 
 # --- Constants ---
@@ -14,9 +13,6 @@ from auth_lib.statuses import OK, INVALID_USERNAME, INVALID_EMAIL, VALID_PASSWOR
     SPECIAL_SYM
 
 SENTINEL = object()
-# Status codes
-# Misc
-USERS_DB: str = f"{os.path.dirname(__file__)}/users.csv"
 
 
 def hash_unicode(a_string: str) -> str:
