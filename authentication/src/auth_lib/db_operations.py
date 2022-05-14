@@ -14,7 +14,7 @@ AUTH_DB_NAME: str = "auth"
 CREDENTIALS_COLLECTION_NAME: str = "creds_list"
 
 # Initialize client
-auth_client = pymongo.MongoClient("mongodb://localhost:27017")
+auth_client = pymongo.MongoClient("mongo", 27017)
 
 
 def get_user_creds(username: str) -> Optional[dict]:
