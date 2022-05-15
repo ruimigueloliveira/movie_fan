@@ -1,6 +1,4 @@
-# part1 and part2
-app/part1/
-app/part2/
+# Pycache files
 __pycache__/
  *.pyc
 
