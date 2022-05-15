@@ -12,6 +12,7 @@ from swagger_server.models.inline_response400 import InlineResponse400  # noqa: 
 from swagger_server import util
 
 client = pymongo.MongoClient("mongo", 27017)
+# client = pymongo.MongoClient("localhost", 27017)
 db = client.rentals
 
 def products_get():  # noqa: E501
