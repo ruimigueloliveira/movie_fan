@@ -1,34 +1,34 @@
 {% extends "base.html" %}
 {% block content %}
-    <div class="actor-container">
-        <div class="row" about="{{ actor.uri }}" typeof="pr:actor">
-            <div class="col-md-6">
-                <p class="actor-title" property="pr:name"><b>{{ actor.name }}</b></p>
-                <p class="sub-title" property="pr:number_of_shows"><b>Number of shows: </b>{{ actor.number }}</p>
-                <p rel="pr:starring">
-                    {% for k,v in actor.movies.items %}
-                        <a class="movie-titles" property="pr:url" href="{% url 'movie' %}?id={{ k }}" typeof="pr:movie">
-                            <span property="pr:name">-> {{ v }}</span>
-                            <br>
-                        </a>
-                    {% endfor %}
-                </p>
-            </div>
-            <div class="col-sm-6 align-items-center d-flex justify-content-center">
-                {% if actor.name == 'Jennifer Aniston' %}
-                    <img src="../static/imgs/jennifer.jpg" class="actor-image"/>
-                {% elif actor.name == 'Samuel L. Jackson' %}
-                    <img src="../static/imgs/samuel.jpg" class="actor-image"/>
-                {% elif actor.name == 'Julia Roberts' %}
-                    <img src="../static/imgs/julia.jpg" class="actor-image"/>
-                {% elif actor.name == 'Dwayne Johnson' %}
-                    <img src="../static/imgs/dwayne.jpg" class="actor-image"/>
-                {% elif actor.name == 'Oprah Winfrey' %}
-                    <img src="../static/imgs/oprah.png" class="actor-image"/>
-                {% elif actor.name == 'Brad Pitt' %}
-                    <img src="../static/imgs/brad_pitt.jpg" class="actor-image"/>
-                {% endif %}
-            </div>
+<div class="actor-container">
+    <div class="row" about="{{ actor.uri }}" typeof="pr:actor">
+        <div class="col-md-6">
+            <p class="actor-title" property="pr:name"><b>{{ actor_name }}</b></p>
+            <p class="sub-title" property="pr:number_of_shows"><b>Number of shows: </b>{{ number_of_shows }}</p>
+            <p rel="pr:starring">
+                {% for key,val in actor_ditc.items %}
+                    <a class="movie-titles" property="pr:url" href="{% url 'movie' %}?id={{ key }}" typeof="pr:movie">
+                        <span property="pr:name">-> {{ val.title }}</span>
+                        <br>
+                    </a>
+                {% endfor %}
+            </p>
+        </div>
+        <div class="col-sm-6 align-items-center d-flex justify-content-center">
+            {% if actor_name == 'Jennifer Aniston' %}
+                <img src="../static/imgs/jennifer.jpg" class="actor-image"/>
+            {% elif actor_name == 'Samuel L. Jackson' %}
+                <img src="../static/imgs/samuel.jpg" class="actor-image"/>
+            {% elif actor_name == 'Julia Roberts' %}
+                <img src="../static/imgs/julia.jpg" class="actor-image"/>
+            {% elif actor_name == 'Dwayne Johnson' %}
+                <img src="../static/imgs/dwayne.jpg" class="actor-image"/>
+            {% elif actor_name == 'Oprah Winfrey' %}
+                <img src="../static/imgs/oprah.png" class="actor-image"/>
+            {% elif actor_name == 'Brad Pitt' %}
+                <img src="../static/imgs/brad_pitt.jpg" class="actor-image"/>
+            {% endif %}
         </div>
     </div>
+</div>
 {% endblock %}

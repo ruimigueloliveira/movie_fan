@@ -125,9 +125,18 @@ def movie(request):
         raise Http404("Filme não disponível!")
     id = request.GET['id']
     movie_ditc = requests.get("http://127.0.0.1:8003/v1/movie/?show_id="+id).json()
+    print(movie_ditc)
+    cast = movie_ditc["cast"].split(", ")
+    cast_last_element = cast[-1]
+    directors = movie_ditc["director"].split(", ")
+    directors_last_element = directors[-1]
     tparams = {
-        'movie': movie_ditc,
         'username': username,
+        'movie': movie_ditc,
+        'cast' : cast,
+        'cast_last_element': cast_last_element,
+        'directors' : directors,
+        'directors_last_element': directors_last_element
     }
     return render(request, 'program_info.html', tparams)
 
@@ -173,15 +182,29 @@ def rent_confirm(request):
 
 # Lists all movies/series of an actor
 def actor(request):
+    if not 'id' in request.GET:
+        raise Http404("Actor não disponível!")
+    id = request.GET['id']
+    actor_ditc = requests.get("http://127.0.0.1:8003/v1/actor/?name="+id).json()
     tparams = {
         'username': username,
+        'actor_ditc': actor_ditc,
+        'actor_name': id,
+        'number_of_shows': len(actor_ditc)
     }
     return render(request, 'actor.html', tparams)
 
 # Lists all movies/series of a director
 def director(request):
+    if not 'id' in request.GET:
+        raise Http404("Director não disponível!")
+    id = request.GET['id']
+    director_ditc = requests.get("http://127.0.0.1:8003/v1/director/?name="+id).json()
     tparams = {
         'username': username,
+        'director_ditc': director_ditc,
+        'director_name': id,
+        'number_of_shows': len(director_ditc)
     }
     return render(request, 'director.html', tparams)
 
