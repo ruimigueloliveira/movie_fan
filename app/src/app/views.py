@@ -4,7 +4,7 @@ from django.shortcuts import render
 import requests
 from django.shortcuts import render
 from .forms import myRentalForms, mySignUpForms, myLogInForms
-import numpy as np
+import math
 
 username = ""
 email = ""
@@ -32,7 +32,7 @@ def signup_confirm(request):
         data = form.cleaned_data
 
     response = requests.post(
-        f"http://localhost:8001/deti-egs-moviefan/Authentication/1.0.0/v1/signup",
+        f"http://127.0.0.1:8001/deti-egs-moviefan/Authentication/1.0.0/v1/signup",
         json=dict(username=data["username"], email=data["email"], password=data["password"])
     )
 
@@ -66,7 +66,7 @@ def login_confirm(request):
         data = form.cleaned_data
 
     response = requests.post(
-        f"http://localhost:8001/deti-egs-moviefan/Authentication/1.0.0/v1/auth-token",
+        f"http://127.0.0.1:8001/deti-egs-moviefan/Authentication/1.0.0/v1/auth-token",
         json=dict(username=data["username"], password=data["password"])
     )
 
@@ -112,7 +112,7 @@ def profile(request):
 
 # List of all the movies
 def movieslist(request):
-    allmovies_ditc = requests.get("http://127.0.0.1:8003/v1/shows?type=movie").json()
+    allmovies_ditc = requests.get("http://0.0.0.0:8003/v1/shows?type=movie").json()
     tparams = {
         'allmovies_ditc': allmovies_ditc,
         'username': username,
@@ -124,7 +124,7 @@ def movie(request):
     if not 'id' in request.GET:
         raise Http404("Filme não disponível!")
     id = request.GET['id']
-    movie_ditc = requests.get("http://127.0.0.1:8003/v1/movie/?show_id="+id).json()
+    movie_ditc = requests.get("http://0.0.0.0:8003/v1/movie/?show_id="+id).json()
     print(movie_ditc)
     cast = movie_ditc["cast"].split(", ")
     cast_last_element = cast[-1]
@@ -142,7 +142,7 @@ def movie(request):
 
 # List of all the series
 def serieslist(request):
-    allseries_ditc = requests.get("http://127.0.0.1:8003/v1/shows?type=tvshow").json()
+    allseries_ditc = requests.get("http://0.0.0.0:8003/v1/shows?type=tvshow").json()
     tparams = {
         'allseries_ditc': allseries_ditc,
         'username': username,
@@ -154,7 +154,7 @@ def rent(request):
     if not 'id' in request.GET:
         raise Http404("Filme não disponível!")
     id = request.GET['id']
-    movie_statistics = requests.get("http://127.0.0.1:8003/v1/movie/?show_id="+id).json()
+    movie_statistics = requests.get("http://0.0.0.0:8003/v1/movie/?show_id="+id).json()
     tparams = {
         'movie_statistics': movie_statistics,
         'username': username
@@ -170,8 +170,8 @@ def rent_confirm(request):
     data = {}
     if form.is_valid():
         data = form.cleaned_data
-    movie_title = requests.get("http://127.0.0.1:8003/v1/movie/?show_id="+id).json()["title"]
-    movie_price = round(np.log(int(data["rental_time"])+1),2)*2
+    movie_title = requests.get("http://0.0.0.0:8003/v1/movie/?show_id="+id).json()["title"]
+    movie_price = round(math.log(int(data["rental_time"])+1),2)*2
     movie_data = {"price": movie_price, "entity": "movie_fan", "username": username, "title": movie_title, "rental_time": data["rental_time"]}
     requests.post("http://127.0.0.1:8002/rentals/rental/v1/products/"+id, data = movie_data)
     tparams = {
@@ -185,7 +185,7 @@ def actor(request):
     if not 'id' in request.GET:
         raise Http404("Actor não disponível!")
     id = request.GET['id']
-    actor_ditc = requests.get("http://127.0.0.1:8003/v1/actor/?name="+id).json()
+    actor_ditc = requests.get("http://0.0.0.0:8003/v1/actor/?name="+id).json()
     tparams = {
         'username': username,
         'actor_ditc': actor_ditc,
@@ -199,7 +199,7 @@ def director(request):
     if not 'id' in request.GET:
         raise Http404("Director não disponível!")
     id = request.GET['id']
-    director_ditc = requests.get("http://127.0.0.1:8003/v1/director/?name="+id).json()
+    director_ditc = requests.get("http://0.0.0.0:8003/v1/director/?name="+id).json()
     tparams = {
         'username': username,
         'director_ditc': director_ditc,

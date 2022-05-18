@@ -1,12 +1,20 @@
 
-FROM python:3.8
+FROM python:3.8-alpine
 
-WORKDIR /code
 
-COPY requirements.txt /code/
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
+RUN apk add gcc python3-dev musl-dev
+
+RUN mkdir /app
+
+WORKDIR /app
+
+COPY ./src/requirements.txt requirements.txt
 RUN pip install -r requirements.txt
-RUN python3 -m pip install requests
-RUN pip3 install numpy
 
-COPY . /code/
+
+COPY ./src/   /app
+
+CMD ["python", "manage.py", "runserver" ,"0.0.0.0:8080"]

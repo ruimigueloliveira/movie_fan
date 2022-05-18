@@ -16,9 +16,6 @@ CREDENTIALS_COLLECTION_NAME: str = "creds_list"
 # Initialize client mongo container
 auth_client = pymongo.MongoClient("mongo", 27017)
 
-# Initialize client localhost
-# auth_client = pymongo.MongoClient("localhost", 27017)
-
 
 def get_user_creds(username: str) -> Optional[dict]:
     """[Read] Get the credentials (SHA-256 hashed) of the user w/ the requested username
