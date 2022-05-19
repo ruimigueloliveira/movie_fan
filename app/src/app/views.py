@@ -32,7 +32,7 @@ def signup_confirm(request):
         data = form.cleaned_data
 
     response = requests.post(
-        f"http://127.0.0.1:8001/deti-egs-moviefan/Authentication/1.0.0/v1/signup",
+        f"http://0.0.0.0:8001/deti-egs-moviefan/Authentication/1.0.0/v1/signup",
         json=dict(username=data["username"], email=data["email"], password=data["password"])
     )
 
@@ -66,7 +66,7 @@ def login_confirm(request):
         data = form.cleaned_data
 
     response = requests.post(
-        f"http://127.0.0.1:8001/deti-egs-moviefan/Authentication/1.0.0/v1/auth-token",
+        f"http://0.0.0.0:8001/deti-egs-moviefan/Authentication/1.0.0/v1/auth-token",
         json=dict(username=data["username"], password=data["password"])
     )
 
@@ -103,7 +103,7 @@ def logout(request):
 
 # Profile
 def profile(request):
-    user_rentals = requests.get("http://127.0.0.1:8002/rentals/rental/v1/productsBy/"+username).json()
+    user_rentals = requests.get("http://0.0.0.0:8002/rentals/rental/v1/productsBy/"+username).json()
     tparams = {
         'username': username,
         'user_rentals': user_rentals
@@ -173,7 +173,7 @@ def rent_confirm(request):
     movie_title = requests.get("http://0.0.0.0:8003/v1/movie/?show_id="+id).json()["title"]
     movie_price = round(math.log(int(data["rental_time"])+1),2)*2
     movie_data = {"price": movie_price, "entity": "movie_fan", "username": username, "title": movie_title, "rental_time": data["rental_time"]}
-    requests.post("http://127.0.0.1:8002/rentals/rental/v1/products/"+id, data = movie_data)
+    requests.post("http://0.0.0.0:8002/rentals/rental/v1/products/"+id, data = movie_data)
     tparams = {
         'movie_data' : movie_data,
         'username': username,

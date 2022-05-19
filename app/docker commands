@@ -1,0 +1,27 @@
+
+
+docker build -t app_image -f deploy/Dockerfile .
+docker run --hostname test --name app_container -d -p 8000:8000 app_image
+docker logs app_container
+
+docker kill $(docker ps -q)
+docker rm -f $(docker ps -a -q)
+yes | docker image prune -a
+
+
+docker build -t image_name .
+
+ports (externa:interna)
+a externa é que muda o link
+a interna é a defalut para o uma determinada tecnologia (p.e django é 8080 logo no run ponho externa:8080)
+
+docker stop container_id
+docker rm container_id
+
+docker ps
+docker ps -a
+
+docker images
+docker image rm 
+
+systemcrl restart docker

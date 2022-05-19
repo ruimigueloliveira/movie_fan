@@ -1,0 +1,273 @@
+body {
+    background: #2a2828;
+    color: #333333;
+    margin-top: 5rem;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #444444;
+}
+
+ul {
+    margin: 0;
+}
+
+/* Navbar */
+.nav-bar {
+    background-color: black;
+    padding: 18px;
+}
+
+.site-header .navbar-nav .nav-link {
+    color: #ba601e;
+    font-size: 26px;
+}
+
+.site-header .navbar-nav .nav-link:hover {
+    color: darkorange;
+}
+
+/* Começo do content */
+.navbar-dist {
+    margin-top: 160px;
+}
+
+.dist {
+    margin-top: 50px;
+}
+
+/* Slogan da página */
+.page-title {
+    font-family: 'Nosifer', cursive;
+    font-size: 34px;
+    color: white;
+}
+
+.page-title:hover {
+    color: floralwhite;
+    text-decoration: none;
+}
+
+/* Lista de filmes */
+
+.list-name {
+    font-family: 'Staatliches', cursive;
+    color: floralwhite;
+    font-size: 38px;
+}
+
+.movie-titles {
+    font-family: 'Staatliches', cursive;
+    color: white;
+    font-size: 28px;
+}
+
+.movie-titles:hover {
+    color: orangered;
+    text-decoration: none;
+}
+
+/* Info do programa */
+.program-container {
+    padding: 2% 2%;
+    border: 1px solid darkorange;
+    border-radius: 20px;
+    margin-left: 15%;
+    margin-right: 15%;
+}
+
+.score-container {
+    padding: 0.5% 0.5%;
+    /* border: 1px solid darkorange;
+    border-radius: 20px; */
+    margin-left: 15%;
+    margin-right: 15%;
+    margin-top: 0.5%;
+    margin-bottom: 0.5%;
+}
+
+.movie-title {
+    color: orange;
+    text-decoration: none;
+    font-size: 30px;
+    margin-bottom: 0px;
+}
+
+.movie-info {
+    color: floralwhite;
+    font-size: 22px;
+}
+
+.actor-list {
+    text-decoration: underline;
+    color: white;
+}
+
+.actor-list:hover {
+    text-decoration: none;
+    color: white;
+}
+
+.program-info-image {
+    height: 442px;
+    width: 320px;
+    border-style: solid;
+    border-color: orangered;
+    border-radius: 7px;
+    border-width: 2px;
+}
+
+.seen {
+    margin:0 auto;
+    display:block;
+}
+
+.watched {
+    float: right;
+}
+
+/* Div para o conteúdo */
+.list-container {
+    margin-left: 20%;
+    margin-right: 10%;
+}
+
+/* Add movie */
+.add-movie {
+    margin-left: 25%;
+    margin-right: 25%;
+}
+
+.mandatory-text {
+    color: navajowhite;
+    font-size: 18px;
+}
+
+/* Info do ator */
+.actor-container {
+    padding: 20px 20px;
+    border: 1px solid darkorange;
+    border-radius: 20px;
+    margin-left: 25%;
+    margin-right: 25%;
+}
+
+.actor-title {
+    color: orange;
+    font-size: 32px;
+}
+
+.sub-title {
+    color: orangered;
+    font-size: 25px;
+    margin-bottom: 5%;
+}
+
+.actor-image {
+    height: 353px;
+    width: 256px;
+    border-style: solid;
+    border-color: orangered;
+    border-radius: 7px;
+    border-width: 2px;
+}
+
+/* Outros */
+.medium {
+    font-size: 30px;
+}
+
+.small {
+    font-size: 20px;
+}
+
+/* Home Page */
+
+.home-container {
+    margin-left: 3%;
+    margin-right: 3%;
+}
+
+.series-display-mid {
+    border-style: solid;
+    border-width: 3px;
+    border-color: black;
+    border-radius: 20px;
+}
+
+.series-display-left {
+    border-top-style: solid;
+    border-top-width: 3px;
+    border-top-color: black;
+    border-bottom-style: solid;
+    border-bottom-width: 3px;
+    border-bottom-color: black;
+    border-right-style: solid;
+    border-right-width: 3px;
+    border-right-color: black;
+    border-radius: 20px;
+}
+
+.series-display-right {
+    border-top-style: solid;
+    border-top-width: 3px;
+    border-top-color: black;
+    border-bottom-style: solid;
+    border-bottom-width: 3px;
+    border-bottom-color: black;
+    border-left-style: solid;
+    border-left-width: 3px;
+    border-left-color: black;
+    border-radius: 20px;
+}
+
+.program-image {
+    display: inline-block;
+    height: 200px;
+    width: 145px;
+    /* width: 80%; */
+    margin-right: 3%;
+    margin-left: 9%;
+    margin-bottom: 16px;
+    border-style: solid;
+    border-color: orangered;
+    border-radius: 7px;
+    border-width: 2px;
+}
+
+.popular-font {
+    font-family: 'Staatliches', cursive;
+    color: floralwhite;
+    font-size: 33px;
+    text-align: center;
+    padding-top: 5px;
+}
+
+.score-home {
+    font-family: 'Staatliches', cursive;
+    color: floralwhite;
+    font-size: 28px;
+}
+
+/* Search */
+.pad {
+    margin-top: 6px;
+    padding: 7px;
+}
+
+.search-by {
+    padding-top: 5%;
+    font-family: 'Staatliches', cursive;
+    color: floralwhite;
+    font-size: 28px;
+}
+
+.btn-search {
+    margin-top: 5%;
+}
+
+.actors-directors-name {
+    font-family: 'Staatliches', cursive;
+    color: #ba601e;
+    font-size: 38px;
+}
