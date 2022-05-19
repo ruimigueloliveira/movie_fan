@@ -1,6 +1,3 @@
-# app
-Development of a web application, about films and tv shows.
-
 ## The first part uses the following technologies:
   - Python / Django (application programming);
   - XML (data format);
