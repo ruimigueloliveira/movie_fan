@@ -14,19 +14,20 @@
         <p class="list-name">{{username}} Current rentals:</p>
         <div class="row">
             <div class="col-sm-8" about="{{ movie_statistics.full_id }}" typeof="pr:{{ movie.type }}">
-                <br>
+                
                 {% for rental in user_rentals%}
                 <div class="row">
                     <div class="col-md-9">
                         <li>
                             <div class="col-md-20">
-                                <a class="movie-titles" href="{% url 'movie' %}?id={{rental.prod_id}}"><b>{{rental.title}}</b></a>
-                                <br><br>
-                                <p  class="movie-info"> <b>Price:</b> {{rental.price}}$ </p>
-                                <p style="text-transform:none" class="movie-info"> <b>Rental Time:</b> {{rental.rental_time}} days</p>
-                                <p style="text-transform:none" class="movie-info"> <b>End Rental:</b> {{rental.end_rental}} days</p>
+                                <a style="font-size: xx-large;"class="movie-titles" href="{% url 'movie' %}?id={{rental.prod_id}}"><b>{{rental.title}}</b></a>
+                                <br>
+                                <label  class="movie-info"> <b>Price:</b> {{rental.price}}$ </label>
+                                <br>
+                                <label style="text-transform:none" class="movie-info"> <b>Rental Time:</b> {{rental.rental_time}} days</label>
+                                <label style="text-transform:none" class="movie-info"> <b>End Rental:</b> {{rental.end_rental}} days</p>
                             </div>
-                            <br>
+                            
                         </li>
                         
                     </div>

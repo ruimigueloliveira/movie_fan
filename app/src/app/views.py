@@ -1,14 +1,12 @@
-import email
 from django.http import Http404
 from django.shortcuts import render
 import requests
-from django.shortcuts import render
 from .forms import myRentalForms, mySignUpForms, myLogInForms
 import math
 
-username = ""
-email = ""
-password = ""
+username = "admin"
+email = "admin"
+password = "admin"
 
 # Home Page
 def home_page(request):
@@ -125,7 +123,6 @@ def movie(request):
         raise Http404("Filme não disponível!")
     id = request.GET['id']
     movie_ditc = requests.get("http://0.0.0.0:8003/v1/movie/?show_id="+id).json()
-    print(movie_ditc)
     cast = movie_ditc["cast"].split(", ")
     cast_last_element = cast[-1]
     directors = movie_ditc["director"].split(", ")
@@ -164,12 +161,16 @@ def rent(request):
 # Confirm Rent Movie
 def rent_confirm(request): 
     if not 'id' in request.GET:
-        raise Http404("Filme não disponível!")
+        raise Http404("Movie not available!")
     id = request.GET['id']
     form = myRentalForms(request.POST)
     data = {}
     if form.is_valid():
         data = form.cleaned_data
+    
+    if int(data["rental_time"]) > 100 or int(data["rental_time"]) < 1:
+        raise Http404("Rental time not valid!")
+
     movie_title = requests.get("http://0.0.0.0:8003/v1/movie/?show_id="+id).json()["title"]
     movie_price = round(math.log(int(data["rental_time"])+1),2)*2
     movie_data = {"price": movie_price, "entity": "movie_fan", "username": username, "title": movie_title, "rental_time": data["rental_time"]}

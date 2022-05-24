@@ -1,21 +1,17 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="score-container">
-    <div class="row">
-        <div class="col-md-5"></div>
-        <div class="col-md-2"></div>
-        <div class="col-md-5">
-            <a href="{% url 'rent' %}?id={{  movie.id }}">
-                <button type="button" class="watched btn btn-lg btn-outline-success">RENT</button>
-            </a>
-        </div>
-    </div>
-</div>
 <div class="program-container">
+    <a href="{% url 'rent' %}?id={{  movie.id }}">
+        <button style="border: 2px solid white;
+        background-color: orange;
+        color: white;
+        font-size: 20px;" type="button" class="watched btn btn-lg btn-outline-success"><b>RENT</b></button>
+    </a>
     <div class="row">
         <div class="col-sm-8" about="{{ movie.full_id }}" typeof="pr:{{ movie.type }}">
             <p class="movie-title" property="pr:name"><b>{{ movie.title }}</b> ({{ movie.release_year }}) </p>
             <p class="movie-info" property="pr:duration"> Added on {{ movie.date_added }} - {{ movie.duration }}</p>
+            <br>
             <p class="movie-info" property="pr:rating"><b>Type: </b>{{ movie.listed_in }}</p>
             <p class="movie-info" rel="pr:starring" ><b>Cast: </b>
                 <b> - </b>
