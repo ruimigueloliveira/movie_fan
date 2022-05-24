@@ -14,4 +14,4 @@ RUN python csv_to_mariadb.py
 
 COPY src/webproj/ .
 
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8003"]

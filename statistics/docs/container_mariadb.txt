@@ -19,8 +19,8 @@ no bash da mariadb:
 diretório:
 /movie_fan/statistics/
 dar build e run:
-sudo docker build -t statistics:dev -f deploy/Dockerfile.dev .     #é provável aparecerem algumas exceçoes do script devido a carateres estranhos nos filmes do ficheiro csv
-sudo docker run --name stats -p 8000:8000 c4ba7c159d08    #o último argumento deve ser alterado para o id da imagem criada
+sudo docker build -t statistics_image -f deploy/Dockerfile.dev .     #é provável aparecerem algumas exceçoes do script devido a carateres estranhos nos filmes do ficheiro csv
+sudo docker run --name statistics_container -p 8003:8003 statistics_image    #o último argumento deve ser alterado para o id da imagem criada
 
 
 
