@@ -8,9 +8,9 @@ COPY src/requirements.txt .
 
 RUN pip install -r requirements.txt
 
-#COPY docs/csv_to_mariadb.py .
+COPY docs/ .
 
-#RUN python csv_to_mariadb.py
+RUN python csv_to_mariadb.py
 
 COPY src/webproj/ .
 

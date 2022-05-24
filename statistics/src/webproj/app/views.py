@@ -10,7 +10,7 @@ try:
     conn = mariadb.connect(
         user="root",
         password="mypass",
-        host="10.139.0.2",
+        host="10.139.0.2",   #maybe change this ip
         port=3306,
         database="movies"
     )

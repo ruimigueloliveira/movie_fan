@@ -4,3 +4,23 @@ sudo docker run --name mariadbtest -e MYSQL_ROOT_PASSWORD=mypass -p 3307:3307 -d
 
 descobrir a rede:
 sudo docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' mariadbtest
+
+conectar:
+mysql -h 10.139.0.2 -u root -p          #substituir ip
+password: mypass
+
+no bash da mariadb:
+    create database movies;
+	use movies;
+	create table show_info (id int, type varchar(10), title varchar(170), director varchar(300), cast varchar(700), country varchar(90), date_added varchar(40), release_year int, rating varchar(20), duration varchar(30), listed_in varchar(150), description varchar(600), primary key(id));
+	create table show_rank (id int, nranks int, sumranks int, primary key(id));
+
+
+diretório:
+/movie_fan/statistics/
+dar build e run:
+sudo docker build -t statistics:dev -f deploy/Dockerfile.dev .     #é provável aparecerem algumas exceçoes do script devido a carateres estranhos nos filmes do ficheiro csv
+sudo docker run --name stats -p 8000:8000 c4ba7c159d08    #o último argumento deve ser alterado para o id da imagem criada
+
+
+
