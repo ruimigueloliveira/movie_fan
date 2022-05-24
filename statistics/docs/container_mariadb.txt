@@ -1,0 +1,6 @@
+pull e run no container:
+sudo docker pull mariadb:10.4
+sudo docker run --name mariadbtest -e MYSQL_ROOT_PASSWORD=mypass -p 3307:3307 -d docker.io/library/mariadb:10.4
+
+descobrir a rede:
+sudo docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' mariadbtest
