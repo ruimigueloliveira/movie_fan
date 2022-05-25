@@ -168,16 +168,21 @@ def rent_confirm(request):
     if form.is_valid():
         data = form.cleaned_data
     
+    error = False
+    movie_data = {}
     if int(data["rental_time"]) > 100 or int(data["rental_time"]) < 1:
-        raise Http404("Rental time not valid!")
+        error = True
 
-    movie_title = requests.get("http://0.0.0.0:8003/v1/movie/?show_id="+id).json()["title"]
-    movie_price = round(math.log(int(data["rental_time"])+1),2)*2
-    movie_data = {"price": movie_price, "entity": "movie_fan", "username": username, "title": movie_title, "rental_time": data["rental_time"]}
-    requests.post("http://0.0.0.0:8002/rentals/rental/v1/products/"+id, data = movie_data)
+    if not error:
+        movie_title = requests.get("http://0.0.0.0:8003/v1/movie/?show_id="+id).json()["title"]
+        movie_price = round(math.log(int(data["rental_time"])+1),2)*2
+        movie_data = {"price": movie_price, "entity": "movie_fan", "username": username, "title": movie_title, "rental_time": data["rental_time"]}
+        requests.post("http://0.0.0.0:8002/rentals/rental/v1/products/"+id, data = movie_data)
+
     tparams = {
         'movie_data' : movie_data,
         'username': username,
+        'error' : error
     }
     return render(request, 'rent_confirm.html', tparams)
 

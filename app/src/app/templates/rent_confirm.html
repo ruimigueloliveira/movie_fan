@@ -3,12 +3,16 @@
 <div class="score-container"></div>
 <div class="program-container">
     <div class="row">
-        <div class="col-sm-8" about="{{ movie_statistics.full_id }}">
-            <p class="movie-title"><b>Your Rental is Confirmed</b></p>
-            <br>
-            <p class="movie-info"> <b>Title:</b> {{movie_data.title}} </p>
-            <p class="movie-info"> <b>Price:</b> {{movie_data.price}}$ </p>
-            <p class="movie-info"> <b>Rental Time:</b> {{movie_data.rental_time}} days</p>
+        <div class="col-sm-8">
+            {% if error %}
+                <p class="movie-title"><b>Rental time not valid!</b></p>
+            {% else %}
+                <p class="movie-title"><b>Your Rental is Confirmed</b></p>
+                <br>
+                <p class="movie-info"> <b>Title:</b> {{movie_data.title}} </p>
+                <p class="movie-info"> <b>Price:</b> {{movie_data.price}}$ </p>
+                <p class="movie-info"> <b>Rental Time:</b> {{movie_data.rental_time}} days</p>
+            {% endif %}
         </div>
     </div>
 </div>
