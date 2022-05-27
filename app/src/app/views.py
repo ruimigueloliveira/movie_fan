@@ -123,17 +123,29 @@ def movie(request):
         raise Http404("Filme não disponível!")
     id = request.GET['id']
     movie_ditc = requests.get("http://0.0.0.0:8003/v1/movie/?show_id="+id).json()
+
+    # print(movie_ditc)
+
     cast = movie_ditc["cast"].split(", ")
     cast_last_element = cast[-1]
+
     directors = movie_ditc["director"].split(", ")
     directors_last_element = directors[-1]
+
+    countries = movie_ditc["country"].split(", ")
+    countries_last_element = countries[-1]
+    
+    print(countries)
+
     tparams = {
         'username': username,
         'movie': movie_ditc,
         'cast' : cast,
         'cast_last_element': cast_last_element,
         'directors' : directors,
-        'directors_last_element': directors_last_element
+        'directors_last_element': directors_last_element,
+        'countries' : countries,
+        'countries_last_element': countries_last_element
     }
     return render(request, 'program_info.html', tparams)
 
@@ -216,8 +228,15 @@ def director(request):
 
 # Lists all movies/series directed in a country
 def country(request):
+    if not 'id' in request.GET:
+        raise Http404("Country not available!")
+    id = request.GET['id']
+    country_ditc = requests.get("http://0.0.0.0:8003/v1/country/?name="+id).json()
     tparams = {
         'username': username,
+        'country_ditc': country_ditc,
+        'country_name': id,
+        'number_of_shows': len(country_ditc)
     }
     return render(request, 'country.html', tparams)
 

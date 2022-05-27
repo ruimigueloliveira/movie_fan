@@ -12,7 +12,7 @@
             <p class="movie-title" property="pr:name"><b>{{ movie.title }}</b> ({{ movie.release_year }}) </p>
             <p class="movie-info" property="pr:duration"> Added on {{ movie.date_added }} - {{ movie.duration }}</p>
             <br>
-            <p class="movie-info" property="pr:rating"><b>Type: </b>{{ movie.listed_in }}</p>
+            <p class="movie-info" property="pr:rating"><b>Category: </b>{{ movie.listed_in }}</p>
             <p class="movie-info" rel="pr:starring" ><b>Cast: </b>
                 <b> - </b>
                 {% for actor in cast %}
@@ -34,18 +34,21 @@
                 {% endfor %}
             </p>
 
-            <p class="movie-info" rel="pr:countries"><b>Countries: </b>
-                    <b> - </b>
-                    <a class="actor-list" property="pr:url" href="{% url 'country' %}?country={{ k }}" typeof="pr:country">
-                        <span property="pr:name">{{ movie.country }}</span>
-                    </a>
+            <p class="movie-info" rel="pr:starring" ><b>Countries: </b>
+                <b> - </b>
+                {% for country in countries %}
+                    {% if country == countries_last_element %}
+                        <a class="actor-list" property="pr:url" href="{% url 'country' %}?id={{ country }}" typeof="pr:country">{{country}}</a>
+                    {% else %}
+                        <a class="actor-list" property="pr:url" href="{% url 'country' %}?id={{ country }}" typeof="pr:country">{{country}}, </a>
+                    {% endif %}
+                {% endfor %}
             </p>
 
-            <p class="movie-info" rel="pr:categories"><b>Categories: </b>
+            <p class="movie-info" rel="pr:categories"><b>Type: </b>
                 <b> - </b>
                 <span property="pr:name">{{ movie.type }}</span>
             </p>
-
             <p class="movie-info" property="pr:rating"><b>Rating: </b>{{ movie.rating }}</p>
             <p class="movie-info" property="pr:description"><b>Description: </b>{{ movie.description }}</p>
             {% if movie.rate %}

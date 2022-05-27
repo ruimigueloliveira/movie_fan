@@ -1,16 +1,17 @@
 {% extends "base.html" %}
 {% block content %}
-    <div class="actor-container" about="{{ country.uri }}" typeof="pr:country">
-        <p class="actor-title" property="pr:name"><b>{{ country.name }}</b></p>
-        <p class="sub-title" property="pr:number_of_shows"><b>Number of shows: </b>{{ country.number }}</p>
-        <p rel="pr:movie">
-            {% for k,v in country.movies.items %}
-            <a class="movie-titles" property="pr:url" href="{% url 'movie' %}?id={{ k }}" typeof="pr:movie">
-                <span property="pr:name">-> {{ v }}</span>
+<div class="actor-container" about="{{ country.uri }}" typeof="pr:country">
+    <p class="actor-title" property="pr:name"><b>{{ country_name }}</b></p>
+    <p class="sub-title" ><b>Number of shows: </b>{{ number_of_shows }}</p>
+    <p rel="pr:directing">
+        {% for key,val in country_ditc.items %}
+            <a class="movie-titles" property="pr:url" href="{% url 'movie' %}?id={{ key }}" typeof="pr:movie">
+                <span property="pr:name">-> {{ val.title }}</span>
                 <br>
             </a>
         {% endfor %}
-        </p>
-
-    </div>
+    </p>
+</div>
 {% endblock %}
+
+
