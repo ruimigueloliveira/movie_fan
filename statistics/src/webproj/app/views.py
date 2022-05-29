@@ -171,6 +171,38 @@ def country_search(request):
     data = simplejson.dumps(tparams)
     return HttpResponse(data, content_type='application/json')
 
+def listed_in_search(request):
+    if not 'name' in request.GET:
+        raise Http404("Invalid request!")
+    name = request.GET['name']
+    cur = conn.cursor()
+    name = '%' + name + '%'
+    data=(name, )
+    statement = "select * from show_info where listed_in like %s;"
+    cur.execute(statement,data)
+
+    myresult = cur.fetchall()
+    cur.close()
+    tparams = {}
+    for i in myresult:
+        movie = {
+        'id': i[0],
+        'type': i[1],
+        'title': i[2],
+        'director': i[3],
+        'cast': i[4],
+        'country': i[5],
+        'date_added': i[6],
+        'release_year': i[7],
+        'rating': i[8],
+        'duration': i[9],
+        'listed_in': i[10],
+        'description': i[11]
+        }
+        tparams[i[0]]=movie
+    data = simplejson.dumps(tparams)
+    return HttpResponse(data, content_type='application/json')
+
 def movie(request):
     if not 'show_id' in request.GET:
         raise Http404("Filme não disponível!")

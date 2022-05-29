@@ -25,6 +25,7 @@ urlpatterns = [
     path('v1/actor/', views.actor, name='actor'),
     path('v1/director/', views.director_list, name='director_list'),
     path('v1/country/', views.country_search, name='country_search'),
+    path('v1/listed_in/', views.listed_in_search, name='listed_in_search'),
     path('v1/movie/', views.movie, name='movie'),
     path('v1/movie/id', views.id, name='id'),
     path('v1/movie/type', views.type, name='type'),
