@@ -134,8 +134,11 @@ def movie(request):
 
     countries = movie_ditc["country"].split(", ")
     countries_last_element = countries[-1]
+
+    categories = movie_ditc["listed_in"].split(", ")
+    categories_last_element = categories[-1]
     
-    print(countries)
+    print(categories)
 
     tparams = {
         'username': username,
@@ -145,7 +148,9 @@ def movie(request):
         'directors' : directors,
         'directors_last_element': directors_last_element,
         'countries' : countries,
-        'countries_last_element': countries_last_element
+        'countries_last_element': countries_last_element,
+        'categories' : categories,
+        'categories_last_element': categories_last_element
     }
     return render(request, 'program_info.html', tparams)
 
@@ -242,8 +247,15 @@ def country(request):
 
 # Lists all movies/series from a category (action, drama, comedy, etc.)
 def category(request):
+    if not 'id' in request.GET:
+        raise Http404("Category not available!")
+    id = request.GET['id']
+    country_ditc = requests.get("http://0.0.0.0:8003/v1/listed_in/?name="+id).json()
     tparams = {
         'username': username,
+        'category_ditc': country_ditc,
+        'category_name': id,
+        'number_of_shows': len(country_ditc)
     }
     return render(request, 'category.html', tparams)
 

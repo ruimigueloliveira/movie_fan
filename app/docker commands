@@ -4,7 +4,6 @@ docker build -t app_image -f deploy/Dockerfile .
 docker run --name app_container -d -p 8000:8000 app_image
 docker logs app_container
 
-
 # STATISTICS
 docker pull mariadb:10.4
 docker run --name mariadbtest -e MYSQL_ROOT_PASSWORD=mypass -p 3307:3307 -d docker.io/library/mariadb:10.4
@@ -14,11 +13,15 @@ create database movies;
 use movies;
 create table show_info (id int, type varchar(10), title varchar(170), director varchar(300), cast varchar(700), country varchar(90), date_added varchar(40), release_year int, rating varchar(20), duration varchar(30), listed_in varchar(150), description varchar(600), primary key(id));
 create table show_rank (id int, nranks int, sumranks int, primary key(id));
-python3 csv_to_mariadb.py
+# python3 csv_to_mariadb.py
 
 docker build -t statistics_image -f deploy/Dockerfile.dev .
 docker run --name statistics_container -p 8003:8003 statistics_image
 
+# IP
+172.17.0.2
+statistics/docs/csv_to_mariadb.txt
+statistics/src/webproj/views
 
 # REMOVE 
 docker kill $(docker ps -q)
