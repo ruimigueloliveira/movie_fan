@@ -1,6 +1,8 @@
 version: '3'
 services:
   auth:
+    image: authentication_image
+    container_name: authentication_container
     build:
       context: ../
       dockerfile: deploy/Dockerfile.dev
@@ -15,6 +17,7 @@ services:
       - .:/code
   mongo:
     image: mongo
+    container_name: mongo_container
     ports:
       - "27000:27017"
     command: mongod --port 27017 --bind_ip 0.0.0.0
