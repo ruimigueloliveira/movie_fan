@@ -92,7 +92,11 @@ def products_id_post(id_):  # noqa: E501
 
     rental_time = str(request.form.getlist("rental_time")[0])
     today = datetime.datetime.now()
-    end_rental = today + datetime.timedelta(int(rental_time))
+    prov_rental = today + datetime.timedelta(int(rental_time))
+
+    end_rental = str(prov_rental).split(' ')[0] + ' ' + str(prov_rental).split(' ')[1].split('.')[0]
+
+
     dict = {
         '_id': str(request.form.getlist("username")[0]) + '_' + str(id_),
         'prod_id': str(id_),
