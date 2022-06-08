@@ -63,9 +63,6 @@ def home(request):
     return render(request, 'index.html', tparams)
 
 def nmovies(request):
-    print("OK1")
-    db.show_info.insert_one({'movie':'terminator'})
-    print("OK2")
     results = db.show_info.find()
     count=0
     for i in results:
