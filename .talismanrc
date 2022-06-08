@@ -1,4 +1,6 @@
 fileignoreconfig:
+- filename: statistics/src/webproj/app/movies.csv
+  checksum: 2e6831b816c7bb749ab6c62fecb30b87bfa2489b6afcce9c862854bc96adc5e4
 - filename: statistics/src/webproj/app/old_views.py
   checksum: 5a88922ea5bb6ab08b5bab3ffe37b818fde892f15d589efbbb251423ea73aadd
 version: "1.0"
