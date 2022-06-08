@@ -121,7 +121,7 @@ def actor(request):
     results = db.show_info.find()
     tparams = {}
     for i in results:
-        if name in i['cast'].casefold():
+        if name.casefold() in i['cast'].casefold():
             movie = {
             'id': i['id'],
             'type': i['type'],
@@ -148,7 +148,7 @@ def director_list(request):
     results = db.show_info.find()
     tparams = {}
     for i in results:
-        if name in i['director'].casefold():
+        if name.casefold() in i['director'].casefold():
             movie = {
             'id': i['id'],
             'type': i['type'],
@@ -175,7 +175,7 @@ def country_search(request):
     results = db.show_info.find()
     tparams = {}
     for i in results:
-        if name in i['country'].casefold():
+        if name.casefold() in i['country'].casefold():
             movie = {
             'id': i['id'],
             'type': i['type'],
@@ -202,7 +202,7 @@ def listed_in_search(request):
     results = db.show_info.find()
     tparams = {}
     for i in results:
-        if name in i['listed_in'].casefold():
+        if name.casefold() in i['listed_in'].casefold():
             movie = {
             'id': i['id'],
             'type': i['type'],
