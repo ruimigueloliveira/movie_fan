@@ -1,6 +1,11 @@
-version: "3"
+version: "3.3"
 
 services:
+
+  mongo:
+        image: mongo
+        container_name: mongo_container
+        restart: always
 
   web:
     image: statistics_image
@@ -11,14 +16,5 @@ services:
     command: python manage.py runserver 0.0.0.0:8003
     ports:
       - 8003:8003
-    depends_on:
-      - mariadb
 
-  mariadb:
-    image: mariadb:10.4
-    container_name: mariadb_container
-    restart: always
-    environment:
-      MARIADB_ROOT_PASSWORD: mypass
-    ports:
-     - 3306:3306
+  

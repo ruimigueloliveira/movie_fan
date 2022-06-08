@@ -8,10 +8,8 @@ COPY src/requirements.txt .
 
 RUN pip install -r requirements.txt
 
-COPY docs/ .
-
-RUN python csv_to_mariadb.py
-
 COPY src/webproj/ .
+
+EXPOSE 8003
 
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8003"]
