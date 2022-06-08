@@ -8,7 +8,6 @@ services:
       dockerfile: deploy/Dockerfile.dev
     ports:
       - "8001:8001"
-#      - "127.0.0.1:5678:5678"  # For the debug server
     links:
       - mongo
     depends_on:
