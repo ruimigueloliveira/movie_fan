@@ -1,4 +1,8 @@
-FROM python:3.8
+FROM python:3.8-alpine
+
+# Add gcc and limits.h
+RUN apk add gcc musl-dev 
+
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 

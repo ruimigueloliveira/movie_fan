@@ -123,6 +123,7 @@ def movie(request):
         raise Http404("Filme não disponível!")
     id = request.GET['id']
     movie_ditc = requests.get("http://0.0.0.0:8003/v1/movie/?show_id="+id).json()
+    print(movie_ditc)
 
     # print(movie_ditc)
 
@@ -237,6 +238,7 @@ def country(request):
         raise Http404("Country not available!")
     id = request.GET['id']
     country_ditc = requests.get("http://0.0.0.0:8003/v1/country/?name="+id).json()
+
     tparams = {
         'username': username,
         'country_ditc': country_ditc,
@@ -251,6 +253,7 @@ def category(request):
         raise Http404("Category not available!")
     id = request.GET['id']
     country_ditc = requests.get("http://0.0.0.0:8003/v1/listed_in/?name="+id).json()
+    print(country_ditc)
     tparams = {
         'username': username,
         'category_ditc': country_ditc,

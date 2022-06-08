@@ -3,16 +3,20 @@ version: "3.3"
 services:
 
   mongo:
-        image: mongo
-        container_name: mongo_container
-        restart: always
+    image: mongo
+    volumes:
+     - "/var/lib/mongodb-statistics:/data/db"
+    ports:
+     - "27017:27017"
+    container_name: mongo_container_statistics
+    restart: always
 
   web:
     image: statistics_image
     container_name: statistics_container
     build:
       context: ../
-      dockerfile: deploy/Dockerfile.dev
+      dockerfile: deploy_statistics/Dockerfile.dev
     command: python manage.py runserver 0.0.0.0:8003
     ports:
       - 8003:8003
