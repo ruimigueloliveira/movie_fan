@@ -1,4 +1,8 @@
 fileignoreconfig:
+- filename: authentication/src/auth_lib/auth_private_key.pem
+  checksum: f3b220867842f42ca6dafd3b7b6d6ed99bea6c86b1883d55bfb101b3b410ac83
+- filename: authentication/src/auth_lib/oauth_operations.py
+  checksum: 8efd9cfb4893881ff19fa45c9f5df140e4a02d6acb89221eed949d614dbf43cd
 - filename: statistics/src/webproj/app/movies.csv
   checksum: 2e6831b816c7bb749ab6c62fecb30b87bfa2489b6afcce9c862854bc96adc5e4
 - filename: statistics/src/webproj/app/old_views.py

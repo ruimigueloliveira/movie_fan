@@ -8,12 +8,19 @@ from cryptography.hazmat.primitives import serialization, hashes
 from cryptography.hazmat.primitives.asymmetric import padding
 
 import auth_lib.db_operations
-from auth_lib import statuses
 from auth_lib import statuses as s
 
-SENTINEL = object()
-# Registry entity key password
-PRIV_KEY_PASSWORD = b"priv_key543"
+# Registry entity key
+PRIVATE_KEY_PEM = "auth_private_key.pem"
+
+password_filepath = os.path.join(os.path.dirname(__file__), "password")
+try:
+    with open(password_filepath, mode="r") as f:
+        PRIVATE_KEY_PASSWORD = bytes(f.readlines()[0], "utf-8")
+except FileNotFoundError:
+    print("Error: Password file not found!")
+    exit(1)
+
 # How many nanoseconds are there in a day
 DAY_NS = int(1e9 * 60 * 60 * 24)  # 60s * 60 min * 24h
 # Separates the arguments when encrypting multiple strings
@@ -26,10 +33,10 @@ def _load_priv_key():
     :return: Private key of the authorization entity
     """
     # Load private key
-    with open(os.path.join(os.path.dirname(__file__), "privkey.pem"), "rb") as key_file:
+    with open(os.path.join(os.path.dirname(__file__), PRIVATE_KEY_PEM), "rb") as key_file:
         private_key = serialization.load_pem_private_key(
             key_file.read(),
-            password=PRIV_KEY_PASSWORD,
+            password=PRIVATE_KEY_PASSWORD,
             backend=cryptography.hazmat.backends.default_backend()
         )
     return private_key
@@ -142,14 +149,14 @@ def validate_access_token(access_tkn: bytes, auth_tkn: bytes) -> int:
 if __name__ == '__main__':
     # Generate authorization code
     status_code, auth = authorization_code(username="andre", email="andre@gmail.com", password="andre$P1")
-    assert status_code == 0, f"Authorization code error code {status_code}: {statuses.status_description(status_code)}"
+    assert status_code == 0, f"Authorization code error code {status_code}: {s.status_description(status_code)}"
 
     # Generate access token
     status_code, access_token = generate_access_token(
         auth_code=auth, username="andre", email="andre@gmail.com", password="andre$P1"
     )
-    assert status_code == 0, f"Access token generation error code {status_code}: {statuses.status_description(status_code)}"
+    assert status_code == 0, f"Access token generation error code {status_code}: {s.status_description(status_code)}"
 
     # Validate access token
     status_code = validate_access_token(access_tkn=access_token, auth_tkn=auth)
-    assert status_code == 0, f"Access token validation error code {status_code}: {statuses.status_description(status_code)}"
+    assert status_code == 0, f"Access token validation error code {status_code}: {s.status_description(status_code)}"
