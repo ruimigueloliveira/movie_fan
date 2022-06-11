@@ -1,3 +1,9 @@
+"""Status codes registry
+
+Holds all possible status codes of this library, as well as a string description associated with
+each one.
+"""
+
 from typing import Dict
 
 SPECIAL_SYM: tuple = ('$', '@', '#', '%')
@@ -19,6 +25,7 @@ PASSWORD_NO_NUMBERS: int = 33
 PASSWORD_NO_UPPERCASE: int = 34
 PASSWORD_NO_LOWERCASE: int = 35
 PASSWORD_NO_SPECIAL_SYMBOLS: int = 36
+PASSWORD_INVALID_SYMBOLS: int = 37
 VALID_CREDENTIALS: int = 40
 NON_EXISTENT_USERNAME: int = 41
 NON_EXISTENT_EMAIL: int = 42
@@ -34,7 +41,7 @@ OVERDUE_ACCESS_TOKEN: int = 63
 
 
 def status_description(code: int) -> str:
-    """
+    """Get description relative to a status code integer
 
     :param code: Status code integer
     :return: Status code description
@@ -62,6 +69,7 @@ def status_description(code: int) -> str:
         PASSWORD_NO_UPPERCASE: "Password should have at least one uppercase letter",
         PASSWORD_NO_LOWERCASE: "Password should have at least one lowercase letter",
         PASSWORD_NO_SPECIAL_SYMBOLS: f'Password should have at least one of the symbols {"".join(SPECIAL_SYM)}',
+        PASSWORD_INVALID_SYMBOLS: f'Password contains invalid symbols',
         VALID_CREDENTIALS: "Input credentials are valid",
         NON_EXISTENT_USERNAME: "Username does not exist",
         NON_EXISTENT_EMAIL: "E-mail does not exist",

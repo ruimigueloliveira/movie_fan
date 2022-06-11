@@ -7,10 +7,12 @@ import re
 
 # --- Constants ---
 # Sentinel design pattern
+import string
+
 from auth_lib.statuses import OK, INVALID_USERNAME, INVALID_EMAIL, VALID_PASSWORD, \
     PASSWORD_TOO_SHORT, \
     PASSWORD_TOO_LONG, PASSWORD_NO_NUMBERS, PASSWORD_NO_UPPERCASE, PASSWORD_NO_LOWERCASE, PASSWORD_NO_SPECIAL_SYMBOLS, \
-    SPECIAL_SYM
+    SPECIAL_SYM, PASSWORD_INVALID_SYMBOLS
 
 SENTINEL = object()
 
@@ -27,8 +29,14 @@ def hash_unicode(a_string: str) -> str:
 
 
 def password_check(passwd: str) -> int:
-    """
+    """Enforces a secure password and
+
     Credits https://www.geeksforgeeks.org/password-validation-in-python/
+    Forces user to choose a password from 6-20 characters,
+        with characters lowercase, uppercase and numbers and
+         at least one special symbol: (@, #, $, %).
+    No other characters are allowed.
+
     :param passwd: A password
     :return: Status code indicating the validity of the password
     """
@@ -51,12 +59,21 @@ def password_check(passwd: str) -> int:
     if not any(char in SPECIAL_SYM for char in passwd):
         return PASSWORD_NO_SPECIAL_SYMBOLS
 
+    allowed_symbols = (*SPECIAL_SYM, *[*string.ascii_letters], *[*string.digits])
+    if not all(char in allowed_symbols for char in passwd):
+        return PASSWORD_INVALID_SYMBOLS
+
     return VALID_PASSWORD
 
 
 # FIXME parameters are str | object because of sentinel object
 def input_check(username: str = SENTINEL, email: str = SENTINEL, password: str = SENTINEL) -> int:
-    """
+    """Checks the validity of provided credentials.
+
+    Characters must be valid to prevent injection attacks.
+    Username and e-mail must abide by a standard format.
+        email -> 'ascii@sub.domain'
+        username -> 'user9_k.1-2'
 
     :param username: Username to be validated
     :param email: Email to be validated

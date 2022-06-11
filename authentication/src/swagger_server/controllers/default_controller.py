@@ -52,12 +52,18 @@ def v1_access_token_post():  # noqa: E501
         request.json[param] for param in ("authtoken", "username", "email", "password")
     ]
     # Call auth-lib
-    status_code, access_token = oauth_operations.generate_access_token(bytes.fromhex(auth_code), username, email, password)
-    # Split, parse and join
-    signature, deadline = access_token.split(b"-ds")
-    access_token = "-ds".join(
-        [signature.hex(), str(deadline, "utf-8")]
+    status_code, access_token = oauth_operations.generate_access_token(
+        bytes.fromhex(auth_code), username, email, password
     )
+    # Split, parse and join
+    if status_code == 0:
+        signature, deadline = access_token.split(b"-ds")
+        access_token = "-ds".join(
+            [signature.hex(), str(deadline, "utf-8")]
+        )
+    else:
+        access_token = str(access_token, "utf-8")
+
     # Return status code
     return dict(
         status_code=status_code,
