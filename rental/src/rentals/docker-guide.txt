@@ -9,3 +9,12 @@ docker image rm [image_id]
 
 docker build -t [img_name] .
 docker run --name [container_name] -d -p 8002:8080 [img_name]
+
+
+// Correr a app
+docker build -t registry.deti:5000/pedrog/rental:1747 -f deploy_rental/Dockerfile.dev .
+docker run --name rentals_container -d -p 8002:8002 registry.deti:5000/pedrog/rental:1747
+docker logs rentals_container
+docker push registry.deti:5000/pedrog/rental:1747
+kubectl apply -f deploy_rental/deployment.yaml
+kubectl get pods -n pedrog
