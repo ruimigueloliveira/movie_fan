@@ -1,11 +1,11 @@
-version: "3.9"
+version: "3"
 
 services:
 
   app:
     build: 
       context: ../
-      dockerfile: deploy/Dockerfile
+      dockerfile: deploy_app/Dockerfile.dev
 
     container_name: app_container
     
