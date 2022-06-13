@@ -1,6 +1,6 @@
 
-# APP
-docker build -t app_image -f deploy/Dockerfile .
+# APP LOCAL
+docker build -t app_image -f deploy_app/Dockerfile.dev .
 docker run --name app_container -d -p 8000:8000 app_image
 docker logs app_container
 
@@ -9,7 +9,22 @@ docker kill $(docker ps -q)
 docker rm -f $(docker ps -a -q)
 yes | docker image prune -a
 
-# BEST COMMAND EVER
+# KUBERNETES
+
+1. Construir a imagem
+docker build -t registry.deti:5000/jonhcena/app:v1 -f deploy_app/Dockerfile.dev .
+
+2. Enviar para o registry
+docker push registry.deti:5000/jonhcena/app:v1
+
+2. Enviar para o cluster
+kubectl apply -f deploy_app/deployment.yaml
+
+3. Ver estado
 kubectl get pods -n jonhcena
-kubectl -n jonhcena port-forward app-5cdb478f89-l88nb 1232:8000
-http://localhost:1232/
+
+# 4. Mudar o porto
+# kubectl -n jonhcena port-forward app-69988cb677-fdqwm 1232:8000
+
+# 5. Aceder
+# http://localhost:1232/
