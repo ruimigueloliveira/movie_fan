@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-mongodb
+  namespace: egs9
+  labels:
+    app: auth-mongodb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth-mongodb
+  template:
+    metadata:
+      labels:
+        app: auth-mongodb
+    spec:
+      containers:
+      - name: mongodb
+        image: registry.deti:5000/egs9/auth-mongodb:20220615
+        ports:
+        - containerPort: 27017
+        volumeMounts:
+          - name: auth-mongodb-static
+            mountPath: /var/www/static
+      volumes:
+        - name: auth-mongodb-static
+          persistentVolumeClaim:
+            claimName: auth-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-mongodb-service
+  namespace: egs9
+spec:
+  selector:
+    app: auth-mongodb
+  ports:
+    - protocol: TCP
+      port: 27017
+      targetPort: 27017
