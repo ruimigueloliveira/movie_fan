@@ -9,6 +9,10 @@ docker kill $(docker ps -q)
 docker rm -f $(docker ps -a -q)
 yes | docker image prune -a
 
+# OPENVPN
+cd /Desktop/deti-srv-OpenVPN/
+sudo openvpn deti-srv.ovpn
+
 # KUBERNETES
 
 1. Construir a imagem

@@ -5,7 +5,7 @@ metadata:
   name: app
   namespace: egs9
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: app
@@ -17,13 +17,13 @@ spec:
       containers:
       - name: app
         image: registry.deti:5000/egs9/app:13061756
-        resources:
-          requests:
-            memory: "32Mi"
-            cpu: "10m"
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
+        # resources:
+        #   requests:
+        #     memory: "32Mi"
+        #     cpu: "10m"
+        #   limits:
+        #     memory: "128Mi"
+        #     cpu: "500m"
         ports:
         - containerPort: 8000
 ---
@@ -38,3 +38,27 @@ spec:
     targetPort: 8000
   selector:
     app: app
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app-k3s
+  namespace: egs9
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    traefik.ingress.kubernetes.io/frontend-entry-points: http,https
+    traefik.ingress.kubernetes.io/redirect-entry-point: https
+    traefik.ingress.kubernetes.io/redirect-permanent: "true"
+spec:
+  rules:
+  - host: moviefans.k3s
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: app
+            port:
+              number: 80
