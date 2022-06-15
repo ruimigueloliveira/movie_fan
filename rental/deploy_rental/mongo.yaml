@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo-rental
+  namespace: egs9
+  labels:
+    app: mongo-rental
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo-rental
+  template:
+    metadata:
+      labels:
+        app: mongo-rental
+    spec:
+      containers:
+      - name: mongodb
+        image: registry.deti:5000/egs9/mongo-rental:15061538
+        ports:
+        - containerPort: 27017
+        volumeMounts:
+          - name: mongo-rental-static
+            mountPath: /var/www/static
+      volumes:
+        - name: mongo-rental-static
+          persistentVolumeClaim:
+            claimName: rental-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-rental-service
+  namespace: egs9
+spec:
+  selector:
+    app: mongo-rental
+  ports:
+    - protocol: TCP
+      port: 27017
+      targetPort: 27017

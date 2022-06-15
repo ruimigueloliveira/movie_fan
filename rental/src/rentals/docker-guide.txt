@@ -11,10 +11,25 @@ docker build -t [img_name] .
 docker run --name [container_name] -d -p 8002:8080 [img_name]
 
 
-// Correr a app
+// Correr a app DOCKER
 docker build -t registry.deti:5000/pedrog/rental:1747 -f deploy_rental/Dockerfile.dev .
-docker run --name rentals_container -d -p 8002:8002 registry.deti:5000/pedrog/rental:1747
+docker run --name rentals_container -d -p 8002:8002 registry.deti:5000/pedrog/rental:1325
 docker logs rentals_container
-docker push registry.deti:5000/pedrog/rental:1747
+
+// Correr a app K8S
+
+docker pull mongo:4.4
+
+docker build -t registry.deti:5000/egs9/rental:15061538 -f deploy_rental/Dockerfile.dev .
+
+
+docker push registry.deti:5000/egs9/rental:15061538
+docker push registry.deti:5000/egs9/mongo-rental:15061538
+
+
 kubectl apply -f deploy_rental/deployment.yaml
-kubectl get pods -n pedrog
+kubectl apply -f deploy_rental/mongo.yaml
+kubectl apply -f deploy_rental/storage.yaml
+kubectl get pods -n egs9
+
+docker image tag mongo:latest registry.deti:5000/egs9/mongo-rental:15061538

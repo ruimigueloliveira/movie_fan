@@ -2,21 +2,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: app
-  namespace: pedrog
+  name: rental
+  namespace: egs9
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: app
+      app: rental
   template:
     metadata:
       labels:
-        app: app
+        app: rental
     spec:
       containers:
-      - name: app
-        image: registry.deti:5000/pedrog/rentals:1756
+      - name: rental
+        image: registry.deti:5000/egs9/rental:15061538
         resources:
           requests:
             memory: "32Mi"
@@ -25,4 +25,16 @@ spec:
             memory: "128Mi"
             cpu: "500m"
         ports:
-        - containerPort: 8080
+        - containerPort: 8002
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rental-service
+  namespace: egs9
+spec:
+  ports:
+  - port: 80
+    targetPort: 8002
+  selector:
+    app: rental

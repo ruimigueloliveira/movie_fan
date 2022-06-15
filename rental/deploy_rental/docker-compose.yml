@@ -8,16 +8,5 @@ services:
         - "/var/lib/mongodb-rentals:/data/db"
         ports:
         - "27018:27017"
-        container_name: mongo_container_rentals
-        restart: always 
-
-    web:
-        image: rentals_image
-        container_name: rentals_container
-        build:
-            context: ../
-            dockerfile: deploy_rental/Dockerfile.dev
-        ports:
-          - "8002:8002"
-
-    
+        container_name: mongodb
+        restart: always
