@@ -189,18 +189,18 @@ After the above requirements are met, you can proceed.
 To apply the configurations, run:
 ```shell
 # Remember to run these in the authentication dir
-kubectl apply -f deploy/storage.yaml
-kubectl apply -f deploy/mongo.yaml
-kubectl apply -f deploy/deployment.yaml
+kubectl apply -f deploy_auth/storage.yaml
+kubectl apply -f deploy_auth/mongo.yaml
+kubectl apply -f deploy_auth/deployment.yaml
 ```
 
 To delete the resources created with the above
 command, run:
 ```shell
 # Remember to run this in the authentication dir
-kubectl delete -f deploy/deployment.yaml
-kubectl delete -f deploy/mongo.yaml 
-kubectl delete -f deploy/storage.yaml
+kubectl delete -f deploy_auth/deployment.yaml
+kubectl delete -f deploy_auth/mongo.yaml 
+kubectl delete -f deploy_auth/storage.yaml
 ```
 
 ### Docker
