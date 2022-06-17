@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo-stats
+  namespace: egs9
+  labels:
+    app: mongo-stats
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo-stats
+  template:
+    metadata:
+      labels:
+        app: mongo-stats
+    spec:
+      containers:
+      - name: mongodb
+        image: registry.deti:5000/egs9/mongo-stats:1632
+        ports:
+        - containerPort: 27017
+        volumeMounts:
+          - name: mongo-stats-static
+            mountPath: /var/www/static
+      volumes:
+        - name: mongo-stats-static
+          persistentVolumeClaim:
+            claimName: stats-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-stats-service
+  namespace: egs9
+spec:
+  selector:
+    app: mongo-stats
+  ports:
+    - protocol: TCP
+      port: 27017
+      targetPort: 27017

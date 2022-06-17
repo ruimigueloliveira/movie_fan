@@ -6,18 +6,20 @@ import pymongo
 import csv
 
 # Connect to MongoDB Platform
-client = pymongo.MongoClient("mongo", 27017)
+client = pymongo.MongoClient("mongo-stats-service", 27017)
 db = client.movies
 
 with open('app/movies.csv', 'r') as f:
 
     csvreader = csv.reader(f)
     header = next(csvreader)
+    print(header)
     i = 0
 
     results = db.show_info.find()
     count=0
     for i in results:
+        print("Collection has content")
         count+=1
         if count>2:
             break
@@ -52,8 +54,6 @@ with open('app/movies.csv', 'r') as f:
                 db.show_rank.insert_one(dict1)
             except:
                 pass
-
-
 
 def home(request):
     tparams = {
