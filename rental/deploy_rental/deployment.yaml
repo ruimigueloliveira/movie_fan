@@ -34,7 +34,31 @@ metadata:
   namespace: egs9
 spec:
   ports:
-  - port: 8002
+  - port: 80
     targetPort: 8002
   selector:
     app: rental
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: rental-ingress
+  namespace: egs9
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    traefik.ingress.kubernetes.io/frontend-entry-points: http,https
+    traefik.ingress.kubernetes.io/redirect-entry-point: https
+    traefik.ingress.kubernetes.io/redirect-permanent: "true"
+spec:
+  rules:
+  - host: rental.k3s
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: rental-service
+            port:
+              number: 80
