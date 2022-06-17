@@ -10,6 +10,8 @@ The guide below is directed to developers.
 2. [Building and deploying](#building-and-deploying)
    1. [Kubernetes](#kubernetes)
    2. [Docker](#docker)
+      1. [Mongo](#mongo-image)
+      2. [Auth](#auth-image)
 3. [Miscellaneous](#miscellaneous)
    1. [Access code deadline corruption](#access-code-deadline-corruption)
    2. [Server Password](#private-key-password)
@@ -31,7 +33,7 @@ http requests.
 ```python
 import requests
 response = requests.post(
-            "http://localhost:8001/deti-egs-moviefan/Authentication/1.0.0/v1/signup",
+            "http://idp.moviefans.k3s:80/deti-egs-moviefan/Authentication/1.0.0/v1/signup",
             json=dict(username="user1", email="user1@it.org", password="user1Pa$$")
         )
 # Print the response
@@ -58,7 +60,7 @@ POST request.
 ```python
 import requests
 response = requests.post(
-"http://localhost:8001/deti-egs-moviefan/Authentication/1.0.0/v1/auth-token",
+"http://idp.moviefans.k3s:80/deti-egs-moviefan/Authentication/1.0.0/v1/auth-token",
 json=dict(username="user1", email="user1@it.org", password="user1Pa$$")
 )
 # Print the response
@@ -85,7 +87,7 @@ request.
 ```python
 import requests
 response = requests.post(
-            "http://localhost:8001/deti-egs-moviefan/Authentication/1.0.0/v1/access-token",
+            "http://idp.moviefans.k3s:80/deti-egs-moviefan/Authentication/1.0.0/v1/access-token",
             json=dict(
                 authtoken='31d38d6e8ce7ab42f34467135aa19225982f9e8965595bbe74f8734'
                           '8a16a9455c4387cc5d66f02b68d76f5310e7cdd76db98a09cfdeffcb1a50f7e145122b044',
@@ -116,7 +118,7 @@ generation endpoints.
 ```python
 import requests
 response = requests.post(
-            url='http://localhost:8001/deti-egs-moviefan/Authentication/1.0.0/v1/validate-access-token',
+            url='http://idp.moviefans.k3s:80/deti-egs-moviefan/Authentication/1.0.0/v1/validate-access-token',
             json=dict(
                 auth_code='31d38d6e8ce7ab42f34467135aa19225982f9e8965595bbe74f8734'
                           '8a16a9455c4387cc5d66f02b68d76f5310e7cdd76db98a09cfdeffcb1a50f7e145122b044',
@@ -149,7 +151,7 @@ database.
 ```python
 import requests
 response = requests.post(
-            "http://localhost:8001/deti-egs-moviefan/Authentication/1.0.0/v1/signout",
+            "http://idp.moviefans.k3s:80/deti-egs-moviefan/Authentication/1.0.0/v1/signout",
             json=dict(username="user1", email="user1@it.org", password="user1Pa$$")
         )
 response.json()
@@ -186,7 +188,9 @@ After the above requirements are met, you can proceed.
 
 To apply the configurations, run:
 ```shell
-# Remember to run this in the authentication dir
+# Remember to run these in the authentication dir
+kubectl apply -f deploy/storage.yaml
+kubectl apply -f deploy/mongo.yaml
 kubectl apply -f deploy/deployment.yaml
 ```
 
@@ -195,23 +199,49 @@ command, run:
 ```shell
 # Remember to run this in the authentication dir
 kubectl delete -f deploy/deployment.yaml
+kubectl delete -f deploy/mongo.yaml 
+kubectl delete -f deploy/storage.yaml
 ```
 
 ### Docker
+
+#### Mongo Image
+
+You will pull the image from the docker repositories and push it to the private registry:
+
+Pull mongodb image:
+```shell
+sudo docker pull mongo:4.4
+```
+
+Rename the image:
+```shell
+sudo docker image tag mongo:4.4 registry.deti:5000/egs9/auth-mongodb:20220615
+```
+
+Push mongodb image:
+```shell
+sudo docker push registry.deti:5000/egs9/auth-mongodb:20220615
+```
+
+#### Auth Image
 You will build the image and push it to the private
 registry of the university.
 
 Build the image:
-
 ```shell
-# Remember to run this in the authentication dir
-sudo docker build -t registry:5000/moviefan/auth:20220609 -f deploy_authentication/Dockerfile.dev .
+# Remember to run this in the authentication dir - YYYYMMDDHHmm
+sudo docker build -t registry.deti:5000/egs9/auth:202206171147 -f deploy_authentication/Dockerfile.dev .
 ```
 
-Push it to the registry
-
+Run the container:
 ```shell
-sudo docker push registry.deti:5000/moviefan/auth:20220806
+sudo docker run --name auth -d -p 8001:8001 registry.deti:5000/egs9/auth:202206171147
+```
+
+Push it to the registry:
+```shell
+sudo docker push registry.deti:5000/egs9/auth:202206171147
 ```
 
 ## Miscellaneous

@@ -1,41 +1,41 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mongo-rental
+  name: auth-mongodb
   namespace: egs9
   labels:
-    app: mongo-rental
+    app: auth-mongodb
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: mongo-rental
+      app: auth-mongodb
   template:
     metadata:
       labels:
-        app: mongo-rental
+        app: auth-mongodb
     spec:
       containers:
       - name: mongodb
-        image: registry.deti:5000/egs9/mongo-rental:17961557
+        image: registry.deti:5000/egs9/auth-mongodb:20220615
         ports:
         - containerPort: 27017
         volumeMounts:
-          - name: mongo-rental-static
+          - name: auth-mongodb-static
             mountPath: /var/www/static
       volumes:
-        - name: mongo-rental-static
+        - name: auth-mongodb-static
           persistentVolumeClaim:
-            claimName: rental-pvc
+            claimName: auth-pvc
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: mongo-rental-service
+  name: auth-mongodb-service
   namespace: egs9
 spec:
   selector:
-    app: mongo-rental
+    app: auth-mongodb
   ports:
     - protocol: TCP
       port: 27017
