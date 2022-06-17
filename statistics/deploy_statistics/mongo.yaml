@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: mongodb
-        image: registry.deti:5000/egs9/mongo-stats:1632
+        image: registry.deti:5000/egs9/mongo-stats:1819
         ports:
         - containerPort: 27017
         volumeMounts:

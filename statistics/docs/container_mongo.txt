@@ -1,0 +1,8 @@
+sudo docker build -t registry.deti:5000/egs9/stats:1819 -f deploy_statistics/Dockerfile.dev .
+sudo docker push registry.deti:5000/egs9/stats:1819
+sudo docker pull mongo:4.4
+sudo docker image tag mongo:4.4 registry.deti:5000/egs9/mongo-stats:1819
+sudo docker push registry.deti:5000/egs9/mongo-stats:1819
+kubectl apply -f deploy_statistics/deployment.yaml
+kubectl apply -f deploy_statistics/mongo.yaml
+kubectl apply -f deploy_statistics/storage.yaml

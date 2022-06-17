@@ -79,16 +79,16 @@ def shows(request):
         raise Http404("Invalid request!")
     type = request.GET['type']
     if type=='movie':
-        statement = "{type = 'Movie'}"
+        statement = {'type' : 'Movie'}
     elif type=='tvshow':
-        statement = "{type = 'tv show'}"
+        statement = {'type' : 'TV Show'}
     else:
         tparams = {
         'title': 'error'
         }
         data = simplejson.dumps(tparams)
         return HttpResponse(data, content_type='application/json')
-    results = db.show_info.find()
+    results = db.show_info.find(statement)
     tparams = {}
     for i in results:
         movie = {

@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: stats
-        image: registry.deti:5000/egs9/stats:1632
+        image: registry.deti:5000/egs9/stats:1819
         resources:
           requests:
             memory: "32Mi"
