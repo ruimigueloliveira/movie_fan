@@ -16,10 +16,10 @@ sudo openvpn deti-srv.ovpn
 # KUBERNETES
 
 1. Construir a imagem
-docker build -t registry.deti:5000/egs9/app:17061745 -f deploy_app/Dockerfile.dev .
+docker build -t registry.deti:5000/egs9/app:19060043 -f deploy_app/Dockerfile.dev .
 
 2. Enviar para o registry
-docker push registry.deti:5000/egs9/app:17061745
+docker push registry.deti:5000/egs9/app:19060043
 
 2. Enviar para o cluster
 kubectl apply -f deploy_app/deployment.yaml

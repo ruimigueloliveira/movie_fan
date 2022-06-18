@@ -14,7 +14,6 @@ urlpatterns = [
     path('director/', views.director, name='director'),
     path('country/', views.country, name='country'),
     path('category/', views.category, name='category'),
-    path('search/', views.search, name='search'),
     path('rent/', views.rent, name='rent'),
     path('rent_confirm/', views.rent_confirm, name='rent_confirm'),
     path('profile/', views.profile, name='profile'),

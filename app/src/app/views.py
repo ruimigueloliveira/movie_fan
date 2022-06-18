@@ -4,22 +4,16 @@ import requests
 from .forms import myRentalForms, mySignUpForms, myLogInForms
 import math
 
-username = "admin"
-email = "admin"
-password = "admin"
+username = ""
 
 # Home Page
 def home_page(request):
-    tparams = {
-        'username': username,
-    }
+    tparams = {'username': username}
     return render(request, 'home_page.html', tparams)
 
 # Sign Up
 def signup(request):
-    tparams = {
-        'username': username,
-    }
+    tparams = {'username': username}
     return render(request, 'signup.html', tparams)
 
 # Sign Up Confirm
@@ -29,25 +23,22 @@ def signup_confirm(request):
     if form.is_valid():
         data = form.cleaned_data
     response = requests.post(
-        f"http://0.0.0.0:8001/deti-egs-moviefan/Authentication/1.0.0/v1/signup",
+        f"http://idp.moviefans.k3s/deti-egs-moviefan/Authentication/1.0.0/v1/signup",
         json=dict(username=data["username"], email=data["email"], password=data["password"])
     )
     global username
     username = data["username"]
-    status = response.json()["status"]
     if (response.status_code != 200) or ("OK" not in response.text):
         username = ""
     tparams = {
         'username': username,
-        'status' : status
+        'status' : response.json()["status"]
     }
     return render(request, 'signup_confirm.html', tparams)
 
 # Login
 def login(request):
-    tparams = {
-        'username': username,
-    }
+    tparams = {'username': username}
     return render(request, 'login.html', tparams)
 
 # Login Confirm
@@ -57,17 +48,16 @@ def login_confirm(request):
     if form.is_valid():
         data = form.cleaned_data
     response = requests.post(
-        f"http://0.0.0.0:8001/deti-egs-moviefan/Authentication/1.0.0/v1/auth-token",
+        f"http://idp.moviefans.k3s/deti-egs-moviefan/Authentication/1.0.0/v1/auth-token",
         json=dict(username=data["username"], password=data["password"])
     )
     global username
     username = data["username"]
-    status = response.json()["status"]
     if (response.status_code != 200) or ("OK" not in response.text):
         username = ""
     tparams = {
         'username': username,
-        'status' : status
+        'status' : response.json()["status"]
     }
     return render(request, 'login_confirm.html', tparams)
 
@@ -76,10 +66,6 @@ def logout(request):
     global username
     bye_user = username
     username = ""
-    global email
-    email = ""
-    global password
-    password = ""
     tparams = {
         'username': username,
         'bye_user' : bye_user
@@ -100,7 +86,7 @@ def movieslist(request):
     allmovies_ditc = requests.get("http://moviestats.k3s/v1/shows?type=movie").json()
     tparams = {
         'allmovies_ditc': allmovies_ditc,
-        'username': username,
+        'username': username
     }
     return render(request, 'list_of_movies.html', tparams)
 
@@ -162,18 +148,15 @@ def rent_confirm(request):
     data = {}
     if form.is_valid():
         data = form.cleaned_data
-    
     error = False
     movie_data = {}
     if int(data["rental_time"]) > 100 or int(data["rental_time"]) < 1:
         error = True
-
     if not error:
         movie_title = requests.get("http://moviestats.k3s/v1/movie/?show_id="+id).json()["title"]
         movie_price = round(math.log(int(data["rental_time"])+1),2)*2
         movie_data = {"price": movie_price, "entity": "movie_fan", "username": username, "title": movie_title, "rental_time": data["rental_time"]}
         requests.post("http://rental.k3s/rentals/rental/v1/products/"+id, data = movie_data)
-
     tparams = {
         'movie_data' : movie_data,
         'username': username,
@@ -236,10 +219,3 @@ def category(request):
         'number_of_shows': len(category_ditc)
     }
     return render(request, 'category.html', tparams)
-
-# Searches for movies from the name, actors or countries
-def search(request):
-    tparams = {
-        'username': username,
-    }
-    return render(request, 'search.html', tparams)
