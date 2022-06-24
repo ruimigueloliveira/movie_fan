@@ -37,31 +37,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_400'
       x-openapi-router-controller: swagger_server.controllers.default_controller
-    put:
-      description: Updates product
-      operationId: products_id_put
-      parameters:
-      - name: id_
-        in: path
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: integer
-      responses:
-        "200":
-          description: Successfully updated the product
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inline_response_200_1'
-        "400":
-          description: Invalid request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inline_response_400'
-      x-openapi-router-controller: swagger_server.controllers.default_controller
     post:
       description: Add a product for rental
       operationId: products_id_post
@@ -148,32 +123,6 @@ paths:
                 items:
                   $ref: '#/components/schemas/inline_response_200_2'
                 x-content-type: application/json
-        "400":
-          description: Invalid request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inline_response_400'
-      x-openapi-router-controller: swagger_server.controllers.default_controller
-  /user-products/{user_id}:
-    get:
-      description: Returns the details of the product
-      operationId: user_products_user_id_get
-      parameters:
-      - name: user_id
-        in: path
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: integer
-      responses:
-        "200":
-          description: Successfully returned the product
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inline_response_200_2'
         "400":
           description: Invalid request
           content:

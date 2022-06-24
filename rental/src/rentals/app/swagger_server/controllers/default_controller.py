@@ -40,7 +40,12 @@ def products_id_delete(id_):  # noqa: E501
 
     :rtype: None
     """
-    return 'do some magic!'
+    try:
+        db.products.delete({"_id": id_})
+    except:
+        print('That product does not exist or was already deleted!')
+
+    return 'Success'
 
 def products_by_user(user):
     """products_by_user
@@ -119,29 +124,3 @@ def products_id_post(id_):  # noqa: E501
     print('Movie Title: ' + str(request.form.getlist("title")[0]))
 
     return "Product with id " + str(id_) + " added successfully"
-
-
-def products_id_put(id_):  # noqa: E501
-    """products_id_put
-
-    Updates product # noqa: E501
-
-    :param id_:
-    :type id_: int
-
-    :rtype: InlineResponse2001
-    """
-    return 'do some magic!'
-
-
-def user_products_user_id_get(user_id):  # noqa: E501
-    """user_products_user_id_get
-
-    Returns the details of the product # noqa: E501
-
-    :param user_id:
-    :type user_id: int
-
-    :rtype: InlineResponse2002
-    """
-    return 'do some magic!'
